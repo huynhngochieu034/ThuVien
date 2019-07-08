@@ -32,6 +32,15 @@ void ConsoleProcess::InTungPhanTu_Xau(string a, int _size, int _mod){
 	cout << "\xb3";
 }
 
+void ConsoleProcess::NhapTungPhanTu_Xau(int _size, int _mod){
+	int n = _size+10;
+	int _pear = _mod;
+	if (_mod == -1) _pear = (_size - n - 1) / 2;
+	if (_mod == -2) _pear = (_size - n - 2);
+	gotoxy(n, _size - n - _pear - 1);
+
+}
+
 int dd(string ans){
 	if (ans.empty()) return 0;
 	return ans.size();
@@ -186,11 +195,12 @@ void ConsoleProcess::ShowCur(bool CursorVisibility)
 	SetConsoleCursorInfo(handle, &cursor);
 }
 
-void ConsoleProcess::ThongBao(int x, int y, string a){
+void ConsoleProcess::ThongBao(int x, int y, string a, int check){
 	HANDLE hConsoleColor;
 	hConsoleColor = GetStdHandle(STD_OUTPUT_HANDLE);
+	if (check == 0)
 	SetConsoleTextAttribute(hConsoleColor, 12);
-
+	else SetConsoleTextAttribute(hConsoleColor, 10);
 	gotoxy(x, y);
 	cout << a << endl;
 	SetConsoleTextAttribute(hConsoleColor, Normal_Color);
@@ -199,6 +209,8 @@ void ConsoleProcess::ThongBao(int x, int y, string a){
 	foru(i, 1, 40) cout << " ";
 
 }
+
+
 
 string ConsoleProcess::convert(int a){
 	string ans = "";

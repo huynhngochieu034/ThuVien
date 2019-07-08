@@ -9,6 +9,7 @@ public:
 	~ConsoleProcess();
 	static void gotoxy(int x, int y);
 	static void InTungPhanTu_Xau(string a, int _size, int _mod);
+	static void NhapTungPhanTu_Xau(int _size, int _mod);
 	static void InTungPhanTu_XauMau(string a, int _size, int _mod);
 	static string DocVaoXauKiTu(int x, int y, int &err);
 	static string ChuanHoaTen(string a);
@@ -17,7 +18,7 @@ public:
 	static void StringtoChar(string a, char b[]);
 	static string ChartoString(char a[]);
 	static void ShowCur(bool CursorVisibility);
-	static void ThongBao(int x, int y, string a);
+	static void ThongBao(int x, int y, string a, int check);
 	static string convert(int a);
 };
 

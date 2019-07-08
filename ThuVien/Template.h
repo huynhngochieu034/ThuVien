@@ -2,18 +2,13 @@
 #pragma warning(disable:4996)
 
 #include <iostream>
-#include <cstdlib>
 #include <cstring>
 #include <string>
 #include <cmath>
-#include <ctime>
-#include <map>
-#include <set>
-#include <algorithm>
-#include <utility>
 #include <Windows.h>
 #include <conio.h>
 #include "ConsoleProcess.h"
+#include <fstream>
 
 using namespace std;
 
@@ -37,5 +32,4 @@ typedef long long int64;
 #define Control_Ctrl 17
 #define Control_Tab 9
 #define CanLe 27
-#define database "data.txt"
-#define khachhangdatabase "KhachHang.txt"
+#define databasedocgia "datadocgia.txt"
