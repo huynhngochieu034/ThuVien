@@ -216,18 +216,24 @@ void InDanhSachDocGia(TREE t, int w[]){
 }
 void DocThongTin1DocGia(ifstream &filein, TheDocGia &t){
 	filein >> t.MATHE;
+	filein.ignore(SIZE_MAX, '\n');
 	filein >> t.Ho;
+	filein.ignore(SIZE_MAX, '\n');
 	filein >> t.Ten;
+	filein.ignore(SIZE_MAX, '\n');
 	filein >> t.Phai;
+	filein.ignore(SIZE_MAX, '\n');
 	filein >> t.TrangThai;
+	filein.ignore(SIZE_MAX, '\n');
 }
 
 void GhiThongTin1DocGia(ofstream &fileout, TheDocGia t){
+	
 	fileout << t.MATHE <<"\n";
 	fileout << t.Ho << "\n";
 	fileout << t.Ten << "\n";
 	fileout << t.Phai << "\n";
-	fileout << t.TrangThai;
+	fileout << t.TrangThai << "\n";
 }
 
 void DocDanhSachDocGia(ifstream &filein, TREE &t){
@@ -265,10 +271,10 @@ void CapNhatDanhSachCacDocGia(TREE &t){
 		
 	if (k == 5) return;
 	if (k == 1){
-	
+		
 		InTieuDe(w);
 		InDanhSachDocGia(t,w);
-		
+		getch();
 	}
 
 	if (k == 2) {
@@ -284,7 +290,7 @@ void CapNhatDanhSachCacDocGia(TREE &t){
 			ConsoleProcess::ThongBao(20, 2, "Them doc gia thanh cong", 1);
 		}
 		else ConsoleProcess::ThongBao(20, 2, "Them doc gia that bai", 0);
-		
+		getch();
 	}
 }
 
@@ -296,6 +302,9 @@ int main()
 	ifstream filein;
 	filein.open(databasedocgia, ios::in);
 	DocDanhSachDocGia(filein, t);
+	/*TheDocGia p;
+	DocThongTin1DocGia(filein, p);
+	ThemNodeVaoCay(t, p);*/
 	filein.close();
 
 	ConsoleProcess::ShowCur(0);
@@ -306,6 +315,7 @@ int main()
 		case 2:  return 0; break;
 		}
 	}
+	system("pause");
 	return 0;
 }
 

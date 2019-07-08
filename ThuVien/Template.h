@@ -2,13 +2,11 @@
 #pragma warning(disable:4996)
 
 #include <iostream>
-#include <cstring>
 #include <string>
-#include <cmath>
 #include <Windows.h>
 #include <conio.h>
-#include "ConsoleProcess.h"
 #include <fstream>
+#include "ConsoleProcess.h"
 
 using namespace std;
 
