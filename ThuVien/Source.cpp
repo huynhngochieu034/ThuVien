@@ -4,9 +4,9 @@
 
 //--------------Danh muc sach-------------
 struct DanhMucSach{
-	char MaSach[15];
+	string MaSach;
 	int TrangThai; //0: cho mượn được, 1: đã có độc giả mượn, 2: sách đã thanh lý . 
-	char ViTri[200];
+	string ViTri;
 };
 
 struct nodeDMS{
@@ -23,12 +23,12 @@ typedef struct listDMS LIST_DMS;
 
 //-----------Dau sach-----------------
 struct DauSach{
-	char ISBN[6];
-	char TenSach[100];
+	string ISBN;
+	string TenSach;
 	int SoTrang;
-	char TacGia[50];
+	string TacGia;
 	int NamXuatBan;
-	char TheLoai[40];
+	string TheLoai;
 	LIST_DMS listDMS;/// chua danh sach cac danh muc sach cua danh muc sach do
 };
 typedef struct DauSach DAUSACH;
@@ -43,10 +43,10 @@ struct Date
 };
 struct MuonTra
 {
-	char MaSach[15];
+	string MaSach;
 	Date NgayMuon;
 	Date NgayTra;
-	int TrangThai;//trạng thái =0 là sách đang mượn (chưa trả), =1 là đã trả, =2 : làm mất sách 
+	int TrangThai;//trạng thái = 0 là sách đang mượn (chưa trả), =1 là đã trả, =2 : làm mất sách 
 };
 
 struct nodeMuonTra{
@@ -64,9 +64,9 @@ typedef struct listMuonTra LIST_MUONTRA;
 
 //----------------The doc gia---------------------
 struct TheDocGia{
-	int MATHE;
-	char Ho[100];
-	char Ten[100];
+	unsigned int MATHE;
+	string Ho;
+	string Ten;
 	int Phai; /// 0: nu, 1 nam
 	int TrangThai;
 	LIST_MUONTRA listMuonTra;
@@ -85,6 +85,16 @@ void KhoiTaoCay(TREE &t){
 	t = NULL;
 }
 
+unsigned int Random()
+{
+	srand(time(0));
+	int x;
+	// bo ham rand() vao vong lap moi khong bi loi tang dan, hay giam dan.
+	for (int i = 0; i < 500; i++)
+		x = rand();
+	return x;
+}
+
 int ThemNodeVaoCay(TREE &t, TheDocGia x){
 
 	//neu cay rong
@@ -97,6 +107,7 @@ int ThemNodeVaoCay(TREE &t, TheDocGia x){
 		return 1;
 	}
 	else {
+		/*checkMaDocGia:*/
 		//cay co ton tai phan tu
 	     if(t->data.MATHE > x.MATHE){
 			ThemNodeVaoCay(t->pLeft, x);
@@ -106,17 +117,31 @@ int ThemNodeVaoCay(TREE &t, TheDocGia x){
 			ThemNodeVaoCay(t->pRight, x);
 			return 1;
 		}
-		else return 0;
+		else {
+			return 0;
+			/*x.MATHE = Random();
+			goto checkMaDocGia;*/
+		}
 		
 	}
-	return 0;
+	
+}
+
+NODETHEDOCGIA* TimKiemDocGia(TREE t, int x){
+
+	if (t == NULL) return NULL;
+	else{
+		if (x < t->data.MATHE) TimKiemDocGia(t->pLeft, x);
+		else if (x > t->data.MATHE) TimKiemDocGia(t->pRight, x);
+		else return t;
+	}
 }
 
 void InTieuDe(int w[]){
+
 	system("cls");
 	cout << endl;
 	cout << endl;
-
 
 	int sum = 0;
 	foru(i, 1, 5) sum = sum + w[i];
@@ -152,21 +177,21 @@ void InTieuDe(int w[]){
 	cout << endl;
 }
 
-
-void NhapDocGia(TheDocGia &x, int w[]){
-	int mathe = rand() % 10000 + 1;
+void NhapDocGia(TheDocGia &x, int w[], unsigned int mathe){
 	x.MATHE = mathe;
-	cout << x.MATHE<<"\n";
+	cout << "Ma doc gia: "<<x.MATHE<<"\n";
+	cout << "Nhap ho: ";
 	cin >> x.Ho;
+	cout << "Nhap ten: ";
 	cin >> x.Ten;
+	cout << "Nhap phai(0: Nu, 1:Nam): ";
 	cin >> x.Phai;
+	cout << "Nhap trang thai(0: Khoa, 1: Hoat Dong): ";
 	cin >> x.TrangThai;
 }
 
 
 void InDanhSachDocGia(TREE t, int w[]){
-	char static gioitinh[10];
-	char static trangthai[50];
 
 	/// in cac dong sau
 	if (t != NULL){
@@ -183,23 +208,19 @@ void InDanhSachDocGia(TREE t, int w[]){
 		/// in dong du lieu
 
 		foru(i, 1, w[0]) cout << " "; cout << "\xb3";
-		InDanhSachDocGia(t->pLeft, w);
+		
 		
 		ConsoleProcess::InTungPhanTu_Xau(ConsoleProcess::convert(t->data.MATHE), w[1] - 1, -1);
 		ConsoleProcess::InTungPhanTu_Xau(t->data.Ho, w[2], -1);
 		ConsoleProcess::InTungPhanTu_Xau(t->data.Ten, w[3], -1);
 
-		if (t->data.Phai == 1)
-			strcpy(gioitinh, "NAM");
-		else if(t->data.Phai == 0)
-			strcpy(gioitinh, "NU");
-		ConsoleProcess::InTungPhanTu_Xau(gioitinh, w[4], -1);
-
-		if (t->data.TrangThai == 1)
-			strcpy(trangthai, "DANG HOAT DONG");
-		else if(t->data.TrangThai == 0)
-			strcpy(trangthai, "DA KHOA");
-		ConsoleProcess::InTungPhanTu_Xau(trangthai, w[5], -1);
+		(t->data.Phai == 1) ? 
+		ConsoleProcess::InTungPhanTu_Xau("NAM", w[4], -1) : 
+		ConsoleProcess::InTungPhanTu_Xau("NU", w[4], -1);
+		
+		(t->data.TrangThai == 1) ?
+			ConsoleProcess::InTungPhanTu_Xau("HOAT DONG", w[5], -1) :
+			ConsoleProcess::InTungPhanTu_Xau("KHOA", w[5], -1);
 		cout << endl;
 
 		/// in dong _
@@ -210,38 +231,147 @@ void InDanhSachDocGia(TREE t, int w[]){
 			cout << "\xb3";
 		}
 		cout << endl;
-
+		InDanhSachDocGia(t->pLeft, w);
 		InDanhSachDocGia(t->pRight, w);
 	}
 }
-void DocThongTin1DocGia(ifstream &filein, TheDocGia &t){
-	filein >> t.MATHE;
-	filein.ignore(SIZE_MAX, '\n');
-	filein >> t.Ho;
-	filein.ignore(SIZE_MAX, '\n');
-	filein >> t.Ten;
-	filein.ignore(SIZE_MAX, '\n');
-	filein >> t.Phai;
-	filein.ignore(SIZE_MAX, '\n');
-	filein >> t.TrangThai;
-	filein.ignore(SIZE_MAX, '\n');
-}
 
-void GhiThongTin1DocGia(ofstream &fileout, TheDocGia t){
-	
-	fileout << t.MATHE <<"\n";
-	fileout << t.Ho << "\n";
-	fileout << t.Ten << "\n";
-	fileout << t.Phai << "\n";
-	fileout << t.TrangThai << "\n";
-}
-
-void DocDanhSachDocGia(ifstream &filein, TREE &t){
-	while (!filein.eof()){
-		TheDocGia p;
-		DocThongTin1DocGia(filein, p);
-		ThemNodeVaoCay(t, p);
+int DemSoDocGia(TREE t){
+	int dem = 1;
+	if (t != NULL){
+		dem += DemSoDocGia(t->pLeft);
+		dem += DemSoDocGia(t->pRight);
+		return dem;
 	}
+	else return 0;
+}
+
+void GhiThongTin1DocGia(TREE t, fstream &fileout){
+	
+	fileout << t->data.MATHE << endl;
+	fileout << t->data.Ho << endl;
+	fileout << t->data.Ten << endl;
+	fileout << t->data.Phai << endl;
+	fileout << t->data.TrangThai << endl;
+}
+
+
+void GhiThongTinDanhSachDocGia(TREE t, fstream &fileout){
+	if (t != NULL)
+	{
+		GhiThongTin1DocGia(t, fileout);
+		GhiThongTinDanhSachDocGia(t->pLeft, fileout);
+		GhiThongTinDanhSachDocGia(t->pRight, fileout);
+	}
+}
+
+void LuuDuLieuDocGia(TREE t){
+	fstream fileout;
+	fileout.open(databasedocgia, ios::out);
+	if (fileout.is_open())
+	{
+		fileout << DemSoDocGia(t) << endl;
+		GhiThongTinDanhSachDocGia(t, fileout);
+	}
+	else cout << "Loi ket noi file! ";
+	fileout.close();
+}
+
+void DocThongTin1DocGia(TheDocGia &tdg, fstream &filein){
+	
+	filein >> tdg.MATHE;
+	
+	filein >> tdg.Ho;
+	filein >> tdg.Ten;
+	filein >> tdg.Phai;
+	filein >> tdg.TrangThai;
+}
+
+void DocDuLieuDocGia(TREE &t){
+
+	KhoiTaoCay(t);
+
+	fstream filein;
+	TheDocGia tdg;
+	int soDocGia;
+	filein.open(databasedocgia, ios::in);
+	if (filein.is_open()){
+		
+		filein >> soDocGia;
+		for (int i = 0; i < soDocGia; i++)
+		{
+			DocThongTin1DocGia(tdg, filein);
+			ThemNodeVaoCay(t, tdg);
+		}
+	}
+	else cout << "Loi ket noi file! ";
+	filein.close();
+}
+
+
+void DiTimNodeTheMang(TREE &x, TREE &y){
+	//duyet sang ben trai nhat
+	if (y->pLeft != NULL){
+		DiTimNodeTheMang(x, y->pLeft);
+	}
+	else{ //tim duoc node trai nhat
+		x->data = y->data; //cap nhat data cua node can xoa la data cua node the mang	
+		x = y; //cho node X =y
+		y = y->pRight; //ban chat cho nay chinh la cap nhat lai moi lien ket cho node cha cua node the mang
+	}
+}
+
+int XoaDocGia(TREE &t, int maDocGia){
+	//Neu cay dang rong
+	if (t == NULL){
+		return 0;
+	}
+	else{
+		//neu data nho hon node goc
+		if (maDocGia < t->data.MATHE){
+			XoaDocGia(t->pLeft, maDocGia);
+		}
+		else if (maDocGia > t->data.MATHE){
+			XoaDocGia(t->pRight, maDocGia);
+		}
+		else if(maDocGia == t->data.MATHE){
+			NODETHEDOCGIA *x = t; // node x la node the mang - ti nua se xoa no
+			//neu nhanh trai = NULL <=> day la cay co 1 con chinh la con phai
+			if (t->pLeft == NULL){
+				t = t->pRight; //duyet sang phai cua node can xoa de cap nhat moi lien ket giua node cha 
+								//cua node can xoa voi node con cua node can xoa
+			}
+			else if (t->pRight == NULL){
+				t = t->pLeft; //duyet sang trai cua node can xoa de cap nhat moi lien ket giua node cha 
+								//cua node can xoa voi node con cua node can xoa
+			}
+			else //node can xoa la node co 2 con
+			{
+				//C1: Tim node trai nhat cua cay con phai( cay con phai cua node can xoa)	
+				NODETHEDOCGIA *y = t->pRight; //node y la node the mang cho node can xoa -  node nay se dam nhiem tim ra node trai nhat
+				DiTimNodeTheMang(x, y);
+			}
+			delete x; //xoa node can xoa
+			return 1;
+		}
+		else return 0;
+	}
+}
+
+void HieuChinhDocGia(TREE &t, TheDocGia &tdg, int w[]){
+
+	unsigned int maThe = tdg.MATHE;
+
+	cout << "-------Thong tin doc gia can hieu chinh--------"<<endl;
+	cout << "Ma The: " << tdg.MATHE <<endl;
+	cout << "Ho: " << tdg.Ho << endl;;
+	cout << "Ten: " << tdg.Ten << endl;;
+	(tdg.Phai == 1) ? cout << "Phai: " << "NAM" << endl : cout << "Phai: " << "NU" << endl;
+	(tdg.TrangThai == 1) ? cout << "Trang thai: " << "Hoat Dong" << endl : cout << "Trang Thai: " << "Khoa" << endl;;
+
+	cout << "---------Nhap thong tin can chinh sua--------"<<endl;
+	NhapDocGia(tdg, w, maThe);
+	
 }
 
 int LuaChon(){
@@ -257,7 +387,7 @@ int LuaChon(){
 
 void CapNhatDanhSachCacDocGia(TREE &t){
 	/// danh sach gom 5 cot mathe, ho, ten, gioitinh, trang thai
-	int w[6] = { 10, 10, 30, 20, 35, 45 };
+	int w[6] = { 20, 10, 30, 20, 35, 45 };
 	Menu a(35, 60, 1);
 	a.Set_Header("MENU LUA CHON");
 	a.add("1. In danh sach doc gia");
@@ -271,7 +401,7 @@ void CapNhatDanhSachCacDocGia(TREE &t){
 		
 	if (k == 5) return;
 	if (k == 1){
-		
+		DocDuLieuDocGia(t);
 		InTieuDe(w);
 		InDanhSachDocGia(t,w);
 		getch();
@@ -279,17 +409,53 @@ void CapNhatDanhSachCacDocGia(TREE &t){
 
 	if (k == 2) {
 		system("cls");
+		unsigned int mathe = Random();
 		TheDocGia p;
-		NhapDocGia(p,w);
+		NhapDocGia(p, w, mathe);
 		int check = ThemNodeVaoCay(t, p);
 		if (check == 1){
-			ofstream fileout;
-			fileout.open(databasedocgia, ios::out | ios::app);
-			GhiThongTin1DocGia(fileout, p);
-			fileout.close();
+			LuuDuLieuDocGia(t);
+			DocDuLieuDocGia(t);
 			ConsoleProcess::ThongBao(20, 2, "Them doc gia thanh cong", 1);
 		}
 		else ConsoleProcess::ThongBao(20, 2, "Them doc gia that bai", 0);
+		getch();
+		
+	}
+	if (k == 3){
+		InTieuDe(w);
+		InDanhSachDocGia(t, w);
+		int maDocGia;
+		cout << "Nhap ma doc gia can hieu chinh: ";
+		cin >> maDocGia;
+		NODETHEDOCGIA *p = TimKiemDocGia(t, maDocGia);
+		if (p == NULL) cout << "Ma doc gia " << maDocGia << "khong ton tai!";
+		else{
+			HieuChinhDocGia(t, p->data, w);
+			LuuDuLieuDocGia(t);
+			DocDuLieuDocGia(t);
+			ConsoleProcess::ThongBao(20, 2, "Hieu chinh doc gia thanh cong", 1);
+
+			getch();
+		}
+		
+	}
+	if (k == 4){
+
+		InTieuDe(w);
+		InDanhSachDocGia(t, w);
+		int madocgia;
+		cout << "Nhap ma the doc gia can xoa: ";
+		cin >> madocgia;
+		int check = XoaDocGia(t, madocgia);
+		if (check == 1){
+			LuuDuLieuDocGia(t);
+			DocDuLieuDocGia(t);
+			ConsoleProcess::ThongBao(20, 2, "Xoa doc gia thanh cong", 1);
+		}
+			
+		else ConsoleProcess::ThongBao(20, 2, "Xoa doc gia that bai", 0);
+
 		getch();
 	}
 }
@@ -297,16 +463,7 @@ void CapNhatDanhSachCacDocGia(TREE &t){
 int main()
 {
 	TREE t;
-	KhoiTaoCay(t);
-
-	ifstream filein;
-	filein.open(databasedocgia, ios::in);
-	DocDanhSachDocGia(filein, t);
-	/*TheDocGia p;
-	DocThongTin1DocGia(filein, p);
-	ThemNodeVaoCay(t, p);*/
-	filein.close();
-
+	
 	ConsoleProcess::ShowCur(0);
 	while (true){
 		int k = LuaChon();

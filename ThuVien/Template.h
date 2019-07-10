@@ -5,6 +5,8 @@
 #include <string>
 #include <Windows.h>
 #include <conio.h>
+#include <ctime>   
+#include <cstdlib>
 #include <fstream>
 #include "ConsoleProcess.h"
 
