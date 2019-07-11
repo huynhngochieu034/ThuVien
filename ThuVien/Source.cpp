@@ -107,7 +107,7 @@ int ThemNodeVaoCay(TREE &t, TheDocGia x){
 		return 1;
 	}
 	else {
-		/*checkMaDocGia:*/
+		
 		//cay co ton tai phan tu
 	     if(t->data.MATHE > x.MATHE){
 			ThemNodeVaoCay(t->pLeft, x);
@@ -118,13 +118,13 @@ int ThemNodeVaoCay(TREE &t, TheDocGia x){
 			return 1;
 		}
 		else {
-			return 0;
-			/*x.MATHE = Random();
-			goto checkMaDocGia;*/
+			
+			x.MATHE = Random();
+			ThemNodeVaoCay(t,x);
 		}
 		
 	}
-	
+	return 0;
 }
 
 NODETHEDOCGIA* TimKiemDocGia(TREE t, int x){
@@ -190,48 +190,51 @@ void NhapDocGia(TheDocGia &x, int w[], unsigned int mathe){
 	cin >> x.TrangThai;
 }
 
+void InDongDuLieu(TREE t, int w[]){
+	/// in dong trang
+	foru(i, 1, w[0]) cout << " "; cout << "\xb3";
+	foru(i, 1, w[1] - 2) cout << " "; cout << "\xb3";
+	foru(i, 2, 5){
+		foru(j, 1, w[i] - 1)cout << " ";
+		cout << "\xb3";
+	}
+
+	cout << endl;
+
+	/// in dong du lieu
+
+	foru(i, 1, w[0]) cout << " "; cout << "\xb3";
+
+
+	ConsoleProcess::InTungPhanTu_Xau(ConsoleProcess::convert(t->data.MATHE), w[1] - 1, -1);
+	ConsoleProcess::InTungPhanTu_Xau(t->data.Ho, w[2], -1);
+	ConsoleProcess::InTungPhanTu_Xau(t->data.Ten, w[3], -1);
+
+	(t->data.Phai == 1) ?
+		ConsoleProcess::InTungPhanTu_Xau("NAM", w[4], -1) :
+		ConsoleProcess::InTungPhanTu_Xau("NU", w[4], -1);
+
+	(t->data.TrangThai == 1) ?
+		ConsoleProcess::InTungPhanTu_Xau("HOAT DONG", w[5], -1) :
+		ConsoleProcess::InTungPhanTu_Xau("KHOA", w[5], -1);
+	cout << endl;
+
+	/// in dong _
+	foru(i, 1, w[0]) cout << " "; cout << "\xb3";
+	foru(i, 1, w[1] - 2) cout << "_"; cout << "\xb3";
+	foru(i, 2, 5){
+		foru(j, 1, w[i] - 1)cout << "_";
+		cout << "\xb3";
+	}
+	cout << endl;
+}
 
 void InDanhSachDocGia(TREE t, int w[]){
-
+	
 	/// in cac dong sau
 	if (t != NULL){
-
-		/// in dong trang
-		foru(i, 1, w[0]) cout << " "; cout << "\xb3";
-		foru(i, 1, w[1] - 2) cout << " "; cout << "\xb3";
-		foru(i, 2, 5){
-			foru(j, 1, w[i] - 1)cout << " ";
-			cout << "\xb3";
-		}
-		cout << endl;
-
-		/// in dong du lieu
-
-		foru(i, 1, w[0]) cout << " "; cout << "\xb3";
-		
-		
-		ConsoleProcess::InTungPhanTu_Xau(ConsoleProcess::convert(t->data.MATHE), w[1] - 1, -1);
-		ConsoleProcess::InTungPhanTu_Xau(t->data.Ho, w[2], -1);
-		ConsoleProcess::InTungPhanTu_Xau(t->data.Ten, w[3], -1);
-
-		(t->data.Phai == 1) ? 
-		ConsoleProcess::InTungPhanTu_Xau("NAM", w[4], -1) : 
-		ConsoleProcess::InTungPhanTu_Xau("NU", w[4], -1);
-		
-		(t->data.TrangThai == 1) ?
-			ConsoleProcess::InTungPhanTu_Xau("HOAT DONG", w[5], -1) :
-			ConsoleProcess::InTungPhanTu_Xau("KHOA", w[5], -1);
-		cout << endl;
-
-		/// in dong _
-		foru(i, 1, w[0]) cout << " "; cout << "\xb3";
-		foru(i, 1, w[1] - 2) cout << "_"; cout << "\xb3";
-		foru(i, 2, 5){
-			foru(j, 1, w[i] - 1)cout << "_";
-			cout << "\xb3";
-		}
-		cout << endl;
 		InDanhSachDocGia(t->pLeft, w);
+		InDongDuLieu(t, w);
 		InDanhSachDocGia(t->pRight, w);
 	}
 }
@@ -361,7 +364,7 @@ int XoaDocGia(TREE &t, int maDocGia){
 void HieuChinhDocGia(TREE &t, TheDocGia &tdg, int w[]){
 
 	unsigned int maThe = tdg.MATHE;
-
+	system("cls");
 	cout << "-------Thong tin doc gia can hieu chinh--------"<<endl;
 	cout << "Ma The: " << tdg.MATHE <<endl;
 	cout << "Ho: " << tdg.Ho << endl;;
@@ -374,14 +377,37 @@ void HieuChinhDocGia(TREE &t, TheDocGia &tdg, int w[]){
 	
 }
 
+
+string LayTenHo(TheDocGia tdg)
+{
+	int i = 0;
+	string token;
+	token = tdg.Ten;
+	while (tdg.Ho[i] != ' ')
+	{
+		token += tdg.Ho[i++];
+	}
+	return token;
+}
+
+void LayDuLieuDocGiaVaoMangMotChieu(TREE t){
+	
+
+}
+
+void InDanhSachDocGiaTangDanTheoTenHo(){
+	
+}
+
 int LuaChon(){
 	Menu a(35, 60, 1);
 	a.Set_Header("MENU LUA CHON");
 	a.add("1. Quan ly the doc gia");
-	a.add("2. Thoat");
+	a.add("2. In danh sach the doc gia");
+	a.add("3. Thoat");
 	int _err;
 	int k = a.run(_err);
-	if (_err) k = 2;
+	if (_err) k = 3;
 	return k;
 }
 
@@ -452,8 +478,7 @@ void CapNhatDanhSachCacDocGia(TREE &t){
 			LuuDuLieuDocGia(t);
 			DocDuLieuDocGia(t);
 			ConsoleProcess::ThongBao(20, 2, "Xoa doc gia thanh cong", 1);
-		}
-			
+		}	
 		else ConsoleProcess::ThongBao(20, 2, "Xoa doc gia that bai", 0);
 
 		getch();
@@ -469,7 +494,8 @@ int main()
 		int k = LuaChon();
 		switch (k){
 		case 1: CapNhatDanhSachCacDocGia(t); break;///OK
-		case 2:  return 0; break;
+		case 2: InDanhSachDocGiaTangDanTheoTenHo(); break;
+		case 3:  return 0; break;
 		}
 	}
 	system("pause");
