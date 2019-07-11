@@ -32,15 +32,6 @@ void ConsoleProcess::InTungPhanTu_Xau(string a, int _size, int _mod){
 	cout << "\xb3";
 }
 
-void ConsoleProcess::NhapTungPhanTu_Xau(int _size, int _mod){
-	int n = _size+10;
-	int _pear = _mod;
-	if (_mod == -1) _pear = (_size - n - 1) / 2;
-	if (_mod == -2) _pear = (_size - n - 2);
-	gotoxy(n, _size - n - _pear - 1);
-
-}
-
 int dd(string ans){
 	if (ans.empty()) return 0;
 	return ans.size();
@@ -130,25 +121,6 @@ string ConsoleProcess::DocVaoXauKiTu(int x, int y, int &err){
 		}
 
 	}
-}
-
-string ConsoleProcess::ChuanHoaTen(string a){
-	string ans = "";
-	int i = 0;
-	int cnt = 0;
-	while (i < a.size()){
-		while (i < a.size() && a[i] == ' ') i++;
-		int bd = i;
-		while (i < a.size() && a[i] != ' '){
-			if (i == bd && cnt != 0) ans = ans + ' ';
-			char z = a[i];
-			if (i == bd) z = uppercase(z); else z = lowercase(z);
-			ans = ans + z;
-			i++;
-		}
-		cnt++;
-	}
-	return ans;
 }
 
 char ConsoleProcess::uppercase(char a){

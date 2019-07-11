@@ -1,34 +1,36 @@
-﻿Build started 7/11/2019 4:46:42 PM.
-     1>Project "C:\Users\hieunh.hh\Desktop\ThuVien\ThuVien\ThuVien.vcxproj" on node 2 (Rebuild target(s)).
+﻿Build started 7/12/2019 12:38:29 AM.
+     1>Project "C:\Users\huynh\OneDrive\Desktop\ThuVien\ThuVien\ThuVien.vcxproj" on node 2 (Rebuild target(s)).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppClean.targets(76,5): warning : Access to the path 'c:\users\huynh\onedrive\desktop\thuvien\debug\thuvien.exe' is denied.
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ConsoleProcess.cpp Menu.cpp Source.cpp
+         D:\visual studio\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ConsoleProcess.cpp Menu.cpp Source.cpp
          Source.cpp
-     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\consoleprocess.h(23): warning C4091: 'static ' : ignored on left of 'ConsoleProcess' when no variable is declared
-     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\source.cpp(90): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
-     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\source.cpp(134): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\source.cpp(135): warning C4018: '>' : signed/unsigned mismatch
-     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\source.cpp(334): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\source.cpp(337): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\consoleprocess.h(21): warning C4091: 'static ' : ignored on left of 'ConsoleProcess' when no variable is declared
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(103): warning C4018: '<=' : signed/unsigned mismatch
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(117): warning C4018: '<=' : signed/unsigned mismatch
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(130): warning C4018: '<=' : signed/unsigned mismatch
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(145): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(189): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(190): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(426): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(429): warning C4018: '>' : signed/unsigned mismatch
          Menu.cpp
-     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\consoleprocess.h(23): warning C4091: 'static ' : ignored on left of 'ConsoleProcess' when no variable is declared
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\consoleprocess.h(21): warning C4091: 'static ' : ignored on left of 'ConsoleProcess' when no variable is declared
          ConsoleProcess.cpp
-     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\consoleprocess.h(23): warning C4091: 'static ' : ignored on left of 'ConsoleProcess' when no variable is declared
-     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\consoleprocess.cpp(71): warning C4018: '<=' : signed/unsigned mismatch
-     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\consoleprocess.cpp(108): warning C4018: '<=' : signed/unsigned mismatch
-     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\consoleprocess.cpp(139): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\consoleprocess.cpp(140): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\consoleprocess.cpp(142): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\consoleprocess.cpp(165): warning C4018: '<=' : signed/unsigned mismatch
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\consoleprocess.h(21): warning C4091: 'static ' : ignored on left of 'ConsoleProcess' when no variable is declared
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\consoleprocess.cpp(62): warning C4018: '<=' : signed/unsigned mismatch
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\consoleprocess.cpp(99): warning C4018: '<=' : signed/unsigned mismatch
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\consoleprocess.cpp(137): warning C4018: '<=' : signed/unsigned mismatch
          Generating Code...
-     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\source.cpp(138): warning C4715: 'TimKiemDocGia' : not all control paths return a value
-     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\source.cpp(362): warning C4715: 'XoaDocGia' : not all control paths return a value
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(134): warning C4715: 'checkNhapChu' : not all control paths return a value
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(193): warning C4715: 'TimKiemDocGia' : not all control paths return a value
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(454): warning C4715: 'XoaDocGia' : not all control paths return a value
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\hieunh.hh\Desktop\ThuVien\Debug\ThuVien.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\hieunh.hh\Desktop\ThuVien\Debug\ThuVien.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\hieunh.hh\Desktop\ThuVien\Debug\ThuVien.lib" /MACHINE:X86 Debug\ConsoleProcess.obj
+         D:\visual studio\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\huynh\OneDrive\Desktop\ThuVien\Debug\ThuVien.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\huynh\OneDrive\Desktop\ThuVien\Debug\ThuVien.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\huynh\OneDrive\Desktop\ThuVien\Debug\ThuVien.lib" /MACHINE:X86 Debug\ConsoleProcess.obj
          Debug\Menu.obj
          Debug\Source.obj
-         ThuVien.vcxproj -> C:\Users\hieunh.hh\Desktop\ThuVien\Debug\ThuVien.exe
-     1>Done Building Project "C:\Users\hieunh.hh\Desktop\ThuVien\ThuVien\ThuVien.vcxproj" (Rebuild target(s)).
+     1>LINK : fatal error LNK1104: cannot open file 'C:\Users\huynh\OneDrive\Desktop\ThuVien\Debug\ThuVien.exe'
+     1>Done Building Project "C:\Users\huynh\OneDrive\Desktop\ThuVien\ThuVien\ThuVien.vcxproj" (Rebuild target(s)) -- FAILED.
 
-Build succeeded.
+Build FAILED.
 
-Time Elapsed 00:00:02.54
+Time Elapsed 00:00:02.65

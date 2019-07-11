@@ -2,7 +2,7 @@
 
 // cac struct can su dung
 
-//--------------Danh muc sach-------------
+//--------------Struct Danh muc sach-------------
 struct DanhMucSach{
 	string MaSach;
 	int TrangThai; //0: cho mượn được, 1: đã có độc giả mượn, 2: sách đã thanh lý . 
@@ -21,7 +21,7 @@ struct listDMS{
 };
 typedef struct listDMS LIST_DMS;
 
-//-----------Dau sach-----------------
+//-----------Struct Dau sach-----------------
 struct DauSach{
 	string ISBN;
 	string TenSach;
@@ -34,7 +34,7 @@ struct DauSach{
 typedef struct DauSach DAUSACH;
 
 
-//---------------Muon tra--------------------
+//---------------Struct Muon tra--------------------
 struct Date
 {
 	int Ngay;
@@ -62,7 +62,13 @@ struct listMuonTra{
 };
 typedef struct listMuonTra LIST_MUONTRA;
 
-//----------------The doc gia---------------------
+//----------------Struct The doc gia---------------------
+
+struct HoTenDG{
+	string hoTen;
+	unsigned int MATHE;
+};
+
 struct TheDocGia{
 	unsigned int MATHE;
 	string Ho;
@@ -80,6 +86,55 @@ struct nodeTheDocGia{
 typedef struct nodeTheDocGia NODETHEDOCGIA;
 typedef NODETHEDOCGIA* TREE;
 
+//-----------Biến toàn cục------------------
+int nDocGia=0;
+int vitri=0;
+
+
+//--------------Chuẩn hóa chuỗi--------------
+void XoaKhoangTrangDauVaCuoi(string &str){
+
+	while (str[0] == ' ') str.erase(str.begin() + 0); // xóa kí tự tại vị trí 0
+	while (str[str.length() - 1] == ' ') str.erase(str.begin() + str.length() - 1);// xóa vị trí cuối
+}
+
+void XoaKhoangTrangGiua(string &str){
+
+	foru(i, 0, str.length() - 1)
+	if (str[i] == ' ' && str[i + 1] == ' '){
+		str.erase(str.begin() + i);
+		i--;
+	}
+}
+
+void InHoaKiTuDau(string &str){
+	strlwr((char *)str.c_str());
+
+	if (str[0] != ' ')
+		if (str[0] >= 97 && str[0] <= 122)
+		str[0] -= 32;
+
+	foru(i, 0, str.length())
+		if (str[i] == ' ' && str[i + 1] != ' ')
+			if (str[i + 1] >= 97 && str[i + 1] <= 122)
+				str[i + 1] -= 32;
+}
+
+void ChuanHoaChuoi(string &str){
+	XoaKhoangTrangDauVaCuoi(str);
+	XoaKhoangTrangGiua(str);
+	InHoaKiTuDau(str);
+}
+
+boolean checkNhapChu(string str){
+	foru(i, 0, str.length())
+		if (str[i] < 65 || str[i] > 90 && str[i] < 97 || str[i] >122)
+			return true;
+		else return false;
+}
+
+
+//--------------Cài đặt cây tìm kiếm nhị phân-----------------
 
 void KhoiTaoCay(TREE &t){
 	t = NULL;
@@ -160,11 +215,11 @@ void InTieuDe(int w[]){
 
 	/// dong 3
 	foru(i, 1, w[0]) cout << " "; cout << "\xb3";
-	ConsoleProcess::InTungPhanTu_Xau("MA THE", w[1] - 1, -1);
-	ConsoleProcess::InTungPhanTu_Xau("HO", w[2], -1);
-	ConsoleProcess::InTungPhanTu_Xau("TEN", w[3], -1);
-	ConsoleProcess::InTungPhanTu_Xau("GIOI TINH(0: Nu, 1:Nam)", w[4], -1);
-	ConsoleProcess::InTungPhanTu_Xau("TRANG THAI(0: Bi khoa , 1: Dang hoat dong)", w[5], -1);
+	ConsoleProcess::InTungPhanTu_XauMau("MA THE", w[1] - 1, -1);
+	ConsoleProcess::InTungPhanTu_XauMau("HO", w[2], -1);
+	ConsoleProcess::InTungPhanTu_XauMau("TEN", w[3], -1);
+	ConsoleProcess::InTungPhanTu_XauMau("GIOI TINH(0: Nu, 1:Nam)", w[4], -1);
+	ConsoleProcess::InTungPhanTu_XauMau("TRANG THAI(0: Bi khoa , 1: Dang hoat dong)", w[5], -1);
 	cout << endl;
 
 	/// dong 4
@@ -178,55 +233,93 @@ void InTieuDe(int w[]){
 }
 
 void NhapDocGia(TheDocGia &x, int w[], unsigned int mathe){
+	char phai, trangthai;
+	string ho, ten;
 	x.MATHE = mathe;
 	cout << "Ma doc gia: "<<x.MATHE<<"\n";
-	cout << "Nhap ho: ";
-	cin >> x.Ho;
-	cout << "Nhap ten: ";
-	cin >> x.Ten;
-	cout << "Nhap phai(0: Nu, 1:Nam): ";
-	cin >> x.Phai;
-	cout << "Nhap trang thai(0: Khoa, 1: Hoat Dong): ";
-	cin >> x.TrangThai;
+	
+		nhapho:
+		cout << "Nhap ho: ";
+		getline(cin, ho);
+		if (checkNhapChu(ho)) {
+			cout << "Du lieu khong hop le vui long nhap lai.\n";
+			goto nhapho;
+		}
+	
+		
+		nhapten:
+		cout << "Nhap ten: ";
+		getline(cin, ten);
+		if (checkNhapChu(ten)) {
+			cout << "Du lieu khong hop le vui long nhap lai.\n";
+			goto nhapten;
+		}
+
+	
+	
+	
+
+	do{
+		cout << "Nhap phai(0: Nu, 1:Nam): ";
+		cin >> phai;
+		if (phai != 48 && phai != 49) cout << "Vui long nhap dung du lieu.";
+	} while (phai != 48 && phai != 49);
+	
+	do{
+		cout << "Nhap trang thai(0: Khoa, 1: Hoat Dong): ";
+		cin >> trangthai;
+		if (trangthai != 48 && trangthai != 49) cout << "Vui long nhap dung du lieu.";
+	} while (trangthai != 48 && trangthai != 49);
+
+	ChuanHoaChuoi(ho);
+	ChuanHoaChuoi(ten);
+	x.Ho = ho;
+	x.Ten = ten;
+	x.Phai = phai;
+	x.TrangThai = trangthai;
+	
 }
 
 void InDongDuLieu(TREE t, int w[]){
-	/// in dong trang
-	foru(i, 1, w[0]) cout << " "; cout << "\xb3";
-	foru(i, 1, w[1] - 2) cout << " "; cout << "\xb3";
-	foru(i, 2, 5){
-		foru(j, 1, w[i] - 1)cout << " ";
-		cout << "\xb3";
+	if (t != NULL){
+		/// in dong trang
+		foru(i, 1, w[0]) cout << " "; cout << "\xb3";
+		foru(i, 1, w[1] - 2) cout << " "; cout << "\xb3";
+		foru(i, 2, 5){
+			foru(j, 1, w[i] - 1)cout << " ";
+			cout << "\xb3";
+		}
+
+		cout << endl;
+
+		/// in dong du lieu
+
+		foru(i, 1, w[0]) cout << " "; cout << "\xb3";
+
+
+		ConsoleProcess::InTungPhanTu_XauMau(ConsoleProcess::convert(t->data.MATHE), w[1] - 1, -1);
+		ConsoleProcess::InTungPhanTu_XauMau(t->data.Ho, w[2], -1);
+		ConsoleProcess::InTungPhanTu_XauMau(t->data.Ten, w[3], -1);
+
+		(t->data.Phai == 1) ?
+			ConsoleProcess::InTungPhanTu_XauMau("NAM", w[4], -1) :
+			ConsoleProcess::InTungPhanTu_XauMau("NU", w[4], -1);
+
+		(t->data.TrangThai == 1) ?
+			ConsoleProcess::InTungPhanTu_XauMau("HOAT DONG", w[5], -1) :
+			ConsoleProcess::InTungPhanTu_XauMau("KHOA", w[5], -1);
+		cout << endl;
+
+		/// in dong _
+		foru(i, 1, w[0]) cout << " "; cout << "\xb3";
+		foru(i, 1, w[1] - 2) cout << "_"; cout << "\xb3";
+		foru(i, 2, 5){
+			foru(j, 1, w[i] - 1)cout << "_";
+			cout << "\xb3";
+		}
+		cout << endl;
 	}
-
-	cout << endl;
-
-	/// in dong du lieu
-
-	foru(i, 1, w[0]) cout << " "; cout << "\xb3";
-
-
-	ConsoleProcess::InTungPhanTu_Xau(ConsoleProcess::convert(t->data.MATHE), w[1] - 1, -1);
-	ConsoleProcess::InTungPhanTu_Xau(t->data.Ho, w[2], -1);
-	ConsoleProcess::InTungPhanTu_Xau(t->data.Ten, w[3], -1);
-
-	(t->data.Phai == 1) ?
-		ConsoleProcess::InTungPhanTu_Xau("NAM", w[4], -1) :
-		ConsoleProcess::InTungPhanTu_Xau("NU", w[4], -1);
-
-	(t->data.TrangThai == 1) ?
-		ConsoleProcess::InTungPhanTu_Xau("HOAT DONG", w[5], -1) :
-		ConsoleProcess::InTungPhanTu_Xau("KHOA", w[5], -1);
-	cout << endl;
-
-	/// in dong _
-	foru(i, 1, w[0]) cout << " "; cout << "\xb3";
-	foru(i, 1, w[1] - 2) cout << "_"; cout << "\xb3";
-	foru(i, 2, 5){
-		foru(j, 1, w[i] - 1)cout << "_";
-		cout << "\xb3";
-	}
-	cout << endl;
+	
 }
 
 void InDanhSachDocGia(TREE t, int w[]){
@@ -283,7 +376,6 @@ void LuuDuLieuDocGia(TREE t){
 void DocThongTin1DocGia(TheDocGia &tdg, fstream &filein){
 	
 	filein >> tdg.MATHE;
-	
 	filein >> tdg.Ho;
 	filein >> tdg.Ten;
 	filein >> tdg.Phai;
@@ -369,6 +461,7 @@ void HieuChinhDocGia(TREE &t, TheDocGia &tdg, int w[]){
 	cout << "Ma The: " << tdg.MATHE <<endl;
 	cout << "Ho: " << tdg.Ho << endl;;
 	cout << "Ten: " << tdg.Ten << endl;;
+
 	(tdg.Phai == 1) ? cout << "Phai: " << "NAM" << endl : cout << "Phai: " << "NU" << endl;
 	(tdg.TrangThai == 1) ? cout << "Trang thai: " << "Hoat Dong" << endl : cout << "Trang Thai: " << "Khoa" << endl;;
 
@@ -377,37 +470,72 @@ void HieuChinhDocGia(TREE &t, TheDocGia &tdg, int w[]){
 	
 }
 
-
-string LayTenHo(TheDocGia tdg)
-{
-	int i = 0;
-	string token;
-	token = tdg.Ten;
-	while (tdg.Ho[i] != ' ')
-	{
-		token += tdg.Ho[i++];
+void ThemDuLieuVaoMangHoTen(TREE t, HoTenDG* ht){
+	//Duyệt mảng thêm dữ liệu mã độc giả vào mảng int
+	if (t != NULL){
+		ThemDuLieuVaoMangHoTen(t->pLeft,ht);
+		ht[vitri].hoTen = t->data.Ten + t->data.Ho;
+		ht[vitri].MATHE = t->data.MATHE;
+		vitri++;
+		ThemDuLieuVaoMangHoTen(t->pRight, ht);
 	}
-	return token;
-}
-
-void LayDuLieuDocGiaVaoMangMotChieu(TREE t){
-	
 
 }
 
-void InDanhSachDocGiaTangDanTheoTenHo(){
-	
+void Swap(HoTenDG &x, HoTenDG &y){
+	HoTenDG temp;
+	temp = x;
+	x = y;
+	y = temp;
+}
+
+void Quick_Sort(HoTenDG *ht, int left, int right){
+	HoTenDG key = ht[(left + right) / 2];
+	int i = left, j = right;
+	do{
+		while (ht[i].hoTen < key.hoTen)
+			i++;
+		while (ht[j].hoTen >key.hoTen)
+			j--;
+		if (i <= j){
+			if (i < j) Swap(ht[i], ht[j]);
+			i++;
+			j--;
+		}
+	} while (i <= j);
+	if (left < j) Quick_Sort(ht, left, j);
+	if (right > i) Quick_Sort(ht, i, right);
+}
+
+void InDanhSachTamThoi(TREE t, HoTenDG *ht, int n, int w[]){
+	NODETHEDOCGIA* temp = NULL;
+	if (t != NULL){
+		foru(i, 0, n){
+			temp = TimKiemDocGia(t, ht[i].MATHE);
+			InDongDuLieu(temp, w);
+		}
+	}
+}
+
+void InDanhSachDocGiaTangDanTheoTenHo(TREE t, int w[]){
+	nDocGia = DemSoDocGia(t);
+	HoTenDG *p = new HoTenDG[nDocGia];
+	ThemDuLieuVaoMangHoTen(t, p);
+	Quick_Sort(p, 0, nDocGia - 1);
+	InTieuDe(w);
+	InDanhSachTamThoi(t, p, nDocGia, w);
+	// xoa vung nho
+	delete[] p;
 }
 
 int LuaChon(){
 	Menu a(35, 60, 1);
 	a.Set_Header("MENU LUA CHON");
 	a.add("1. Quan ly the doc gia");
-	a.add("2. In danh sach the doc gia");
-	a.add("3. Thoat");
+	a.add("2. Thoat");
 	int _err;
 	int k = a.run(_err);
-	if (_err) k = 3;
+	if (_err) k = 2;
 	return k;
 }
 
@@ -416,24 +544,30 @@ void CapNhatDanhSachCacDocGia(TREE &t){
 	int w[6] = { 20, 10, 30, 20, 35, 45 };
 	Menu a(35, 60, 1);
 	a.Set_Header("MENU LUA CHON");
-	a.add("1. In danh sach doc gia");
-	a.add("2. Them doc gia");
-	a.add("3. Sua doc gia");
-	a.add("4. Xoa doc gia");
-	a.add("5. Thoat");
+	a.add("1. In danh sach doc gia tang theo ma ");
+	a.add("2. In danh sach doc gia tang theo ten ho");
+	a.add("3. Them doc gia");
+	a.add("4. Sua doc gia");
+	a.add("5. Xoa doc gia");
+	a.add("6. Thoat");
 	int _err;
 	int k = a.run(_err);
-	if (_err) k = 5;
+	if (_err) k = 6;
 		
-	if (k == 5) return;
+	if (k == 6) return;
 	if (k == 1){
 		DocDuLieuDocGia(t);
 		InTieuDe(w);
 		InDanhSachDocGia(t,w);
 		getch();
 	}
+	if (k == 2){
+		DocDuLieuDocGia(t);
+		InDanhSachDocGiaTangDanTheoTenHo(t, w);
+		getch();
+	}
 
-	if (k == 2) {
+	if (k == 3) {
 		system("cls");
 		unsigned int mathe = Random();
 		TheDocGia p;
@@ -448,7 +582,7 @@ void CapNhatDanhSachCacDocGia(TREE &t){
 		getch();
 		
 	}
-	if (k == 3){
+	if (k == 4){
 		InTieuDe(w);
 		InDanhSachDocGia(t, w);
 		int maDocGia;
@@ -466,7 +600,7 @@ void CapNhatDanhSachCacDocGia(TREE &t){
 		}
 		
 	}
-	if (k == 4){
+	if (k == 5){
 
 		InTieuDe(w);
 		InDanhSachDocGia(t, w);
@@ -488,14 +622,13 @@ void CapNhatDanhSachCacDocGia(TREE &t){
 int main()
 {
 	TREE t;
-	
+	DocDuLieuDocGia(t);
 	ConsoleProcess::ShowCur(0);
 	while (true){
 		int k = LuaChon();
 		switch (k){
 		case 1: CapNhatDanhSachCacDocGia(t); break;///OK
-		case 2: InDanhSachDocGiaTangDanTheoTenHo(); break;
-		case 3:  return 0; break;
+		case 2:  return 0; break;
 		}
 	}
 	system("pause");

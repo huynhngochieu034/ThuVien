@@ -9,10 +9,8 @@ public:
 	~ConsoleProcess();
 	static void gotoxy(int x, int y);
 	static void InTungPhanTu_Xau(string a, int _size, int _mod);
-	static void NhapTungPhanTu_Xau(int _size, int _mod);
 	static void InTungPhanTu_XauMau(string a, int _size, int _mod);
 	static string DocVaoXauKiTu(int x, int y, int &err);
-	static string ChuanHoaTen(string a);
 	static char uppercase(char a);
 	static char lowercase(char a);
 	static void StringtoChar(string a, char b[]);
