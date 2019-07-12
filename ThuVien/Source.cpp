@@ -29,10 +29,22 @@ struct DauSach{
 	string TacGia;
 	int NamXuatBan;
 	string TheLoai;
-	LIST_DMS listDMS;/// chua danh sach cac danh muc sach cua danh muc sach do
+	
 };
 typedef struct DauSach DAUSACH;
 
+struct NodeDauSach{
+	DAUSACH data;
+	LIST_DMS listDMS;/// chua danh sach cac danh muc sach cua danh muc sach do
+};
+typedef struct NodeDauSach NODEDAUSACH;
+
+
+struct ListDauSach{
+	int n;
+	NODEDAUSACH* ListDS[120];
+};
+typedef struct ListDauSach LIST_DS;
 
 //---------------Struct Muon tra--------------------
 struct Date
@@ -110,14 +122,17 @@ void XoaKhoangTrangGiua(string &str){
 void InHoaKiTuDau(string &str){
 	strlwr((char *)str.c_str());
 
-	if (str[0] != ' ')
+	if (str[0] != ' '){
 		if (str[0] >= 97 && str[0] <= 122)
-		str[0] -= 32;
-
-	foru(i, 0, str.length())
+			str[0] -= 32;
+	}
+		
+	foru(i, 0, str.length()){
 		if (str[i] == ' ' && str[i + 1] != ' ')
-			if (str[i + 1] >= 97 && str[i + 1] <= 122)
-				str[i + 1] -= 32;
+		if (str[i + 1] >= 97 && str[i + 1] <= 122)
+			str[i + 1] -= 32;
+	}
+		
 }
 
 void ChuanHoaChuoi(string &str){
@@ -126,11 +141,21 @@ void ChuanHoaChuoi(string &str){
 	InHoaKiTuDau(str);
 }
 
-boolean checkNhapChu(string str){
+int checkNhapChu(string str){
+	
 	foru(i, 0, str.length())
-		if (str[i] < 65 || str[i] > 90 && str[i] < 97 || str[i] >122)
-			return true;
-		else return false;
+		if (!(((str[i] >= 65 && str[i] <= 90) || (str[i] >= 97 && str[i] <= 122)) || str[i]==32))
+			if (str[i] != '\0')
+				return 0;
+	return 1;
+}
+
+int checkNhapSo(string str){
+	foru(i, 0, str.length())
+		if (!(str[i] == 48 || str[i] == 49))
+			if (str[i] != '\0')
+				return 0;
+	return 1;
 }
 
 
@@ -172,11 +197,7 @@ int ThemNodeVaoCay(TREE &t, TheDocGia x){
 			ThemNodeVaoCay(t->pRight, x);
 			return 1;
 		}
-		else {
-			
-			x.MATHE = Random();
-			ThemNodeVaoCay(t,x);
-		}
+		
 		
 	}
 	return 0;
@@ -233,51 +254,53 @@ void InTieuDe(int w[]){
 }
 
 void NhapDocGia(TheDocGia &x, int w[], unsigned int mathe){
-	char phai, trangthai;
+	string phai, trangthai;
 	string ho, ten;
 	x.MATHE = mathe;
 	cout << "Ma doc gia: "<<x.MATHE<<"\n";
-	
-		nhapho:
-		cout << "Nhap ho: ";
-		getline(cin, ho);
-		if (checkNhapChu(ho)) {
-			cout << "Du lieu khong hop le vui long nhap lai.\n";
-			goto nhapho;
-		}
-	
-		
-		nhapten:
-		cout << "Nhap ten: ";
-		getline(cin, ten);
-		if (checkNhapChu(ten)) {
-			cout << "Du lieu khong hop le vui long nhap lai.\n";
-			goto nhapten;
-		}
 
-	
-	
-	
+	nhapho:
+	cout << "Nhap ho: ";
+	getline(cin, ho);
+	if (checkNhapChu(ho) == 0){
+		cout << "Vui long nhap dung du lieu.Nhap lai\n";
+		goto nhapho;
+	}
 
-	do{
-		cout << "Nhap phai(0: Nu, 1:Nam): ";
-		cin >> phai;
-		if (phai != 48 && phai != 49) cout << "Vui long nhap dung du lieu.";
-	} while (phai != 48 && phai != 49);
+	nhapten:
+	cout << "Nhap ten: ";
+	getline(cin, ten);
+	if (checkNhapChu(ten) == 0){
+		cout << "Vui long nhap dung du lieu.Nhap lai\n";
+		goto nhapten;
+	}
+	cout << ten;
 	
-	do{
-		cout << "Nhap trang thai(0: Khoa, 1: Hoat Dong): ";
-		cin >> trangthai;
-		if (trangthai != 48 && trangthai != 49) cout << "Vui long nhap dung du lieu.";
-	} while (trangthai != 48 && trangthai != 49);
+	nhapphai:
+	cout << "Nhap phai(0: Nu, 1:Nam): ";
+	cin >> phai;
+	if (checkNhapSo(phai) == 0){
+		cout << "Vui long nhap dung du lieu.Nhap lai\n";
+		goto nhapphai;
+	}
 
+	nhaptrangthai:
+	cout << "Nhap trang thai(0: Khoa, 1: Hoat Dong): ";
+	cin >> trangthai;
+	if (checkNhapSo(trangthai) == 0){
+		cout << "Vui long nhap dung du lieu.Nhap lai\n";
+		goto nhaptrangthai;
+	}
 	ChuanHoaChuoi(ho);
 	ChuanHoaChuoi(ten);
 	x.Ho = ho;
 	x.Ten = ten;
-	x.Phai = phai;
-	x.TrangThai = trangthai;
-	
+	x.Phai = stoi(phai);
+	x.TrangThai = stoi(trangthai);
+	cout << x.Ho<<endl;
+	cout << x.Ten<<endl;
+	cout << x.Phai << endl;
+	cout << x.TrangThai << endl;
 }
 
 void InDongDuLieu(TREE t, int w[]){
@@ -374,12 +397,14 @@ void LuuDuLieuDocGia(TREE t){
 }
 
 void DocThongTin1DocGia(TheDocGia &tdg, fstream &filein){
-	
+	string temp;
 	filein >> tdg.MATHE;
-	filein >> tdg.Ho;
-	filein >> tdg.Ten;
+	getline(filein, temp);
+	getline(filein, tdg.Ho);
+	getline(filein, tdg.Ten);
 	filein >> tdg.Phai;
 	filein >> tdg.TrangThai;
+
 }
 
 void DocDuLieuDocGia(TREE &t){
@@ -531,11 +556,12 @@ void InDanhSachDocGiaTangDanTheoTenHo(TREE t, int w[]){
 int LuaChon(){
 	Menu a(35, 60, 1);
 	a.Set_Header("MENU LUA CHON");
-	a.add("1. Quan ly the doc gia");
-	a.add("2. Thoat");
+	a.add("1. Quan ly The Doc Gia");
+	a.add("2. Quan Ly Dau Sach");
+	a.add("3. Thoat");
 	int _err;
 	int k = a.run(_err);
-	if (_err) k = 2;
+	if (_err) k = 3;
 	return k;
 }
 
@@ -619,6 +645,40 @@ void CapNhatDanhSachCacDocGia(TREE &t){
 	}
 }
 
+void CapNhatDanhSachDauSach(){
+	/// danh sach gom 5 cot mathe, ho, ten, gioitinh, trang thai
+	int w[6] = { 20, 10, 30, 20, 35, 45 };
+	Menu a(35, 60, 1);
+	a.Set_Header("MENU LUA CHON");
+	a.add("1. In danh sach dau sach tang theo ma ");
+	a.add("2. In danh sach dau sach tang theo ten ho");
+	a.add("3. Them dau sach");
+	a.add("4. Sua dau sach");
+	a.add("5. Xoa dau sach");
+	a.add("6. Thoat");
+	int _err;
+	int k = a.run(_err);
+	if (_err) k = 6;
+
+	if (k == 6) return;
+	if (k == 1){
+	
+	}
+	if (k == 2){
+		
+	}
+
+	if (k == 3) {
+
+	}
+	if (k == 4){
+		
+	}
+	if (k == 5){
+
+	}
+}
+
 int main()
 {
 	TREE t;
@@ -628,7 +688,8 @@ int main()
 		int k = LuaChon();
 		switch (k){
 		case 1: CapNhatDanhSachCacDocGia(t); break;///OK
-		case 2:  return 0; break;
+		case 2:	CapNhatDanhSachDauSach(); break;
+		case 3:  return 0; break;
 		}
 	}
 	system("pause");
