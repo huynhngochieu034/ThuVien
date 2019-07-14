@@ -33,3 +33,5 @@ typedef long long int64;
 #define Control_Tab 9
 #define CanLe 27
 #define databasedocgia "datadocgia.txt"
+#define MAXDS 100
+#define databasedausach "datadausach.txt"
