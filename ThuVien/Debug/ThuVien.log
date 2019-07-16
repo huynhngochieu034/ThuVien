@@ -1,24 +1,25 @@
-﻿Build started 7/15/2019 12:47:06 AM.
+﻿Build started 7/16/2019 10:31:38 PM.
      1>Project "C:\Users\huynh\OneDrive\Desktop\ThuVien\ThuVien\ThuVien.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          D:\visual studio\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Source.cpp
-     1>cl : Command line warning D9028: minimal rebuild failure, reverting to normal build
          Source.cpp
      1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\consoleprocess.h(21): warning C4091: 'static ' : ignored on left of 'ConsoleProcess' when no variable is declared
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(125): warning C4018: '<=' : signed/unsigned mismatch
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(140): warning C4018: '<=' : signed/unsigned mismatch
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(161): warning C4018: '<=' : signed/unsigned mismatch
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(169): warning C4018: '<=' : signed/unsigned mismatch
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(178): warning C4018: '<=' : signed/unsigned mismatch
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(188): warning C4018: '<=' : signed/unsigned mismatch
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(220): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(259): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(260): warning C4018: '>' : signed/unsigned mismatch
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(498): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(501): warning C4018: '>' : signed/unsigned mismatch
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(858): warning C4102: 'nhaptensach' : unreferenced label
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(263): warning C4715: 'TimKiemDocGia' : not all control paths return a value
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(526): warning C4715: 'XoaDocGia' : not all control paths return a value
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(123): warning C4018: '<=' : signed/unsigned mismatch
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(138): warning C4018: '<=' : signed/unsigned mismatch
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(159): warning C4018: '<=' : signed/unsigned mismatch
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(167): warning C4018: '<=' : signed/unsigned mismatch
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(175): warning C4018: '<=' : signed/unsigned mismatch
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(184): warning C4018: '<=' : signed/unsigned mismatch
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(194): warning C4018: '<=' : signed/unsigned mismatch
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(211): warning C4018: '<=' : signed/unsigned mismatch
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(238): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(277): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(278): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(516): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(519): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(281): warning C4715: 'TimKiemDocGia' : not all control paths return a value
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(544): warning C4715: 'XoaDocGia' : not all control paths return a value
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(1578): warning C4715: 'CapNhatDanhSachDanhMucSach' : not all control paths return a value
        Link:
          D:\visual studio\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\huynh\OneDrive\Desktop\ThuVien\Debug\ThuVien.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\huynh\OneDrive\Desktop\ThuVien\Debug\ThuVien.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\huynh\OneDrive\Desktop\ThuVien\Debug\ThuVien.lib" /MACHINE:X86 Debug\ConsoleProcess.obj
          Debug\Menu.obj
@@ -28,4 +29,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.72
+Time Elapsed 00:00:01.40

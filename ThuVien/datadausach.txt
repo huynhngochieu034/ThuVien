@@ -1,13 +1,66 @@
-2
-ISBN2
+8
+ISBN
 Clean Code
 Tran Van Di
 Truyen Ma
 200
 2018
+2
 ISBN1
-CTDL&GT
-Luu Nguyen Ki Thu
+0
+dsa
+ISBN2
+2
+cau giay
+QQQ
+Clean Code
+Tran Van Duy
+Truyen Ma
+201
+2016
+0
+VVV
+Mua He 2019
+Tran Van Quy
+Phieu Luu
+200
+2016
+0
+RRR
+Nhat Ky Vang Thu
+Nguyen Nhat Anh
+Phieu Luu
+208
+2016
+0
+EEE
+trst
+Tfs
 Kinh Di
-400
-2010
+398
+2014
+0
+GGG
+tre
+Ews
+Phieu Luu
+3
+32
+1
+GGG1
+0
+1
+NNN
+BALOON
+Nguyen Van Chou
+Kinh Di
+208
+2014
+0
+AAA
+Con Chim Non
+Fdgd
+Chat Choi
+34
+43
+0

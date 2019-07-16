@@ -16,6 +16,7 @@ struct nodeDMS{
 typedef struct nodeDMS NODE_DMS;
 
 struct listDMS{
+	int n;
 	NODE_DMS *pHead;
 	NODE_DMS *pTail;
 };
@@ -40,7 +41,7 @@ struct NodeDauSach{
 	LIST_DMS listDMS;/// chua danh sach cac danh muc sach cua danh muc sach do
 };
 typedef struct NodeDauSach NODEDAUSACH;
-
+typedef NODEDAUSACH* pNODEDAUSACH;
 
 struct ListDauSach{
 	int n;
@@ -81,12 +82,6 @@ typedef struct listMuonTra LIST_MUONTRA;
 //----------------END struct muon tra-------------------
 
 
-//----------------Struct The doc gia---------------------
-//struct HoTenDG{
-//	string hoTen;
-//	unsigned int MATHE;
-//};
-
 struct TheDocGia{
 	unsigned int MATHE;
 	string Ho;
@@ -110,6 +105,9 @@ typedef NODETHEDOCGIA* TREE;
 //-------------------Biến toàn cục-------------------------
 int nDocGia=0;
 int vitri=0;
+void KhoiTaoDanhMucSach(LIST_DMS &l);
+NODE_DMS* KhoiTaoNodeDMS(DanhMucSach dms);
+void ThemVaoCuoi(LIST_DMS &l, NODE_DMS *p);
 //-------------------END bien toan cuc------------------------
 
 
@@ -173,6 +171,14 @@ int checkNhapSo0va1(string str){
 	return 1;
 }
 
+int checkNhapSo0va1va2(string str){
+	foru(i, 0, str.length())
+	if (!(str[i] == 48 || str[i] == 49 || str[i] == 50))
+	if (str[i] != '\0')
+		return 0;
+	return 1;
+}
+
 int checkNhapSo(string str){
 	//check nhap so
 	foru(i, 0, str.length())
@@ -186,7 +192,7 @@ int checkNhapSo(string str){
 int checkNhapISBN(string str){
 	//check nhap chu khong dau space
 	foru(i, 0, str.length())
-	if (!(((str[i] >= 65 && str[i] <= 90) || (str[i] >= 97 && str[i] <= 122)) || (str[i] >= 48 && str[i] <= 57))){
+	if (!((str[i] >= 65 && str[i] <= 90) || (str[i] >= 97 && str[i] <= 122))){
 		if (str[i] != '\0'){
 			cout << "Loi nhap so chu";
 			return 0;
@@ -197,6 +203,18 @@ int checkNhapISBN(string str){
 		return 0;
 	}
 
+	return 1;
+}
+
+int checkNhapMaSach(string str){
+	//check nhap chu khong dau space
+	foru(i, 0, str.length())
+	if (!(((str[i] >= 65 && str[i] <= 90) || (str[i] >= 97 && str[i] <= 122)) || (str[i] >= 48 && str[i] <= 57))){
+		if (str[i] != '\0'){
+			cout << "Loi nhap so chu";
+			return 0;
+		}
+	}
 	return 1;
 }
 
@@ -542,64 +560,6 @@ void HieuChinhDocGia(TREE &t, TheDocGia &tdg, int w[]){
 	
 }
 
-//void ThemDuLieuVaoMangHoTen(TREE t, HoTenDG* ht){
-//	//Duyệt mảng thêm dữ liệu mã độc giả vào mảng int
-//	if (t != NULL){
-//		ThemDuLieuVaoMangHoTen(t->pLeft,ht);
-//		ht[vitri].hoTen = t->data.Ten + t->data.Ho;
-//		ht[vitri].MATHE = t->data.MATHE;
-//		vitri++;
-//		ThemDuLieuVaoMangHoTen(t->pRight, ht);
-//	}
-//
-//}
-//
-//void Swap(HoTenDG &x, HoTenDG &y){
-//	HoTenDG temp;
-//	temp = x;
-//	x = y;
-//	y = temp;
-//}
-//
-//void Quick_Sort(HoTenDG *ht, int left, int right){
-//	HoTenDG key = ht[(left + right) / 2];
-//	int i = left, j = right;
-//	do{
-//		while (ht[i].hoTen < key.hoTen)
-//			i++;
-//		while (ht[j].hoTen >key.hoTen)
-//			j--;
-//		if (i <= j){
-//			if (i < j) Swap(ht[i], ht[j]);
-//			i++;
-//			j--;
-//		}
-//	} while (i <= j);
-//	if (left < j) Quick_Sort(ht, left, j);
-//	if (right > i) Quick_Sort(ht, i, right);
-//}
-
-//void InDanhSachTamThoi(TREE t, HoTenDG *ht, int n, int w[]){
-//	NODETHEDOCGIA* temp = NULL;
-//	if (t != NULL){
-//		foru(i, 0, n){
-//			temp = TimKiemDocGia(t, ht[i].MATHE);
-//			InDongDuLieu(temp, w);
-//		}
-//	}
-//}
-//
-//void InDanhSachDocGiaTangDanTheoTenHo(TREE t, int w[]){
-//	nDocGia = DemSoDocGia(t);
-//	HoTenDG *p = new HoTenDG[nDocGia];
-//	ThemDuLieuVaoMangHoTen(t, p);
-//	Quick_Sort(p, 0, nDocGia - 1);
-//	InTieuDe(w);
-//	InDanhSachTamThoi(t, p, nDocGia, w);
-//	// xoa vung nho
-//	delete[] p;
-//}
-
 void ThemNodeVaoCayTheoTenHo(TREE &t, TheDocGia x){
 
 	//neu cay rong
@@ -640,6 +600,15 @@ void InDanhSachDocGiaTheoTenHo(TREE t, TREE &temp){
 	}
 }
 
+void Free(TREE &t)
+{
+	if (t == NULL)
+		return;
+	Free(t->pLeft);
+	Free(t->pRight);
+	free(t);
+}
+
 void CapNhatDanhSachCacDocGia(TREE &t){
 	KhoiTaoCay(t);
 	DocDuLieuDocGia(t);
@@ -655,9 +624,16 @@ void CapNhatDanhSachCacDocGia(TREE &t){
 	a.add("6. Thoat");
 	int _err;
 	int k = a.run(_err);
-	if (_err) k = 6;
+	if (_err) { 
+		Free(t);
+		k = 6;
+	}
 		
-	if (k == 6) return;
+	if (k == 6)
+	{
+		Free(t);
+		return;
+	}
 	if (k == 1){
 		
 		InTieuDe(w);
@@ -669,6 +645,7 @@ void CapNhatDanhSachCacDocGia(TREE &t){
 		InDanhSachDocGiaTheoTenHo(t, temp);
 		InTieuDe(w);
 		InDanhSachDocGia(temp, w);
+		Free(temp);
 		getch();
 		/*InDanhSachDocGiaTangDanTheoTenHo(t, w);
 		getch();*/
@@ -737,7 +714,11 @@ void CapNhatDanhSachCacDocGia(TREE &t){
 }
 //-----------------------------END process Cay Nhi Phan Tim kiem Doc Gia---------------------------------
 
+//-----------------------------Start process Muon tra------------------------------------------
 
+
+
+//-----------------------------End process Muon tra-------------------------------------------
 
 
 //------------------------------Start process Dau Sach-----------------------------------------
@@ -801,6 +782,45 @@ void InTieuDeDauSach(int w[]){
 	cout << endl;
 }
 
+void InDongDuLieuDauSachTimKiem(LIST_DS lds, int w[], string TenSach){
+	/// in cac dong sau
+	if (lds.n == -1) return;
+	foru(it, 0, lds.n){
+		if (lds.ListDS[it]->data.TenSach == TenSach){
+			cout << endl;
+			cout << "-----------THONG TIN SACH DA TIM KIEM-------------\n";
+			cout << "--------------------------------------------------\n";
+			cout << "ISBN: " << lds.ListDS[it]->data.ISBN << endl;
+			cout << "--------------------------------------------------\n";
+			cout << "Ten Sach: " << lds.ListDS[it]->data.TenSach << endl;
+			cout << "--------------------------------------------------\n";
+			cout << "So Trang: " << lds.ListDS[it]->data.SoTrang << endl;
+			cout << "--------------------------------------------------\n";
+			cout << "Tac Gia: " << lds.ListDS[it]->data.TacGia << endl;
+			cout << "--------------------------------------------------\n";
+			cout << "Nam Xuat Ban: " << lds.ListDS[it]->data.NamXuatBan << endl;
+			cout << "--------------------------------------------------\n";
+			cout << "The Loai: " << lds.ListDS[it]->data.TheLoai << endl;
+			cout << "--------------------------------------------------\n";
+			cout << "---------------------Cac Ma Sach--------------------\n";
+			for (NODE_DMS* p = lds.ListDS[it]->listDMS.pHead; p != NULL; p = p->pNext)
+			{
+				cout << "Ma: " << p->data.MaSach << "   " << "Trang Thai: ";
+				if (p->data.TrangThai == 0)
+					cout << "Cho Muon Duoc"<<endl;
+				if (p->data.TrangThai == 1)
+					cout << "Da Co Doc Gia Muon"<<endl;
+				if (p->data.TrangThai == 2)
+					cout << "Sach Da Thanh Ly" << endl;
+				cout << "--------------------------------------------------\n";
+			}
+			
+		}
+		
+	}
+
+}
+
 void InDongDuLieuDauSach(LIST_DS lds, int w[]){
 	/// in cac dong sau
 	if (lds.n == -1) return;
@@ -837,6 +857,29 @@ void InDongDuLieuDauSach(LIST_DS lds, int w[]){
 
 }
 
+void Swap(pNODEDAUSACH ds1, pNODEDAUSACH ds2){
+	NODEDAUSACH temp = *ds1;
+	*ds1 = *ds2;
+	*ds2 = temp;
+}
+
+void SapXepTheoTheLoaiVaTenSach(LIST_DS lds, int w[]){
+	int j;
+	for (int i = 0; i < lds.n - 1; i++){
+		for (j = 0; j < lds.n - i - 1; j++){
+			if (lds.ListDS[j]->data.TheLoai > lds.ListDS[j+1]->data.TheLoai){
+				Swap(lds.ListDS[j], lds.ListDS[j + 1]);
+			}
+			else if (lds.ListDS[j]->data.TheLoai == lds.ListDS[j + 1]->data.TheLoai){
+				if (lds.ListDS[j]->data.TenSach > lds.ListDS[j + 1]->data.TenSach){
+					Swap(lds.ListDS[j], lds.ListDS[j + 1]);
+				}
+			}
+		}
+	}
+	InDongDuLieuDauSach(lds, w);
+}
+
 void NhapThongTin1DauSach(LIST_DS lds, DauSach &ds, int w[], int isISBN){
 	string sotrang, namxuatban;
 
@@ -854,8 +897,6 @@ void NhapThongTin1DauSach(LIST_DS lds, DauSach &ds, int w[], int isISBN){
 		}
 	}
 	
-
-	nhaptensach:
 	cout << "Nhap Ten Sach: ";
 	getline(cin, ds.TenSach);
 
@@ -922,11 +963,12 @@ void NhapThongTin1DauSach(LIST_DS lds, DauSach &ds, int w[], int isISBN){
 int ThemDauSach(LIST_DS &lds, int w[]){
 	if (isFull(lds)) return 0;
 
-	NodeDauSach *p = new NodeDauSach;
+	NodeDauSach *pp = new NodeDauSach;
 	DauSach *ds = new DauSach;
 	NhapThongTin1DauSach(lds, *ds, w, 1);
-	p->data = *ds;
-	lds.ListDS[++lds.n] = p;
+	pp->data = *ds;
+	lds.ListDS[++lds.n] = pp;
+	KhoiTaoDanhMucSach(lds.ListDS[lds.n]->listDMS);
 	return 1;
 	
 }
@@ -947,6 +989,14 @@ void GhiThongTinDanhSachDauSach(LIST_DS lds, fstream &fileout){
 		fileout << lds.ListDS[i]->data.TheLoai << endl;
 		fileout << lds.ListDS[i]->data.SoTrang << endl;
 		fileout << lds.ListDS[i]->data.NamXuatBan << endl;
+
+		fileout << lds.ListDS[i]->listDMS.n << endl;
+		for (NODE_DMS* p = lds.ListDS[i]->listDMS.pHead; p != NULL; p = p->pNext)
+		{
+			fileout << p->data.MaSach << endl;
+			fileout << p->data.TrangThai << endl;
+			fileout << p->data.ViTri << endl;
+		}
 		
 	}
 }
@@ -956,7 +1006,7 @@ void LuuDuLieuDauSach(LIST_DS lds){
 	fileout.open(databasedausach, ios::out);
 	if (fileout.is_open())
 	{
-		/*GhiThongTinDanhSachDauSach(lds, fileout);*/
+		
 		fileout << lds.n + 1 << endl;
 		for (int i = 0; i <= lds.n; i++)
 		{
@@ -967,6 +1017,14 @@ void LuuDuLieuDauSach(LIST_DS lds){
 			fileout << lds.ListDS[i]->data.SoTrang << endl;
 			fileout << lds.ListDS[i]->data.NamXuatBan << endl;
 
+		
+			fileout << lds.ListDS[i]->listDMS.n << endl;
+			for (NODE_DMS* p = lds.ListDS[i]->listDMS.pHead; p != NULL; p = p->pNext)
+			{
+				fileout << p->data.MaSach << endl;
+				fileout << p->data.TrangThai << endl;
+				fileout << p->data.ViTri << endl;
+			}
 		}
 	}
 	else cout << "Loi ket noi file! ";
@@ -989,22 +1047,44 @@ void DocDuLieuDauSach(LIST_DS &lds){
 
 	fstream filein;
 	int sodausach;
+	int sodanhmucsach;
+	
 	filein.open(databasedausach, ios::in);
 	if (filein.is_open()){
 
 		string temp;
 		filein >> sodausach;
-		
+		getline(filein, temp);
 
 		for (int i = 0; i < sodausach; i++)
 		{
 			
 			NodeDauSach *p = new NodeDauSach;
 			DauSach *ds = new DauSach;
-			getline(filein, temp);
+			if (p == NULL) continue;
+			
+			
 			DocThongTin1DauSach(*ds, filein);
 			p->data = *ds;
+
+			filein >> sodanhmucsach;
+			getline(filein, temp);
+			KhoiTaoDanhMucSach(p->listDMS);
+			for (int j = 0; j < sodanhmucsach; j++)
+			{
+				DanhMucSach *dms = new DanhMucSach;
+				getline(filein, dms->MaSach);
+				filein >> dms->TrangThai;
+				getline(filein, temp);
+				getline(filein, dms->ViTri);
+				NODE_DMS *ndms = KhoiTaoNodeDMS(*dms);
+				ThemVaoCuoi(p->listDMS, ndms);
+			}
+			
 			lds.ListDS[++lds.n] = p;
+
+
+			
 		}
 	}
 	else cout << "Loi ket noi file! ";
@@ -1019,7 +1099,7 @@ int TimKiemDauSach(LIST_DS lds, string ISBN){
 }
 
 int XoaDauSach(LIST_DS &lds, int vitri){
-	cout <<"vi tri nek: "<< vitri;
+	
 	if (isEmpty(lds)) return 0;
 	if (vitri == lds.n){
 		delete lds.ListDS[lds.n];
@@ -1063,25 +1143,34 @@ void CapNhatDanhSachDauSach(LIST_DS &lds){
 	DocDuLieuDauSach(lds);
 	/// danh sach gom 6 cot ISBN,Ten Sach, So Trang, TacGia, Nam Xuat Ban, The Loai
 	int w[7] = { 20, 10, 45, 10, 35, 18, 25 };
-	Menu a(35, 60, 1);
+	Menu a(35, 80, 1);
 	a.Set_Header("MENU LUA CHON");
-	a.add("1. In danh sach dau sach tang theo ISBN ");
-	a.add("2. In danh sach dau sach tang theo ???");
+	a.add("1. In danh sach dau sach");
+	a.add("2. In danh sach dau sach theo the loai va tang theo ten sach");
 	a.add("3. Them dau sach");
 	a.add("4. Sua dau sach");
 	a.add("5. Xoa dau sach");
-	a.add("6. Thoat");
+	a.add("6. Tim thong tin dau sach");
+	a.add("7. Thoat");
 	int _err;
 	int k = a.run(_err);
-	if (_err) k = 6;
+	if (_err) { 
+		GiaiPhongBoNho(lds);
+		k = 7; 
+	}
 
-	if (k == 6) return;
+	if (k == 7) {
+		GiaiPhongBoNho(lds);
+		return; 
+	}
 	if (k == 1){
 		InDanhSachDauSach(lds, w);
 		getch();
 	}
 	if (k == 2){
-		
+		InTieuDeDauSach(w);
+		SapXepTheoTheLoaiVaTenSach(lds, w);
+		getch();
 	}
 
 	if (k == 3) {
@@ -1141,11 +1230,417 @@ void CapNhatDanhSachDauSach(LIST_DS &lds){
 		}
 		getch();
 	}
+	if (k == 6){
+		string tenSach;
+		InTieuDeDauSach(w);
+		InDanhSachDauSach(lds, w);
+		cout << "Nhap Ten Sach: ";
+		getline(cin, tenSach);
+		ChuanHoaChuoi(tenSach);
+		
+		InDongDuLieuDauSachTimKiem(lds, w, tenSach);
+		getch();
+	}
 }
 //---------------------------END process Dau Sach-----------------------------------------------
 
-int LuaChon(){
+
+//------------------------------Start process Danh Muc Sach----------------------------------------
+void InTieuDeDanhMucSach(int w[]){
+
+	system("cls");
+	cout << endl;
+	cout << endl;
+
+	int sum = 0;
+	foru(i, 1, 3) sum = sum + w[i];
+
+	/// dong 1
+	foru(i, 1, w[0] + 1) cout << " "; foru(i, 1, sum - 2) cout << "_"; cout << endl;
+
+	/// dong 2
+	foru(i, 1, w[0]) cout << " "; cout << "\xb3";
+	foru(i, 1, w[1] - 2) cout << " "; cout << "\xb3";
+	foru(i, 2, 3){
+		foru(j, 1, w[i] - 1)cout << " ";
+		cout << "\xb3";
+	}
+	cout << endl;
+
+	/// dong 3
+	foru(i, 1, w[0]) cout << " "; cout << "\xb3";
+	ConsoleProcess::InTungPhanTu_XauMau("MA SACH", w[1] - 1, -1);
+	ConsoleProcess::InTungPhanTu_XauMau("TRANG THAI", w[2], -1);
+	ConsoleProcess::InTungPhanTu_XauMau("VI TRI", w[3], -1);
+	cout << endl;
+
+	/// dong 4
+	foru(i, 1, w[0]) cout << " "; cout << "\xb3";
+	foru(i, 1, w[1] - 2) cout << "_"; cout << "\xb3";
+	foru(i, 2, 3){
+		foru(j, 1, w[i] - 1)cout << "_";
+		cout << "\xb3";
+	}
+	cout << endl;
+}
+
+void InDongDuLieuDanhMucSach(LIST_DMS l, int w[]){
+	/// in cac dong sau
+	if (l.pHead == NULL) return;
+	for (NODE_DMS *k = l.pHead; k != NULL; k = k->pNext){
+		/// in dong trang
+		foru(i, 1, w[0]) cout << " "; cout << "\xb3";
+		foru(i, 1, w[1] - 2) cout << " "; cout << "\xb3";
+		foru(i, 2, 3){
+			foru(j, 1, w[i] - 1)cout << " ";
+			cout << "\xb3";
+		}
+		cout << endl;
+
+		/// in dong du lieu
+
+		foru(i, 1, w[0]) cout << " "; cout << "\xb3";
+		ConsoleProcess::InTungPhanTu_Xau(k->data.MaSach, w[1] - 1, -1);
+
+
+		if (k->data.TrangThai == 0)
+			ConsoleProcess::InTungPhanTu_Xau("Cho Muon Duoc", w[2], -1);
+		if (k->data.TrangThai == 1)
+			ConsoleProcess::InTungPhanTu_Xau("Da Co Doc Gia Muon", w[2], -1);
+		if (k->data.TrangThai == 2)
+			ConsoleProcess::InTungPhanTu_Xau("Sach Da Thanh Ly", w[2], -1);
+
+		ConsoleProcess::InTungPhanTu_Xau(k->data.ViTri, w[3], -1);
+		cout << endl;
+
+		/// in dong _
+		foru(i, 1, w[0]) cout << " "; cout << "\xb3";
+		foru(i, 1, w[1] - 2) cout << "_"; cout << "\xb3";
+		foru(i, 2, 3){
+			foru(j, 1, w[i] - 1)cout << "_";
+			cout << "\xb3";
+		}
+		cout << endl;
+	}
+
+}
+
+void InDanhSachDanhMucSach(LIST_DMS l, int w[]){
+
+	InTieuDeDanhMucSach(w);
+	InDongDuLieuDanhMucSach(l, w);
+}
+
+void KhoiTaoDanhMucSach(LIST_DMS &l){
+	l.n = 0;
+	l.pHead = NULL;
+	l.pTail = NULL;
+}
+
+NODE_DMS* KhoiTaoNodeDMS(DanhMucSach dms){
+	NODE_DMS *p = new NODE_DMS;//Cap phat vung nho cho con tro
+	if (p == NULL) {
+		cout << "\nKhong du vung nho de cap phat";
+		return NULL;
+	}
+	p->data = dms;
+	p->pNext = NULL;
+	return p;
+}
+
+NODE_DMS* TimKiemDanhMucSach(LIST_DMS &l, string maSach){
+	if (l.pHead == NULL){
+		return NULL;
+	}
+	for (NODE_DMS *k = l.pHead; k != NULL; k = k->pNext){
+		if (k->data.MaSach == maSach){
+			return k;
+		}
+	}
+	return NULL;
+}
+
+void ThemVaoDau(LIST_DMS &l, NODE_DMS *p){
+
+	//Danh sach dang rong
+	if (l.pHead == NULL){
+		l.pHead = l.pTail = p;
+	}
+	else{
+		p->pNext = l.pHead;
+		l.pHead = p;
+	}
+}
+
+void ThemVaoCuoi(LIST_DMS &l, NODE_DMS *p){
+
+	//Danh sach dang rong
+	if (l.pHead == NULL){
+		l.pHead = l.pTail = p;
+		l.n++;
+		return;
+	}
+	else{
+		l.pTail->pNext = p;
+		l.pTail = p;
+		l.n++;
+		return;
+	}
+	
+}
+
+void XoaDau(LIST_DMS &l){
+
+	if (l.pHead == NULL){
+		return;
+	}
+	NODE_DMS *p = l.pHead; //node p là node sẽ xóa
+	l.pHead = l.pHead->pNext;//cập nhật lại lpHead
+	delete p;
+}
+
+void XoaCuoi(LIST_DMS &l){
+	
+	if (l.pHead == NULL){
+		return;
+	}
+	//danh sach co 1 phan tu
+	if (l.pHead->pNext == NULL){
+		XoaDau(l);
+		return;
+	}
+	for (NODE_DMS *k = l.pHead; k != NULL; k = k->pNext){
+		if (k->pNext == l.pTail){
+			delete l.pTail;
+			k->pNext = NULL;
+			l.pTail = k;
+			return;
+		}
+	}
+}
+
+int XoaNodeCoKhoaBatKi(LIST_DMS &l, string maSach){
+
+	if (l.pHead == NULL){
+		return -1;
+	}
+
+	//Neu node nam dau danh sach
+	if (l.pHead->data.MaSach == maSach){
+		XoaDau(l);
+		return 1;
+	}
+	//Neu node nam cuoi danh sach
+	if (l.pTail->data.MaSach == maSach){
+		XoaCuoi(l);
+		return 1;
+	}
+	NODE_DMS *g = new NODE_DMS;
+	for (NODE_DMS *k = l.pHead; k != NULL; k = k->pNext){
+		//Tim duoc phan tu can xoa
+		if (k->data.MaSach == maSach){
+			
+			g->pNext = k->pNext;//cap nhat moi lien ket
+			delete k;
+			return 1;
+		}
+		g = k; //cho node g tro den node k can xoa
+	}
+	return 0;
+}
+
+void NhapDanhMucSach(DanhMucSach &dms, string maSach){
+	string trangthai;
+	nhaptrangthaidms:
+	cout << "Nhap trang thai(0: Cho muon duoc, 1: Da co doc gia muon, 2:Da thanh ly): ";
+	getline(cin, trangthai);
+	if (checkNhapSo0va1va2(trangthai) == 0){
+		cout << "Vui long nhap dung du lieu.Nhap lai\n";
+		goto nhaptrangthaidms;
+	}
+
+	cout << "Nhap Vi Tri: ";
+	getline(cin, dms.ViTri);
+
+	dms.MaSach = maSach;
+	ChuanHoaChuoi(dms.ViTri);
+	dms.TrangThai = stoi(trangthai);
+
+}
+
+void HieuChinhDanhMucSach(DanhMucSach &dms, int w[]){
+	system("cls");
+	cout << "-------Thong tin danh muc sach ban dau--------" << endl;
+	cout << "Ma Sach: " << dms.MaSach << endl;
+	cout << "Trang Thai: " << dms.TrangThai << endl;
+	cout << "Vi Tri: " << dms.ViTri << endl;
+
+
+
+	cout << "---------Nhap thong tin can chinh sua--------" << endl;
+	NhapDanhMucSach(dms, dms.MaSach);
+}
+
+string NhapISBN(){
+	string ISBN;
+nhapISBNthem:
+	cout << "Nhap ISBN (gom 6 ki tu) can them sach vao: ";
+	getline(cin, ISBN);
+	if (checkNhapISBN(ISBN) == 0){
+		cout << "Vui long nhap dung dinh dang.Nhap lai\n";
+		goto nhapISBNthem;
+	}
+	return ISBN;
+}
+
+void GiaiPhongDanhSachLKD(LIST_DMS &l){
+	NODE_DMS *k;
+	while (l.pHead != NULL){
+		k = l.pHead;
+		l.pHead = l.pHead->pNext;
+		delete k;
+	}
+}
+
+int CapNhatDanhSachDanhMucSach(LIST_DS &lds, LIST_DMS &ldms, pNODEDAUSACH &p){
+
+	/// danh sach gom 6 cot ISBN,Ten Sach, So Trang, TacGia, Nam Xuat Ban, The Loai
+	int w[4] = { 20, 20, 35, 20 };
 	Menu a(35, 60, 1);
+	a.Set_Header("MENU LUA CHON");
+	a.add("1. In danh sach danh muc sach");
+	a.add("2. Them danh muc sach");
+	a.add("3. Sua danh muc sach");
+	a.add("4. Xoa danh muc sach");
+	a.add("5. Thoat");
+	int _err;
+	int k = a.run(_err);
+	if (_err) k = 5;
+	if (k == 5) return 5;
+	if (k == 1){
+		InDanhSachDanhMucSach(ldms, w);
+		getch();
+	}
+	if (k == 2){
+		DanhMucSach *dms = new DanhMucSach;
+		int stt = ldms.n;
+		string maSach = p->data.ISBN + to_string(++stt);
+		NhapDanhMucSach(*dms, maSach);
+		NODE_DMS *ndms = KhoiTaoNodeDMS(*dms);
+		ThemVaoCuoi(ldms, ndms);
+		LuuDuLieuDauSach(lds);
+		DocDuLieuDauSach(lds);
+		ConsoleProcess::ThongBao(20, 2, "Them danh muc sach thanh cong", 1);
+
+		getch();
+
+
+	}
+
+	if (k == 3) {
+		InDanhSachDanhMucSach(ldms, w);
+		string maSach;
+		nhapmasachhc:
+		cout << "Nhap ma sach can hieu chinh: ";
+		getline(cin, maSach);
+		if (checkNhapMaSach(maSach) == 0){
+			cout << "Du lieu tim kiem khong hop le. Vui long nhap lai.\n";
+			goto nhapmasachhc;
+		}
+		NODE_DMS *pp = TimKiemDanhMucSach(ldms, maSach);
+		if (pp == NULL) ConsoleProcess::ThongBao(20, 2, "Khong tim thay dau sach vua nhap.", 0);
+		else{
+			HieuChinhDanhMucSach(pp->data, w);
+			LuuDuLieuDauSach(lds);
+			DocDuLieuDauSach(lds);
+			ConsoleProcess::ThongBao(20, 2, "Hieu chinh dau sach thanh cong", 1);
+		}
+		getch();
+
+	}
+	if (k == 4){
+		InDanhSachDanhMucSach(ldms, w);
+		string maSach;
+		nhapmasachxoa:
+		cout << "Nhap ma sach can xoa: ";
+		getline(cin, maSach);
+		if (checkNhapMaSach(maSach) == 0){
+			cout << "Du lieu tim kiem khong hop le. Vui long nhap lai.\n";
+			goto nhapmasachxoa;
+		}
+		
+		int check = XoaNodeCoKhoaBatKi(ldms, maSach);
+		if (check == -1) ConsoleProcess::ThongBao(20, 2, "Danh Sach Rong", 0);
+		else if (check == 1){
+			ldms.n--;
+			LuuDuLieuDauSach(lds);
+			DocDuLieuDauSach(lds);
+			ConsoleProcess::ThongBao(20, 2, "Xoa sach thanh cong", 1);
+		}
+		else ConsoleProcess::ThongBao(20, 2, "Khong tim thay ma sach vua nhap", 1);
+		
+		getch();
+	}
+}
+
+void LayViTriNodeDuocChon(LIST_DS &lds){
+	int w[7] = { 20, 10, 45, 10, 35, 18, 25 };
+	InTieuDeDauSach(w);
+	InDanhSachDauSach(lds, w);
+	string ISBN = NhapISBN();
+	int vitri = TimKiemDauSach(lds, ISBN);
+	if (vitri == -1) {
+		ConsoleProcess::ThongBao(20, 2, "Khong tim thay dau sach vua nhap.", 0);
+		getch();
+	}
+
+	else{
+		NODEDAUSACH *p = lds.ListDS[vitri];
+		if (p->listDMS.n == 0) KhoiTaoDanhMucSach(p->listDMS);
+		int check;
+		while (true){
+			check = CapNhatDanhSachDanhMucSach(lds, p->listDMS, p);
+			if (check == 5) {
+				GiaiPhongDanhSachLKD(p->listDMS); 
+				break;
+			}
+		}
+	}
+	return;
+}
+
+//-------------------------------END process Danh Muc Sach---------------------------------------
+
+int LuaChon2(){
+	Menu a(35, 80, 1);
+	a.Set_Header("MENU LUA CHON");
+	a.add("1. Quan ly Dau Sach");
+	a.add("2. Quan Ly Danh Muc Sach");
+	a.add("3. Thoat");
+	int _err;
+	int k = a.run(_err);
+	if (_err) k = 3;
+	return k;
+}
+
+int main2(){
+	LIST_DS lds;
+	KhoiTaoDauSach(lds);
+	DocDuLieuDauSach(lds);
+	ConsoleProcess::ShowCur(0);
+	while (true){
+		int k = LuaChon2();
+		switch (k){
+		case 1: CapNhatDanhSachDauSach(lds); break;///OK
+		case 2:	LayViTriNodeDuocChon(lds); break;///OK
+		case 3:  return 0; break;
+		}
+	}
+	return 0;
+}
+
+int LuaChon(){
+	Menu a(35, 80, 1);
 	a.Set_Header("MENU LUA CHON");
 	a.add("1. Quan ly The Doc Gia");
 	a.add("2. Quan Ly Dau Sach");
@@ -1159,20 +1654,16 @@ int LuaChon(){
 int main()
 {
 	TREE t;
-	LIST_DS lds;
+	
 	ConsoleProcess::ShowCur(0);
 	while (true){
 		int k = LuaChon();
 		switch (k){
 		case 1: CapNhatDanhSachCacDocGia(t); break;///OK
-		case 2:	CapNhatDanhSachDauSach(lds);
-				break;
+		case 2:	main2(); break;///OK
 		case 3:  return 0; break;
 		}
 	}
-	GiaiPhongBoNho(lds);
 	system("pause");
 	return 0;
 }
-
-
