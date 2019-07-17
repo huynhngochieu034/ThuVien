@@ -73,8 +73,10 @@ struct nodeMuonTra{
 	struct nodeMuonTra *pPrev;
 };
 typedef struct nodeMuonTra NODE_MUONTRA;
+typedef NODE_MUONTRA* pNODE_MUONTRA;
 
 struct listMuonTra{
+	int n;
 	NODE_MUONTRA *pHead;
 	NODE_MUONTRA *pTail;
 };
@@ -108,6 +110,9 @@ int vitri=0;
 void KhoiTaoDanhMucSach(LIST_DMS &l);
 NODE_DMS* KhoiTaoNodeDMS(DanhMucSach dms);
 void ThemVaoCuoi(LIST_DMS &l, NODE_DMS *p);
+void Init(LIST_MUONTRA &l);
+void AddTailMT(LIST_MUONTRA &l, NODE_MUONTRA *p);
+string NhapISBN();
 //-------------------END bien toan cuc------------------------
 
 
@@ -439,6 +444,24 @@ void GhiThongTin1DocGia(TREE t, fstream &fileout){
 	fileout << t->data.Ten << endl;
 	fileout << t->data.Phai << endl;
 	fileout << t->data.TrangThai << endl;
+
+	fileout << t->listMuonTra.n << endl;
+	for (NODE_MUONTRA* p = t->listMuonTra.pHead; p != NULL; p = p->pNext)
+	{
+		fileout << p->data.MaSach << endl;
+
+		fileout << p->data.NgayMuon.Ngay << endl;
+		fileout << p->data.NgayMuon.Thang << endl;
+		fileout << p->data.NgayMuon.Nam << endl;
+
+		fileout << p->data.NgayTra.Ngay << endl;
+		fileout << p->data.NgayTra.Thang << endl;
+		fileout << p->data.NgayTra.Nam << endl;
+
+		fileout << p->data.TrangThai << endl;
+		
+	}
+
 }
 
 void GhiThongTinDanhSachDocGia(TREE t, fstream &fileout){
@@ -462,32 +485,52 @@ void LuuDuLieuDocGia(TREE t){
 	fileout.close();
 }
 
-void DocThongTin1DocGia(TheDocGia &tdg, fstream &filein){
-	string temp;
-	filein >> tdg.MATHE;
-	getline(filein, temp);
-	getline(filein, tdg.Ho);
-	getline(filein, tdg.Ten);
-	filein >> tdg.Phai;
-	filein >> tdg.TrangThai;
-
-}
-
 void DocDuLieuDocGia(TREE &t){
 
 	KhoiTaoCay(t);
 
 	fstream filein;
-	TheDocGia *tdg = new TheDocGia;
 	int soDocGia;
+	int soSach;
 	filein.open(databasedocgia, ios::in);
+
 	if (filein.is_open()){
-		
+		string temp;
 		filein >> soDocGia;
 		for (int i = 0; i < soDocGia; i++)
 		{
-			DocThongTin1DocGia(*tdg, filein);
+			NODETHEDOCGIA *p = new NODETHEDOCGIA;
+			TheDocGia *tdg = new TheDocGia;
+			filein >> tdg->MATHE;
+			getline(filein, temp);
+			getline(filein, tdg->Ho);
+			getline(filein, tdg->Ten);
+			filein >> tdg->Phai;
+			filein >> tdg->TrangThai;
 			ThemNodeVaoCay(t, *tdg);
+			p = TimKiemDocGia(t, tdg->MATHE);
+
+			filein >> soSach;
+			getline(filein, temp);
+			Init(p->listMuonTra);
+			for (int j = 0; j < soSach; j++)
+			{
+				NODE_MUONTRA *nmt = new NODE_MUONTRA;
+				MuonTra *mt = new MuonTra;
+				getline(filein, mt->MaSach);
+				filein >> mt->NgayMuon.Ngay;
+				filein >> mt->NgayMuon.Thang;
+				filein >> mt->NgayMuon.Nam;
+				filein >> mt->NgayTra.Ngay;
+				filein >> mt->NgayTra.Thang;
+				filein >> mt->NgayTra.Nam;
+				filein >> mt->TrangThai;
+				nmt->data = *mt;
+
+				// cap nhat du lieu vao
+				AddTailMT(p->listMuonTra, nmt);
+			}
+
 		}
 	}
 	else cout << "Loi ket noi file! ";
@@ -610,8 +653,7 @@ void Free(TREE &t)
 }
 
 void CapNhatDanhSachCacDocGia(TREE &t){
-	KhoiTaoCay(t);
-	DocDuLieuDocGia(t);
+	
 	/// danh sach gom 5 cot mathe, ho, ten, gioitinh, trang thai
 	int w[6] = { 20, 10, 30, 20, 35, 45 };
 	Menu a(35, 60, 1);
@@ -647,8 +689,6 @@ void CapNhatDanhSachCacDocGia(TREE &t){
 		InDanhSachDocGia(temp, w);
 		Free(temp);
 		getch();
-		/*InDanhSachDocGiaTangDanTheoTenHo(t, w);
-		getch();*/
 	}
 
 	if (k == 3) {
@@ -715,9 +755,202 @@ void CapNhatDanhSachCacDocGia(TREE &t){
 //-----------------------------END process Cay Nhi Phan Tim kiem Doc Gia---------------------------------
 
 //-----------------------------Start process Muon tra------------------------------------------
+void Init(LIST_MUONTRA &l)
+{
+	 l.n = 0;
+	 l.pHead = NULL; // Con tro dau tro den NULL
+	 l.pTail = NULL; // Con tro cuoi tro den NULL
+}
 
+int Isempty(LIST_MUONTRA l) //kiem tra DS rong
+{
+	return (l.pHead == NULL);
+}
 
+NODE_MUONTRA* KhoiTaoNodeMT(MuonTra mt){
+	NODE_MUONTRA *p = new NODE_MUONTRA;//Cap phat vung nho cho con tro
+	if (p == NULL) {
+		cout << "\nKhong du vung nho de cap phat";
+		return NULL;
+	}
+	p->data = mt;
+	p->pPrev = NULL;
+	p->pNext = NULL;
+	return p;
+}
 
+void AddTailMT(LIST_MUONTRA &l, NODE_MUONTRA *p){
+	
+	NODE_MUONTRA *mt = KhoiTaoNodeMT(p->data);
+	if (l.pHead == NULL) {
+		l.pHead = l.pTail = p;
+		++l.n;
+		return;
+	}
+	else
+	{
+		l.pTail->pNext = p;
+		p->pPrev = l.pTail;
+		l.pTail = p;
+		++l.n;
+		return;
+	}
+	
+}
+
+void GiaiPhongDanhSachLKK(LIST_MUONTRA &l){
+	NODE_MUONTRA *k;
+	while (l.pHead != NULL){
+		k = l.pHead;
+		l.pHead = l.pHead->pNext;
+		delete k;
+	}
+}
+
+string TimTenSach(string maSach, LIST_DS lds, string &vitri){
+	int i;
+	int dem = 0;
+	NODE_DMS *dms;
+	for (i = 0; i < lds.n; i++){
+		dms = TimKiemDanhMucSach(lds.ListDS[i]->listDMS, maSach);
+		if (dms != NULL){
+			dem = i;
+			vitri = dms->data.ViTri;
+		}
+			
+	}
+	
+	return lds.ListDS[dem]->data.TenSach;
+}
+
+void MuonSach(LIST_MUONTRA &l, NODETHEDOCGIA* &dg, LIST_DS lds){
+	int w[7] = { 20, 10, 45, 10, 35, 18, 25 };
+	if (dg->data.TrangThai == 0) {
+		ConsoleProcess::ThongBao(20, 2, "The Doc Gia Nay Da Bi Khoa. Khong duoc muon sach", 0);
+		getch();
+		return;
+	}
+	cout << endl;
+	cout << "----------------THONG TIN DOC GIA-----------------\n";
+	cout << "--------------------------------------------------\n";
+	cout << "Ma Doc Gia: " << dg->data.MATHE << endl;
+	cout << "--------------------------------------------------\n";
+	cout << "Ho: " << dg->data.Ho << endl;
+	cout << "--------------------------------------------------\n";
+	cout << "Ten: " << dg->data.Ten << endl;
+	cout << "--------------------------------------------------\n";
+	cout << "Trang thai the: ";
+	if (dg->data.TrangThai == 1)
+		cout << "Dang hoat dong" << endl;
+	cout << "--------------------------------------------------\n";
+	cout << "--------------------------------------------------\n";
+	cout << "---------------------Cac Sach Dang muon--------------------\n";
+	string vitri;
+	for (NODE_MUONTRA* p = dg->listMuonTra.pHead; p != NULL; p = p->pNext)
+	{
+		cout <<"Ma Sach: " << p->data.MaSach << endl;
+		
+		cout << "Ten Sach: " << TimTenSach(p->data.MaSach, lds, vitri) << endl;
+		cout << "Ngay Muon: ";
+		if (p->data.NgayMuon.Ngay < 10) cout<<"0"<<p->data.NgayMuon.Ngay <<"/";
+		else cout << p->data.NgayMuon.Ngay << "/";
+		if (p->data.NgayMuon.Thang < 10) cout << "0" << p->data.NgayMuon.Thang << "/";
+		else cout << p->data.NgayMuon.Thang << "/";
+		cout << p->data.NgayMuon.Nam << endl;
+
+		cout << "Vi tri: "<< vitri << endl;
+		cout << "--------------------------------------------------\n";
+	}
+	if (dg->listMuonTra.pHead == NULL && dg->listMuonTra.n <3){
+		InDanhSachDauSach(lds, w);
+		string ISBN = NhapISBN();
+		int vitri = TimKiemDauSach(lds, ISBN);
+		if (vitri == -1) ConsoleProcess::ThongBao(20, 2, "Khong tim thay dau sach vua nhap.", 0);
+		else{
+			InDanhSachDanhMucSach(lds.ListDS[vitri]->listDMS, w);
+			string maSach;
+			nhapmasachmuon:
+			cout << "Nhap ma sach can muon: ";
+			getline(cin, maSach);
+			if (checkNhapMaSach(maSach) == 0){
+				cout << "Du lieu tim kiem khong hop le. Vui long nhap lai.\n";
+				goto nhapmasachmuon;
+			}
+			NODE_DMS *pp = TimKiemDanhMucSach(lds.ListDS[vitri]->listDMS, maSach);
+			if (pp == NULL) ConsoleProcess::ThongBao(20, 1, "Khong tim thay dau sach vua nhap.", 0);
+			else{
+				NODE_MUONTRA *nmt = new NODE_MUONTRA;
+				MuonTra *mt = new MuonTra;
+				mt->MaSach = maSach;
+				mt->NgayMuon.Ngay;
+				mt->NgayMuon.Thang;
+				mt->NgayMuon.Nam;
+				mt->NgayTra.Ngay=0;
+				mt->NgayTra.Thang=0;
+				mt->NgayTra.Nam=0;
+				mt->TrangThai=0;
+				nmt->data = *mt;
+				AddTailMT(l, nmt);
+				ConsoleProcess::ThongBao(20, 1, "Muon sach thanh cong", 1);
+			}
+		}
+	}
+
+}
+
+int CapNhatMuonTra(TREE &t, LIST_MUONTRA &l, NODETHEDOCGIA* &dg, LIST_DS lds){
+	
+	Menu a(35, 60, 1);
+	a.Set_Header("MENU LUA CHON");
+	a.add("1. Muon Sach");
+	a.add("2. Tra sach");
+	a.add("3. Liet Ke Sach Dang Muon");
+	a.add("4. Thoat");
+	int _err;
+	int k = a.run(_err);
+	if (_err) k = 4;
+	if (k == 4) return 4;
+	if (k == 1){
+		
+	}
+	if (k == 2){
+		
+	}
+	if (k == 3) {
+		
+	}
+}
+
+void LayViTriNodeDuocChonMuonTra(TREE &t,LIST_DS lds){
+	int w[6] = { 20, 10, 30, 20, 35, 45 };
+	InTieuDe(w);
+	InDanhSachDocGia(t, w);
+	string maDocGia;
+	nhapmadocgiaduocchon:
+	cout << "Nhap ma doc gia can cap nhat: ";
+	getline(cin, maDocGia);
+	if (checkNhapSo(maDocGia) == 0){
+		cout << "Du lieu tim kiem khong hop le. Vui long nhap lai.\n";
+		goto nhapmadocgiaduocchon;
+	}
+	NODETHEDOCGIA *p = TimKiemDocGia(t, stoi(maDocGia));
+	if (p == NULL) {
+		ConsoleProcess::ThongBao(20, 2, "Ma doc gia vua nhap khong ton tai", 0);
+		getch();
+	}
+	else{
+		if (p->listMuonTra.n == 0) Init(p->listMuonTra);
+		int check;
+		while (true){
+			check = CapNhatMuonTra(t, p->listMuonTra, p);
+			if (check == 4) {
+				GiaiPhongDanhSachLKK(p->listMuonTra);
+				break;
+			}
+		}
+	}
+	return;
+}
 //-----------------------------End process Muon tra-------------------------------------------
 
 
@@ -1483,8 +1716,8 @@ void HieuChinhDanhMucSach(DanhMucSach &dms, int w[]){
 
 string NhapISBN(){
 	string ISBN;
-nhapISBNthem:
-	cout << "Nhap ISBN (gom 6 ki tu) can them sach vao: ";
+	nhapISBNthem:
+	cout << "Nhap ISBN (gom 6 ki tu) can cap nhat: ";
 	getline(cin, ISBN);
 	if (checkNhapISBN(ISBN) == 0){
 		cout << "Vui long nhap dung dinh dang.Nhap lai\n";
@@ -1623,10 +1856,8 @@ int LuaChon2(){
 	return k;
 }
 
-int main2(){
-	LIST_DS lds;
-	KhoiTaoDauSach(lds);
-	DocDuLieuDauSach(lds);
+int main2(LIST_DS &lds){
+	
 	ConsoleProcess::ShowCur(0);
 	while (true){
 		int k = LuaChon2();
@@ -1644,24 +1875,30 @@ int LuaChon(){
 	a.Set_Header("MENU LUA CHON");
 	a.add("1. Quan ly The Doc Gia");
 	a.add("2. Quan Ly Dau Sach");
-	a.add("3. Thoat");
+	a.add("3. Quan ly Muon Tra Sach");
+	a.add("4. Thoat");
 	int _err;
 	int k = a.run(_err);
-	if (_err) k = 3;
+	if (_err) k = 4;
 	return k;
 }
 
 int main()
 {
 	TREE t;
-	
+	KhoiTaoCay(t);
+	DocDuLieuDocGia(t);
+	LIST_DS lds;
+	KhoiTaoDauSach(lds);
+	DocDuLieuDauSach(lds);
 	ConsoleProcess::ShowCur(0);
 	while (true){
 		int k = LuaChon();
 		switch (k){
 		case 1: CapNhatDanhSachCacDocGia(t); break;///OK
-		case 2:	main2(); break;///OK
-		case 3:  return 0; break;
+		case 2:	main2(lds); break;///OK
+		case 3: LayViTriNodeDuocChonMuonTra(t,lds); break;
+		case 4:  return 0; break;
 		}
 	}
 	system("pause");
