@@ -5,6 +5,7 @@ Tran Van Di
 Truyen Ma
 200
 2018
+4
 2
 ISBN1
 0
@@ -19,22 +20,28 @@ Truyen Ma
 201
 2016
 0
+0
 VVV
 Mua He 2019
 Tran Van Quy
 Phieu Luu
 200
 2016
-1
+2
+2
 VVV1
 0
 Hang 1, Cot 2
+VVV2
+0
+Hagn4m cot 5
 RRR
 Nhat Ky Vang Thu
 Nguyen Nhat Anh
 Phieu Luu
 208
 2016
+0
 0
 EEE
 trst
@@ -43,12 +50,17 @@ Kinh Di
 398
 2014
 0
+1
+EEE1
+0
+hhjhjh
 GGG
 tre
 Ews
 Phieu Luu
 3
 32
+1
 1
 GGG1
 0
@@ -60,10 +72,12 @@ Kinh Di
 208
 2014
 0
+0
 AAA
 Con Chim Non
 Fdgd
 Chat Choi
 34
 43
+0
 0
