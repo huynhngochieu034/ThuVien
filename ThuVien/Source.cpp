@@ -138,6 +138,7 @@ int TinhKhoangCachNgay(Date d1, Date d2);
 int TimViTriDauSachTuMaSach(LIST_DS lds, string maSach);
 void LuuDuLieuDauSach(LIST_DS lds);
 void DocDuLieuDauSach(LIST_DS &lds);
+void SapXepTheoTheLoaiVaTenSach(LIST_DS lds, int w[]);
 //-------------------END bien toan cuc------------------------
 
 
@@ -810,7 +811,7 @@ void CapNhatDanhSachCacDocGia(TREE &t){
 		SetConsoleTextAttribute(hConsoleColor, 6);
 		ConsoleProcess::gotoxy(75, 1);
 		cout << "----DANH SACH DOC GIA TANG THEO MA---\n";
-		//SetConsoleTextAttribute(hConsoleColor, 15);
+		
 		ConsoleProcess::CreateBoxTitle(29, 3, "Nhap ma doc gia can hieu chinh: ", 50);
 		ConsoleProcess::CreateBoxTitle(29, 6, "Thong Bao: ", 50);
 		string maDocGia;
@@ -1140,27 +1141,30 @@ int KiemTraSachDangMuon(NODETHEDOCGIA* dg, NODE_MUONTRA *mt){
 }
 
 void MuonSach(TREE &t,LIST_MUONTRA &l, NODETHEDOCGIA* &dg, LIST_DS &lds){
-	int w[7] = { 20, 10, 45, 10, 35, 18, 25 };
+	int w[7] = { 24, 10, 45, 10, 35, 18, 25 };
 	int w2[4] = { 20, 20, 35, 20 };
 	Date d2;
 	d2.Ngay = LayNgayHienTai();
 	d2.Thang = LayThangHienTai();
 	d2.Nam = LayNamHienTai();
 	if (dg->data.TrangThai == 0) {
-		ConsoleProcess::ThongBao(20, 2, "The Doc Gia Nay Da Bi Khoa. Khong duoc muon sach", 0);
+		ConsoleProcess::CreateBoxTitle(29, 15, "Thong Bao: ", 70);
+		ConsoleProcess::gotoxy(42, 15);
+		cout<< "The Doc Gia Nay Da Bi Khoa. Khong duoc muon sach";
+		getch();
 		return;
 	}
 	system("cls");
 	cout << endl;
 	cout << "----------------THONG TIN DOC GIA-----------------\n";
 	cout << "--------------------------------------------------\n";
-	cout << "Ma Doc Gia: " << dg->data.MATHE << endl;
+	cout << "----Ma Doc Gia: " << dg->data.MATHE << endl;
 	cout << "--------------------------------------------------\n";
-	cout << "Ho: " << dg->data.Ho << endl;
+	cout << "----Ho: " << dg->data.Ho << endl;
 	cout << "--------------------------------------------------\n";
-	cout << "Ten: " << dg->data.Ten << endl;
+	cout << "----Ten: " << dg->data.Ten << endl;
 	cout << "--------------------------------------------------\n";
-	cout << "Trang thai the: ";
+	cout << "----Trang thai the: ";
 	if (dg->data.TrangThai == 1) cout << "Dang hoat dong" << endl;
 	cout << "--------------------------------------------------\n";
 	cout << "--------------------------------------------------\n";
@@ -1192,43 +1196,75 @@ void MuonSach(TREE &t,LIST_MUONTRA &l, NODETHEDOCGIA* &dg, LIST_DS &lds){
 	}
 	cout << "Nhan bat ky phim de muon sach.";
 	getch();
+
 	if (isQuaHan == TRUE){
-		ConsoleProcess::ThongBao(20, 0, "Ban da muon sach qua thoi han. Khong cho muon nua. oke", 0);
+		ConsoleProcess::CreateBoxTitle(50, 6, "Thong Bao: ", 75);
+		ConsoleProcess::gotoxy(60, 6);
+		cout << "Ban da muon sach qua thoi han. Khong cho muon nua.";
+		getch();
 		return;
 	}
 	if (dg->listMuonTra.n < 3){
 		InDanhSachDauSach(lds, w);
+
+		SapXepTheoTheLoaiVaTenSach(lds, w);
+		HANDLE hConsoleColor;
+		hConsoleColor = GetStdHandle(STD_OUTPUT_HANDLE);
+		SetConsoleTextAttribute(hConsoleColor, 6);
+		ConsoleProcess::gotoxy(75, 1);
+		cout << "----DANH SACH DAU SACH THEO THE LOAI VA TEN SACH---\n";
+
+		ConsoleProcess::CreateBoxTitle(29, 3, "Nhap ISBN can muon: ", 50);
+		ConsoleProcess::CreateBoxTitle(29, 6, "Thong Bao: ", 50);
+
+
 		string ISBN = NhapISBN();
 		int vitri = TimKiemDauSach(lds, ISBN);
-		if (vitri == -1) ConsoleProcess::ThongBao(20, 2, "Khong tim thay dau sach vua nhap.", 0);
+		if (vitri == -1) {
+			ConsoleProcess::gotoxy(42, 6);
+			cout << "Dau sach " << ISBN << " khong ton tai!";
+			getch();
+			return;
+		}
 		else{
 			if (lds.ListDS[vitri]->listDMS.n == 0){ 
-				ConsoleProcess::ThongBao(20, 2, "Danh Sach rong, hien chua co sach.", 0); 
+				ConsoleProcess::gotoxy(42, 6);
+				cout << "Danh Sach rong, hien chua co sach!";
+				getch();
 				return;
 			}
+
 			InDanhSachDanhMucSach(lds.ListDS[vitri]->listDMS, w2);
+
+			HANDLE hConsoleColor;
+			hConsoleColor = GetStdHandle(STD_OUTPUT_HANDLE);
+			SetConsoleTextAttribute(hConsoleColor, 6);
+			ConsoleProcess::gotoxy(60, 1);
+			cout << "----DANH SACH DANH MUC SACH---\n";
+
+			ConsoleProcess::CreateBoxTitle(29, 3, "Nhap ma sach can muon: ", 50);
+			ConsoleProcess::CreateBoxTitle(29, 6, "Thong Bao: ", 50);
+
+
 			string maSach;
 			nhapmasachmuon:
-			cout << "Nhap ma sach can muon: ";
+			ConsoleProcess::gotoxy(62, 3);
+			ConsoleProcess::ShowCur(1);
 			getline(cin, maSach);
 			if (checkNhapMaSach(maSach) == 0 || maSach==""){
-				cout << "Du lieu tim kiem khong hop le. Vui long nhap lai.\n";
+				ConsoleProcess::gotoxy(42, 6);
+				cout << "Du lieu tim kiem khong hop le. Vui long nhap lai.";
 				goto nhapmasachmuon;
 			}
 			NODE_DMS *pp = TimKiemDanhMucSach(lds.ListDS[vitri]->listDMS, maSach);
 			if (pp == NULL) {
-				ConsoleProcess::ThongBao(20, 1, "Khong tim thay dau sach vua nhap.", 0);
+				ConsoleProcess::gotoxy(42, 6);
+				cout << "Ma Sach " << maSach << " khong ton tai!";
+				getch();
 				return;
 			}
 			else{
-				if (pp->data.TrangThai == 1)  {
-					ConsoleProcess::ThongBao(20, 1, "Sach nay da co doc gia muon.", 0);
-					return;
-				}
-				if (pp->data.TrangThai == 2)  {
-					ConsoleProcess::ThongBao(20, 1, "Sach nay da duoc thanh ly.", 0);
-					return;
-				}
+				
 					
 				NODE_MUONTRA *nmt = new NODE_MUONTRA;
 				MuonTra *mt = new MuonTra;
@@ -1242,22 +1278,40 @@ void MuonSach(TREE &t,LIST_MUONTRA &l, NODETHEDOCGIA* &dg, LIST_DS &lds){
 				mt->TrangThai = 0;
 				nmt->data = *mt;
 				if (KiemTraSachDangMuon(dg, nmt)==1){
-					ConsoleProcess::ThongBao(20, 2, "Sach nay ban da muon vao hom nay. Vui long den muon vao ngay mai.", 0);
+					ConsoleProcess::gotoxy(42, 6);
+					cout << "Sach nay ban da muon vao hom nay. Vui long den muon vao ngay mai!";
+					getch();
 					return;
 				}
+				if (pp->data.TrangThai == 1)  {
+					ConsoleProcess::gotoxy(42, 6);
+					cout << "Sach nay da co doc gia muon!";
+					getch();
+					return;
+				}
+				if (pp->data.TrangThai == 2)  {
+					ConsoleProcess::gotoxy(42, 6);
+					cout << "Sach nay da duoc thanh ly!";
+					getch();
+					return;
+				}
+				pp->data.TrangThai = 1;
 				lds.ListDS[vitri]->data.soluotmuon++;
 				LuuDuLieuDauSach(lds);
 				DocDuLieuDauSach(lds);
 				AddTailMT(l, nmt);
 				LuuDuLieuDocGia(t);
 				DocDuLieuDocGia(t);
-				ConsoleProcess::ThongBao(20, 1, "Muon sach thanh cong", 1);
+				ConsoleProcess::ThongBao(42, 6, "Muon sach thanh cong", 1);
 			}
 		}
 	}
 	else{
-		ConsoleProcess::ThongBao(20, 1, "Moi doc gia chi duoc muon toi da 3 cuon sach", 1);
+		ConsoleProcess::CreateBoxTitle(50, 6, "Thong Bao: ", 75);
+		ConsoleProcess::gotoxy(60, 6);
+		cout << "Moi doc gia chi duoc muon toi da 3 cuon sach.";
 		getch();
+		return;
 	}
 
 }
@@ -1271,13 +1325,13 @@ void TraSach(TREE &t, NODETHEDOCGIA* &dg, LIST_DS &lds){
 	cout << endl;
 	cout << "----------------THONG TIN DOC GIA-----------------\n";
 	cout << "--------------------------------------------------\n";
-	cout << "Ma Doc Gia: " << dg->data.MATHE << endl;
+	cout << "----------Ma Doc Gia: " << dg->data.MATHE << endl;
 	cout << "--------------------------------------------------\n";
-	cout << "Ho: " << dg->data.Ho << endl;
+	cout << "----------Ho: " << dg->data.Ho << endl;
 	cout << "--------------------------------------------------\n";
-	cout << "Ten: " << dg->data.Ten << endl;
+	cout << "----------Ten: " << dg->data.Ten << endl;
 	cout << "--------------------------------------------------\n";
-	cout << "Trang thai the: ";
+	cout << "---------Trang thai the: ";
 	if (dg->data.TrangThai == 1) cout << "Dang hoat dong" << endl;
 	cout << "--------------------------------------------------\n";
 	cout << "--------------------------------------------------\n";
@@ -1287,17 +1341,17 @@ void TraSach(TREE &t, NODETHEDOCGIA* &dg, LIST_DS &lds){
 	int ngaydamuon;
 	for (NODE_MUONTRA *p = dg->listMuonTra.pHead; p != NULL; p = p->pNext){
 		if (p->data.TrangThai == 0){
-			cout << "Ma Sach: " << p->data.MaSach << endl;
-			cout << "Ten Sach: " << TimTenSach(p->data.MaSach, lds, vitri) << endl;
-			cout << "Ngay Muon: ";
+			cout << "   Ma Sach: " << p->data.MaSach << endl;
+			cout << "   Ten Sach: " << TimTenSach(p->data.MaSach, lds, vitri) << endl;
+			cout << "   Ngay Muon: ";
 			if (p->data.NgayMuon.Ngay < 10) cout << "0" << p->data.NgayMuon.Ngay << "/";
 			else cout << p->data.NgayMuon.Ngay << "/";
 			if (p->data.NgayMuon.Thang < 10) cout << "0" << p->data.NgayMuon.Thang << "/";
 			else cout << p->data.NgayMuon.Thang << "/";
 			cout << p->data.NgayMuon.Nam << endl;
-			cout << "Vi tri: " << vitri << endl;
+			cout << "   Vi tri: " << vitri << endl;
 			ngaydamuon = TinhKhoangCachNgay(p->data.NgayMuon, d2);
-			cout << "Tong ngay da muon: ";
+			cout << "   Tong ngay da muon: ";
 			cout << ngaydamuon << endl;
 			cout << "--------------------------------------------------\n";
 		}
@@ -1312,24 +1366,82 @@ void TraSach(TREE &t, NODETHEDOCGIA* &dg, LIST_DS &lds){
 		cout << "Du lieu tim kiem khong hop le. Vui long nhap lai.\n";
 		goto nhapmasachtra;
 	}
+
+	cout << "";
+
+
+
 	NODE_MUONTRA* p = TimNodeMuonTra(dg, maSach);
 	if (p == NULL)  {
 		ConsoleProcess::ThongBao(20, 1, "Khong tim thay ma sach vua nhap.", 0);
 		return;
 	}
-	cout << "Nhap ngay tra: ";
-	getline(cin, ngay);
-	cout << "Nhap thang tra: ";
-	getline(cin, thang);
-	cout << "Nhap nam tra: ";
-	getline(cin, nam);
-	p->data.NgayTra.Ngay = stoi(ngay);
-	p->data.NgayTra.Thang = stoi(thang);
-	p->data.NgayTra.Nam = stoi(nam);
-	p->data.TrangThai = 1;
-	LuuDuLieuDocGia(t);
-	DocDuLieuDocGia(t);
-	ConsoleProcess::ThongBao(20, 1, "Tra sach thanh cong", 1);
+
+	HANDLE hConsoleColor;
+	hConsoleColor = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsoleColor, 11);
+
+	ConsoleProcess::CreateBoxTitle(80, 15, "Nhap Chuc Nang(0: Tra Sach, 1: Bao Mat Sach): ", 60);
+	
+	
+
+
+	string nhap;
+    nhap:
+	SetConsoleTextAttribute(hConsoleColor, Normal_Color);
+	ConsoleProcess::gotoxy(125, 15);
+	ConsoleProcess::ShowCur(1);
+	getline(cin, nhap);
+	if (checkNhapSo0va1(nhap) == 0 || nhap == ""){
+
+		ConsoleProcess::CreateBoxTitle(80, 18, "Thong Bao: ", 60);
+		SetConsoleTextAttribute(hConsoleColor, 12);
+		ConsoleProcess::gotoxy(90, 18);
+		cout << "Vui long nhap dung du lieu.Nhap lai\n";
+		goto nhap;
+	}
+	else{
+		ConsoleProcess::gotoxy(90, 18);
+		cout << "                                        ";
+	}
+
+	if (stoi(nhap) == 0){
+		ConsoleProcess::CreateBoxTitle(80, 21, "Nhap ngay tra: ", 60);
+		ConsoleProcess::gotoxy(116,21);
+		cout << "  /  /     ";
+
+		
+		ConsoleProcess::gotoxy(116, 21);
+		getline(cin, ngay);
+
+
+		ConsoleProcess::gotoxy(120, 21);
+		getline(cin, thang);
+
+
+		ConsoleProcess::gotoxy(124, 21);
+		getline(cin, nam);
+
+		p->data.NgayTra.Ngay = stoi(ngay);
+		p->data.NgayTra.Thang = stoi(thang);
+		p->data.NgayTra.Nam = stoi(nam);
+		//chuyen trang thai da tra sach
+		p->data.TrangThai = 1;
+		//chuyen trang thai sach = 0: cho muon dc
+		int vitri1 = TimViTriDauSachTuMaSach(lds, maSach);
+		NODE_DMS* pDMS = TimKiemDanhMucSach(lds.ListDS[vitri1]->listDMS, maSach);
+		pDMS->data.TrangThai = 0;
+
+
+		LuuDuLieuDocGia(t);
+		DocDuLieuDocGia(t);
+		ConsoleProcess::ThongBao(90, 18, "Tra sach thanh cong", 1);
+
+	}
+	else if (stoi(nhap) == 1){
+
+	}
+	
 }
 
 int CapNhatMuonTra(TREE &t, LIST_MUONTRA &l, NODETHEDOCGIA* &dg, LIST_DS &lds){
@@ -1363,17 +1475,30 @@ void LayViTriNodeDuocChonMuonTra(TREE &t,LIST_DS &lds){
 	int w[6] = { 20, 10, 30, 20, 35, 45 };
 	InTieuDe(w);
 	InDanhSachDocGia(t, w);
+
+	HANDLE hConsoleColor;
+	hConsoleColor = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsoleColor, 6);
+	ConsoleProcess::gotoxy(75, 1);
+	cout << "----DANH SACH DOC GIA TANG THEO MA---\n";
+
+	ConsoleProcess::CreateBoxTitle(29, 3, "Nhap ma doc gia can quan ly: ", 70);
+	ConsoleProcess::CreateBoxTitle(29, 6, "Thong Bao: ", 70);
+
 	string maDocGia;
 	nhapmadocgiaduocchon:
-	cout << "Nhap ma doc gia can cap nhat: ";
+	ConsoleProcess::ShowCur(1);
+	ConsoleProcess::gotoxy(62, 3);
 	getline(cin, maDocGia);
 	if (checkNhapSo(maDocGia) == 0 || maDocGia==""){
+		ConsoleProcess::gotoxy(42, 6);
 		cout << "Du lieu tim kiem khong hop le. Vui long nhap lai.\n";
 		goto nhapmadocgiaduocchon;
 	}
 	NODETHEDOCGIA *p = TimKiemDocGia(t, stoi(maDocGia));
 	if (p == NULL) {
-		ConsoleProcess::ThongBao(20, 2, "Ma doc gia vua nhap khong ton tai", 0);
+		ConsoleProcess::gotoxy(42, 6);
+		cout << "Ma doc gia " << maDocGia << " khong ton tai!";
 		getch();
 	}
 	else{
@@ -1417,6 +1542,12 @@ void InTieuDeDauSach(int w[]){
 	system("cls");
 	cout << endl;
 	cout << endl;
+	cout << endl;
+	cout << endl;
+	cout << endl;
+	cout << endl;
+	cout << endl;
+	cout << endl;
 
 	int sum = 0;
 	foru(i, 1, 6) sum = sum + w[i];
@@ -1456,22 +1587,25 @@ void InTieuDeDauSach(int w[]){
 void InDongDuLieuDauSachTimKiem(LIST_DS lds, int w[], string TenSach){
 	/// in cac dong sau
 	if (lds.n == -1) return;
+	system("cls");
+	int dem = 0;
 	foru(it, 0, lds.n){
 		if (lds.ListDS[it]->data.TenSach == TenSach){
+			dem++;
 			cout << endl;
 			cout << "-----------THONG TIN SACH DA TIM KIEM-------------\n";
 			cout << "--------------------------------------------------\n";
-			cout << "ISBN: " << lds.ListDS[it]->data.ISBN << endl;
+			cout << "-----------ISBN: " << lds.ListDS[it]->data.ISBN << endl;
 			cout << "--------------------------------------------------\n";
-			cout << "Ten Sach: " << lds.ListDS[it]->data.TenSach << endl;
+			cout << "-----------Ten Sach: " << lds.ListDS[it]->data.TenSach << endl;
 			cout << "--------------------------------------------------\n";
-			cout << "So Trang: " << lds.ListDS[it]->data.SoTrang << endl;
+			cout << "-----------So Trang: " << lds.ListDS[it]->data.SoTrang << endl;
 			cout << "--------------------------------------------------\n";
-			cout << "Tac Gia: " << lds.ListDS[it]->data.TacGia << endl;
+			cout << "-----------Tac Gia: " << lds.ListDS[it]->data.TacGia << endl;
 			cout << "--------------------------------------------------\n";
-			cout << "Nam Xuat Ban: " << lds.ListDS[it]->data.NamXuatBan << endl;
+			cout << "-----------Nam Xuat Ban: " << lds.ListDS[it]->data.NamXuatBan << endl;
 			cout << "--------------------------------------------------\n";
-			cout << "The Loai: " << lds.ListDS[it]->data.TheLoai << endl;
+			cout << "-----------The Loai: " << lds.ListDS[it]->data.TheLoai << endl;
 			cout << "--------------------------------------------------\n";
 			cout << "---------------------Cac Ma Sach--------------------\n";
 			for (NODE_DMS* p = lds.ListDS[it]->listDMS.pHead; p != NULL; p = p->pNext)
@@ -1488,6 +1622,11 @@ void InDongDuLieuDauSachTimKiem(LIST_DS lds, int w[], string TenSach){
 			
 		}
 		
+	}
+	if (dem == 0){
+		ConsoleProcess::CreateBoxTitle(29, 6, "Thong Bao: ", 50);
+		ConsoleProcess::gotoxy(42, 6);
+		cout << "Ten Sach " << TenSach << " khong ton tai!";
 	}
 
 }
@@ -1567,7 +1706,7 @@ void NhapThongTin1DauSach(LIST_DS lds, DauSach &ds, int w[], int isISBN){
 	ConsoleProcess::CreateBoxAdd(60, 9, " Nhap Nam Xuat Ban( < hon nam hien tai): ", 50);
 	ConsoleProcess::CreateBoxAdd(60, 10, " Nhap The Loai: ", 50);
 	ConsoleProcess::CreateBoxEnd(60, 11, "", 50);
-	ConsoleProcess::CreateBoxTitle(60, 15, "Thong Bao: ", 60);
+	ConsoleProcess::CreateBoxTitle(60, 15, "Thong Bao: ", 70);
 	
 	SetConsoleTextAttribute(hConsoleColor, Normal_Color);
 	
@@ -1597,7 +1736,7 @@ void NhapThongTin1DauSach(LIST_DS lds, DauSach &ds, int w[], int isISBN){
 	}
 	else{
 		SetConsoleTextAttribute(hConsoleColor, Normal_Color);
-		ConsoleProcess::gotoxy(80, 5);
+		ConsoleProcess::gotoxy(89, 5);
 		cout << ds.ISBN;
 	}
 
@@ -1653,7 +1792,7 @@ void NhapThongTin1DauSach(LIST_DS lds, DauSach &ds, int w[], int isISBN){
 
 	namxuatban:
 	SetConsoleTextAttribute(hConsoleColor, Normal_Color);
-	ConsoleProcess::gotoxy(96, 9);
+	ConsoleProcess::gotoxy(100, 9);
 	ConsoleProcess::ShowCur(1);
 	getline(cin, namxuatban);
 	if (checkNhapSo(namxuatban) == 0 || namxuatban == ""){
@@ -1667,12 +1806,12 @@ void NhapThongTin1DauSach(LIST_DS lds, DauSach &ds, int w[], int isISBN){
 		if (nam > LayNamHienTai()){
 			SetConsoleTextAttribute(hConsoleColor, 12);
 			ConsoleProcess::gotoxy(72, 15);
-			cout << "Vui long nhap so nam nho hon nam hien tai. Nhap lai";
+			cout << "Vui long nhap nam nho hon nam hien tai. Nhap lai";
 			goto namxuatban;
 		}
 		else{
 			ConsoleProcess::gotoxy(72, 15);
-			cout << "                                        ";
+			cout << "                                                     ";
 		}
 	}
 
@@ -1863,6 +2002,9 @@ int XoaDauSach(LIST_DS &lds, int vitri){
 
 void HieuChinhDauSach(LIST_DS &lds, DauSach &ds, int w[]){ 
 	system("cls");
+	cout << endl;
+	cout << endl;
+	cout << endl;
 	cout << "-------Thong tin dau sach dang hieu chinh--------" << endl;
 	cout << "ISBN: " << ds.ISBN << endl;
 	cout << "Ten Sach: " << ds.TenSach << endl;
@@ -1896,7 +2038,7 @@ void CapNhatDanhSachDauSach(LIST_DS &lds){
 	KhoiTaoDauSach(lds);
 	DocDuLieuDauSach(lds);
 	/// danh sach gom 6 cot ISBN,Ten Sach, So Trang, TacGia, Nam Xuat Ban, The Loai
-	int w[7] = { 20, 10, 45, 10, 35, 18, 25 };
+	int w[7] = { 24, 10, 45, 10, 35, 18, 25 };
 	Menu a(35, 80, 1);
 	a.Set_Header("QUAN LY DAU SACH");
 	a.add("1. In danh sach dau sach theo the loai va tang theo ten sach");
@@ -1935,63 +2077,107 @@ void CapNhatDanhSachDauSach(LIST_DS &lds){
 	}
 	if (k == 3){
 		InTieuDeDauSach(w);
-		InDanhSachDauSach(lds, w);
+		SapXepTheoTheLoaiVaTenSach(lds, w);
+		HANDLE hConsoleColor;
+		hConsoleColor = GetStdHandle(STD_OUTPUT_HANDLE);
+		SetConsoleTextAttribute(hConsoleColor, 6);
+		ConsoleProcess::gotoxy(75, 1);
+		cout << "----DANH SACH DAU SACH THEO THE LOAI VA TEN SACH---\n";
+
+		ConsoleProcess::CreateBoxTitle(29, 3, "Nhap ISBN can hieu chinh: ", 50);
+		ConsoleProcess::CreateBoxTitle(29, 6, "Thong Bao: ", 50);
+
 		string ISBN;
 		nhapISBNhieuchinh:
-		cout << "Nhap ISBN (gom 6 ki tu) can hieu chinh: ";
+		ConsoleProcess::gotoxy(62, 3);
+		ConsoleProcess::ShowCur(1);
 		getline(cin, ISBN);
-		if (checkNhapISBN(ISBN) == 0 || ISBN==""){
-			cout << "Vui long nhap dung dinh dang.Nhap lai\n";
+		if (checkNhapISBN(ISBN) == 0 || ISBN == ""){
+			ConsoleProcess::gotoxy(42, 6);
+			cout << "Du lieu khong hop le. Vui long nhap lai.\n";
 			goto nhapISBNhieuchinh;
 		}
 
 		int vitri = TimKiemDauSach(lds, ISBN);
-		if (vitri == -1) ConsoleProcess::ThongBao(20, 2, "Khong tim thay dau sach vua nhap.", 0);
+		if (vitri == -1) {
+			ConsoleProcess::gotoxy(42, 6);
+			cout << "Dau sach " << ISBN << " khong ton tai!";
+			getch();
+		}
 		else{
 			HieuChinhDauSach(lds, lds.ListDS[vitri]->data, w);
 			LuuDuLieuDauSach(lds);
 			DocDuLieuDauSach(lds);
-			ConsoleProcess::ThongBao(20, 2, "Hieu chinh dau sach thanh cong", 1);
+			ConsoleProcess::ThongBao(72, 15, "Hieu chinh dau sach thanh cong", 1);
 		}
 		getch();
 	}
 	if (k == 4){
 		InTieuDeDauSach(w);
-		InDanhSachDauSach(lds, w);
+		SapXepTheoTheLoaiVaTenSach(lds, w);
+
+		HANDLE hConsoleColor;
+		hConsoleColor = GetStdHandle(STD_OUTPUT_HANDLE);
+		SetConsoleTextAttribute(hConsoleColor, 6);
+		ConsoleProcess::gotoxy(75, 1);
+		cout << "----DANH SACH DAU SACH THEO THE LOAI VA TEN SACH---\n";
+
+		ConsoleProcess::CreateBoxTitle(29, 3, "Nhap ISBN can xoa: ", 50);
+		ConsoleProcess::CreateBoxTitle(29, 6, "Thong Bao: ", 50);
+
 		string ISBNxoa;
 		nhapISBNxoa:
-		cout << "Nhap ISBN (gom 6 ki tu) can xoa: ";
+		ConsoleProcess::gotoxy(62, 3);
+		ConsoleProcess::ShowCur(1);
 		getline(cin, ISBNxoa);
-		if (checkNhapISBN(ISBNxoa) == 0||ISBNxoa==""){
-			cout << "Vui long nhap dung dinh dang.Nhap lai\n";
+		if (checkNhapISBN(ISBNxoa) == 0||ISBNxoa == ""){
+			ConsoleProcess::gotoxy(42, 6);
+			cout << "Du lieu khong hop le. Vui long nhap lai.\n";
 			goto nhapISBNxoa;
 		}
 		int vitri = TimKiemDauSach(lds, ISBNxoa);
-		if (vitri == -1) ConsoleProcess::ThongBao(20, 2, "Khong tim thay dau sach vua nhap.", 0);
+		if (vitri == -1) {
+			ConsoleProcess::gotoxy(42, 6);
+			cout << "Dau sach " << ISBNxoa << " khong ton tai!";
+			getch();
+		}
 		else{
 			int check = XoaDauSach(lds, vitri);
 			if (check == 1) {
 				LuuDuLieuDauSach(lds);
 				DocDuLieuDauSach(lds);
-				ConsoleProcess::ThongBao(20, 2, "Xoa dau sach thanh cong", 1);
+				ConsoleProcess::ThongBao(42, 6, "Xoa dau sach thanh cong", 1);
 			}
-			else ConsoleProcess::ThongBao(20, 2, "Xoa dau sach that bai. Danh sach Rong", 0);
+			else ConsoleProcess::ThongBao(42, 6, "Xoa dau sach that bai. Danh sach Rong", 0);
 		}
 		getch();
 	}
 	if (k == 5){
 		string tenSach;
 		InTieuDeDauSach(w);
-		InDanhSachDauSach(lds, w);
+		SapXepTheoTheLoaiVaTenSach(lds, w);
+
+		HANDLE hConsoleColor;
+		hConsoleColor = GetStdHandle(STD_OUTPUT_HANDLE);
+		SetConsoleTextAttribute(hConsoleColor, 6);
+		ConsoleProcess::gotoxy(75, 1);
+		cout << "----DANH SACH DAU SACH THEO THE LOAI VA TEN SACH---\n";
+
+		ConsoleProcess::CreateBoxTitle(29, 3, "Nhap Ten Sach: ", 50);
+		ConsoleProcess::CreateBoxTitle(29, 6, "Thong Bao: ", 50);
+
+
 		nhapTenSach:
-		cout << "Nhap Ten Sach: ";
+		ConsoleProcess::gotoxy(62, 3);
+		ConsoleProcess::ShowCur(1);
 		getline(cin, tenSach);
 		if (tenSach == ""){
-			cout << "Vui long khong de trong. Nhap lai\n";
+			ConsoleProcess::gotoxy(42, 6);
+			cout << "Vui long khong de trong. Nhap lai";
 			goto nhapTenSach;
 		}
 		ChuanHoaChuoi(tenSach);
-		
+
 		InDongDuLieuDauSachTimKiem(lds, w, tenSach);
 		getch();
 	}
@@ -2003,6 +2189,12 @@ void CapNhatDanhSachDauSach(LIST_DS &lds){
 void InTieuDeDanhMucSach(int w[]){
 
 	system("cls");
+	cout << endl;
+	cout << endl;
+	cout << endl;
+	cout << endl;
+	cout << endl;
+	cout << endl;
 	cout << endl;
 	cout << endl;
 
@@ -2205,19 +2397,49 @@ int XoaNodeCoKhoaBatKi(LIST_DMS &l, string maSach){
 
 void NhapDanhMucSach(DanhMucSach &dms, string maSach){
 	string trangthai;
+
+	HANDLE hConsoleColor;
+	hConsoleColor = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsoleColor, 11);
+
+
+	ConsoleProcess::CreateBoxTitle(60, 3, "          NHAP THONG TIN DANH MUC SACH", 100);
+	ConsoleProcess::CreateBoxAdd(60, 5, " Nhap trang thai(0: Cho muon duoc, 1: Da co doc gia muon, 2:Da thanh ly): ", 100);
+	ConsoleProcess::CreateBoxAdd(60, 6, " Nhap Vi Tri Sach: ", 100);
+	ConsoleProcess::CreateBoxEnd(60, 7, "", 100);
+	ConsoleProcess::CreateBoxTitle(60, 15, "Thong Bao: ", 100);
+
 	nhaptrangthaidms:
-	cout << "Nhap trang thai(0: Cho muon duoc, 1: Da co doc gia muon, 2:Da thanh ly): ";
+	SetConsoleTextAttribute(hConsoleColor, Normal_Color);
+	ConsoleProcess::gotoxy(133, 5);
+	ConsoleProcess::ShowCur(1);
 	getline(cin, trangthai);
 	if (checkNhapSo0va1va2(trangthai) == 0 || trangthai==""){
-		cout << "Vui long nhap dung du lieu.Nhap lai\n";
+		SetConsoleTextAttribute(hConsoleColor, 12);
+		ConsoleProcess::gotoxy(72, 15);
+		cout << "Vui long nhap dung dinh dang. Nhap lai";
 		goto nhaptrangthaidms;
 	}
+	else{
+		ConsoleProcess::gotoxy(72, 15);
+		cout << "                                          ";
+	}
+
+
 	nhapViTri:
-	cout << "Nhap Vi Tri: ";
+	SetConsoleTextAttribute(hConsoleColor, Normal_Color);
+	ConsoleProcess::gotoxy(80, 6);
+	ConsoleProcess::ShowCur(1);
 	getline(cin, dms.ViTri);
 	if (dms.ViTri == ""){
-		cout << "Vui long khong de trong. Nhap lai\n";
+		SetConsoleTextAttribute(hConsoleColor, 12);
+		ConsoleProcess::gotoxy(72, 15);
+		cout << "Vui long nhap dung dinh dang. Nhap lai";
 		goto nhapViTri;
+	}
+	else{
+		ConsoleProcess::gotoxy(72, 15);
+		cout << "                                          ";
 	}
 
 	dms.MaSach = maSach;
@@ -2228,12 +2450,14 @@ void NhapDanhMucSach(DanhMucSach &dms, string maSach){
 
 void HieuChinhDanhMucSach(DanhMucSach &dms, int w[]){
 	system("cls");
+	cout << endl;
+	cout << endl;
+	cout << endl;
 	cout << "-------Thong tin danh muc sach ban dau--------" << endl;
-	cout << "Ma Sach: " << dms.MaSach << endl;
-	cout << "Trang Thai: " << dms.TrangThai << endl;
-	cout << "Vi Tri: " << dms.ViTri << endl;
-
-
+	cout << "-------Ma Sach: " << dms.MaSach << endl;
+	cout << "-------Trang Thai: " << dms.TrangThai << endl;
+	cout << "-------Vi Tri: " << dms.ViTri << endl;
+	cout << "------------------------------------------------\n";
 
 	cout << "---------Nhap thong tin can chinh sua--------" << endl;
 	NhapDanhMucSach(dms, dms.MaSach);
@@ -2241,11 +2465,13 @@ void HieuChinhDanhMucSach(DanhMucSach &dms, int w[]){
 
 string NhapISBN(){
 	string ISBN;
-	nhapISBNthem:
-	cout << "Nhap ISBN (gom 6 ki tu) can cap nhat: ";
+nhapISBNthem:
+	ConsoleProcess::gotoxy(62, 3);
+	ConsoleProcess::ShowCur(1);
 	getline(cin, ISBN);
 	if (checkNhapISBN(ISBN) == 0 || ISBN==""){
-		cout << "Vui long nhap dung dinh dang.Nhap lai\n";
+		ConsoleProcess::gotoxy(42, 6);
+		cout << "Du lieu khong hop le. Vui long nhap lai.\n";
 		goto nhapISBNthem;
 	}
 	return ISBN;
@@ -2263,7 +2489,7 @@ void GiaiPhongDanhSachLKD(LIST_DMS &l){
 int CapNhatDanhSachDanhMucSach(LIST_DS &lds, LIST_DMS &ldms, pNODEDAUSACH &p){
 
 	/// danh sach gom 6 cot ISBN,Ten Sach, So Trang, TacGia, Nam Xuat Ban, The Loai
-	int w[4] = { 20, 20, 35, 20 };
+	int w[4] = { 27, 20, 35, 20 };
 	Menu a(35, 60, 1);
 	a.Set_Header("MENU LUA CHON");
 	a.add("1. In danh sach danh muc sach");
@@ -2277,78 +2503,121 @@ int CapNhatDanhSachDanhMucSach(LIST_DS &lds, LIST_DMS &ldms, pNODEDAUSACH &p){
 	if (k == 5) return 5;
 	if (k == 1){
 		InDanhSachDanhMucSach(ldms, w);
+		HANDLE hConsoleColor;
+		hConsoleColor = GetStdHandle(STD_OUTPUT_HANDLE);
+		SetConsoleTextAttribute(hConsoleColor, 6);
+		ConsoleProcess::gotoxy(50, 1);
+		cout << "----DANH SACH DANH MUC SACH---\n";
+		SetConsoleTextAttribute(hConsoleColor, 15);
 		getch();
 	}
 	if (k == 2){
 		DanhMucSach *dms = new DanhMucSach;
 		int stt = ldms.n;
 		string maSach = p->data.ISBN + to_string(++stt);
+		system("cls");
 		NhapDanhMucSach(*dms, maSach);
-		NODE_DMS *ndms = KhoiTaoNodeDMS(*dms);
+		NODE_DMS *ndms = new NODE_DMS;
+		ndms = KhoiTaoNodeDMS(*dms);
 		ThemVaoCuoi(ldms, ndms);
 		LuuDuLieuDauSach(lds);
 		DocDuLieuDauSach(lds);
-		ConsoleProcess::ThongBao(20, 2, "Them danh muc sach thanh cong", 1);
-
-		getch();
-
-
+		ConsoleProcess::ThongBao(72, 15, "Them danh muc sach thanh cong", 1);
 	}
 
 	if (k == 3) {
 		InDanhSachDanhMucSach(ldms, w);
+
+		HANDLE hConsoleColor;
+		hConsoleColor = GetStdHandle(STD_OUTPUT_HANDLE);
+		SetConsoleTextAttribute(hConsoleColor, 6);
+		ConsoleProcess::gotoxy(60, 1);
+		cout << "----DANH SACH DANH MUC SACH---\n";
+
+		ConsoleProcess::CreateBoxTitle(29, 3, "Nhap ma sach can hieu chinh: ", 50);
+		ConsoleProcess::CreateBoxTitle(29, 6, "Thong Bao: ", 50);
+
 		string maSach;
 		nhapmasachhc:
-		cout << "Nhap ma sach can hieu chinh: ";
+		ConsoleProcess::gotoxy(62, 3);
+		ConsoleProcess::ShowCur(1);
 		getline(cin, maSach);
 		if (checkNhapMaSach(maSach) == 0||maSach==""){
+			ConsoleProcess::gotoxy(42, 6);
 			cout << "Du lieu tim kiem khong hop le. Vui long nhap lai.\n";
 			goto nhapmasachhc;
 		}
 		NODE_DMS *pp = TimKiemDanhMucSach(ldms, maSach);
-		if (pp == NULL) ConsoleProcess::ThongBao(20, 2, "Khong tim thay dau sach vua nhap.", 0);
+		if (pp == NULL) { 
+			ConsoleProcess::gotoxy(42, 6);
+			cout << "Ma Sach " << maSach << " khong ton tai!";
+			getch();
+		}
 		else{
 			HieuChinhDanhMucSach(pp->data, w);
 			LuuDuLieuDauSach(lds);
 			DocDuLieuDauSach(lds);
-			ConsoleProcess::ThongBao(20, 2, "Hieu chinh dau sach thanh cong", 1);
+			ConsoleProcess::ThongBao(72, 15, "Hieu chinh dau sach thanh cong", 1);
 		}
-		getch();
-
 	}
 	if (k == 4){
 		InDanhSachDanhMucSach(ldms, w);
+
+		HANDLE hConsoleColor;
+		hConsoleColor = GetStdHandle(STD_OUTPUT_HANDLE);
+		SetConsoleTextAttribute(hConsoleColor, 6);
+		ConsoleProcess::gotoxy(60, 1);
+		cout << "----DANH SACH DANH MUC SACH---\n";
+
+		ConsoleProcess::CreateBoxTitle(29, 3, "Nhap ma sach can xoa: ", 50);
+		ConsoleProcess::CreateBoxTitle(29, 6, "Thong Bao: ", 50);
+
 		string maSach;
 		nhapmasachxoa:
-		cout << "Nhap ma sach can xoa: ";
+		ConsoleProcess::gotoxy(62, 3);
+		ConsoleProcess::ShowCur(1);
 		getline(cin, maSach);
 		if (checkNhapMaSach(maSach) == 0 || maSach==""){
+			ConsoleProcess::gotoxy(42, 6);
 			cout << "Du lieu tim kiem khong hop le. Vui long nhap lai.\n";
 			goto nhapmasachxoa;
 		}
 		
 		int check = XoaNodeCoKhoaBatKi(ldms, maSach);
-		if (check == -1) ConsoleProcess::ThongBao(20, 2, "Danh Sach Rong", 0);
+		if (check == -1) ConsoleProcess::ThongBao(42, 6, "Danh Sach Rong", 0);
 		else if (check == 1){
 			ldms.n--;
 			LuuDuLieuDauSach(lds);
 			DocDuLieuDauSach(lds);
-			ConsoleProcess::ThongBao(20, 2, "Xoa sach thanh cong", 1);
+			ConsoleProcess::ThongBao(42, 6, "Xoa sach thanh cong", 1);
 		}
-		else ConsoleProcess::ThongBao(20, 2, "Khong tim thay ma sach vua nhap", 1);
-		
-		getch();
+		else{ 
+			ConsoleProcess::gotoxy(42, 6);
+			cout << "Ma sach " << maSach << " khong ton tai!";
+			getch();
+		}
 	}
 }
 
 void LayViTriNodeDuocChon(LIST_DS &lds){
 	int w[7] = { 20, 10, 45, 10, 35, 18, 25 };
 	InTieuDeDauSach(w);
-	InDanhSachDauSach(lds, w);
+	SapXepTheoTheLoaiVaTenSach(lds, w);
+
+	HANDLE hConsoleColor;
+	hConsoleColor = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsoleColor, 6);
+	ConsoleProcess::gotoxy(75, 1);
+	cout << "----DANH SACH DAU SACH THEO THE LOAI VA TEN SACH---\n";
+
+	ConsoleProcess::CreateBoxTitle(29, 3, "Nhap ISBN can quan ly: ", 50);
+	ConsoleProcess::CreateBoxTitle(29, 6, "Thong Bao: ", 50);
+
 	string ISBN = NhapISBN();
 	int vitri = TimKiemDauSach(lds, ISBN);
 	if (vitri == -1) {
-		ConsoleProcess::ThongBao(20, 2, "Khong tim thay dau sach vua nhap.", 0);
+		ConsoleProcess::gotoxy(42, 6);
+		cout << "Dau sach " << ISBN << " khong ton tai!";
 		getch();
 	}
 
@@ -2613,22 +2882,13 @@ void SelectionSortVaIn10DauSach(LIST_DS lds){
 	int j, max, k;
 	int dem = 0;
 	int w[4] = { 20, 20, 20, 20 };
-	
-	//int *arr = new int[lds.n];
+
 	InTieuDeLietKeDS(w);
 	for (int i = 0; i < lds.n+1; i++){
 		max = i;
 		for (j = i + 1; j < lds.n+1; j++)
-		if (lds.ListDS[j]->data.soluotmuon > lds.ListDS[max]->data.soluotmuon) {
-			max = j;
-			InDongDuLieuLietKeDS(lds, w, j);
-		}
-		//if (max != i){
+		if (lds.ListDS[j]->data.soluotmuon > lds.ListDS[max]->data.soluotmuon) max = j;
 			InDongDuLieuLietKeDS(lds, w, max);
-		//}
-		//else InDongDuLieuLietKeDS(lds, w, i);
-			//InDongDuLieuLietKeDS(lds, w, max);
-			//arr[dem++] = max;
 	}
 	
 
