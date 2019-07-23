@@ -1,4 +1,4 @@
-8
+9
 ISBN
 Clean Code
 Tran Van Di
@@ -79,5 +79,13 @@ Fdgd
 Chat Choi
 34
 43
+0
+0
+III
+Thuy Hu
+Tran Van Cao
+Tieu Thuyet
+356
+2017
 0
 0

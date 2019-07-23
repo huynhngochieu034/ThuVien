@@ -1,37 +1,37 @@
-﻿Build started 7/23/2019 1:56:13 AM.
-     1>Project "C:\Users\huynh\OneDrive\Desktop\ThuVien\ThuVien\ThuVien.vcxproj" on node 2 (Build target(s)).
+﻿Build started 7/23/2019 3:39:18 PM.
+     1>Project "C:\Users\hieunh.hh\Desktop\ThuVien\ThuVien\ThuVien.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         D:\visual studio\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Source.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Source.cpp
          Source.cpp
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\consoleprocess.h(21): warning C4091: 'static ' : ignored on left of 'ConsoleProcess' when no variable is declared
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(153): warning C4018: '<=' : signed/unsigned mismatch
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(168): warning C4018: '<=' : signed/unsigned mismatch
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(189): warning C4018: '<=' : signed/unsigned mismatch
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(197): warning C4018: '<=' : signed/unsigned mismatch
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(205): warning C4018: '<=' : signed/unsigned mismatch
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(214): warning C4018: '<=' : signed/unsigned mismatch
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(224): warning C4018: '<=' : signed/unsigned mismatch
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(241): warning C4018: '<=' : signed/unsigned mismatch
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(280): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(322): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(323): warning C4018: '>' : signed/unsigned mismatch
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(535): warning C4101: 'index' : unreferenced local variable
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(601): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(604): warning C4018: '>' : signed/unsigned mismatch
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(1727): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(2458): warning C4101: 'k' : unreferenced local variable
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(326): warning C4715: 'TimKiemDocGia' : not all control paths return a value
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(629): warning C4715: 'XoaDocGia' : not all control paths return a value
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(1004): warning C4715: 'TimTenSach' : not all control paths return a value
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(1271): warning C4715: 'CapNhatMuonTra' : not all control paths return a value
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(2187): warning C4715: 'CapNhatDanhSachDanhMucSach' : not all control paths return a value
+     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\consoleprocess.h(24): warning C4091: 'static ' : ignored on left of 'ConsoleProcess' when no variable is declared
+     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\source.cpp(153): warning C4018: '<=' : signed/unsigned mismatch
+     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\source.cpp(168): warning C4018: '<=' : signed/unsigned mismatch
+     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\source.cpp(189): warning C4018: '<=' : signed/unsigned mismatch
+     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\source.cpp(197): warning C4018: '<=' : signed/unsigned mismatch
+     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\source.cpp(205): warning C4018: '<=' : signed/unsigned mismatch
+     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\source.cpp(214): warning C4018: '<=' : signed/unsigned mismatch
+     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\source.cpp(224): warning C4018: '<=' : signed/unsigned mismatch
+     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\source.cpp(239): warning C4018: '<=' : signed/unsigned mismatch
+     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\source.cpp(278): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
+     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\source.cpp(320): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\source.cpp(321): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\source.cpp(580): warning C4101: 'index' : unreferenced local variable
+     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\source.cpp(646): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\source.cpp(649): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\source.cpp(1882): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\source.cpp(2619): warning C4101: 'k' : unreferenced local variable
+     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\source.cpp(324): warning C4715: 'TimKiemDocGia' : not all control paths return a value
+     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\source.cpp(674): warning C4715: 'XoaDocGia' : not all control paths return a value
+     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\source.cpp(1093): warning C4715: 'TimTenSach' : not all control paths return a value
+     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\source.cpp(1360): warning C4715: 'CapNhatMuonTra' : not all control paths return a value
+     1>c:\users\hieunh.hh\desktop\thuvien\thuvien\source.cpp(2348): warning C4715: 'CapNhatDanhSachDanhMucSach' : not all control paths return a value
        Link:
-         D:\visual studio\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\huynh\OneDrive\Desktop\ThuVien\Debug\ThuVien.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\huynh\OneDrive\Desktop\ThuVien\Debug\ThuVien.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\huynh\OneDrive\Desktop\ThuVien\Debug\ThuVien.lib" /MACHINE:X86 Debug\ConsoleProcess.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\hieunh.hh\Desktop\ThuVien\Debug\ThuVien.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\hieunh.hh\Desktop\ThuVien\Debug\ThuVien.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\hieunh.hh\Desktop\ThuVien\Debug\ThuVien.lib" /MACHINE:X86 Debug\ConsoleProcess.obj
          Debug\Menu.obj
          Debug\Source.obj
-         ThuVien.vcxproj -> C:\Users\huynh\OneDrive\Desktop\ThuVien\Debug\ThuVien.exe
-     1>Done Building Project "C:\Users\huynh\OneDrive\Desktop\ThuVien\ThuVien\ThuVien.vcxproj" (Build target(s)).
+         ThuVien.vcxproj -> C:\Users\hieunh.hh\Desktop\ThuVien\Debug\ThuVien.exe
+     1>Done Building Project "C:\Users\hieunh.hh\Desktop\ThuVien\ThuVien\ThuVien.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:01.64
+Time Elapsed 00:00:01.19

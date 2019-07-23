@@ -18,5 +18,8 @@ public:
 	static void ShowCur(bool CursorVisibility);
 	static void ThongBao(int x, int y, string a, int check);
 	static string convert(int a);
+	static void CreateBoxTitle(int x, int y, string text, int length);
+	static void CreateBoxAdd(int x, int y, string text, int length);
+	static void CreateBoxEnd(int x, int y, string text, int length);
 };
 

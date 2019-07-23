@@ -182,7 +182,31 @@ void ConsoleProcess::ThongBao(int x, int y, string a, int check){
 
 }
 
+void ConsoleProcess::CreateBoxTitle(int x, int y, string text, int length)
+{
+	gotoxy(x - 2, y - 1);
+	cout << char(201) << setw(length) << setfill(char(205)) << char(205) << char(187);
 
+	gotoxy(x - 2, y);
+	cout << char(186) << text << setw(length - text.length() + 1) << setfill(' ') << char(186);
+
+	gotoxy(x - 2, y + 1);
+	cout << char(200) << setw(length) << setfill(char(205)) << char(205) << char(188);
+}
+
+void ConsoleProcess::CreateBoxAdd(int x, int y, string text, int length)
+{
+	gotoxy(x - 2, y);
+	cout << char(186) << text << setw(length - text.length() + 1) << setfill(' ') << char(186);
+}
+
+void ConsoleProcess::CreateBoxEnd(int x, int y, string text, int length)
+{
+	gotoxy(x - 2, y);
+	cout << char(186) << text << setw(length - text.length() + 1) << setfill(' ') << char(186);
+	gotoxy(x - 2, y + 1);
+	cout << char(200) << setw(length) << setfill(char(205)) << char(205) << char(188);
+}
 
 string ConsoleProcess::convert(int a){
 	string ans = "";
