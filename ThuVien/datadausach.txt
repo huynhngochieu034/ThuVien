@@ -1,4 +1,12 @@
 8
+AAA
+Con Chim Non
+Fdgd
+Chat Choi
+34
+43
+0
+0
 NNN
 BALOON
 Nguyen Van Chou
@@ -7,26 +15,6 @@ Kinh Di
 2014
 0
 0
-VVV
-Mua He 2019
-Tran Van Quy
-Phieu Luu
-200
-2016
-4
-4
-VVV1
-1
-Hang 1, Cot 2
-VVV2
-1
-Hagn4m cot 5
-VVV3
-1
-Hang 5, cot 7
-VVV4
-1
-Hang5, cot 6
 RRR
 Nhat Ky Vang Thu
 Nguyen Nhat Anh
@@ -91,11 +79,23 @@ test
 ISBN5
 1
 test2
-AAA
-Con Chim Non
-Fdgd
-Chat Choi
-34
-43
+VVV
+C++
+Anh Tanh
+Tieu Thuyet
+200
+2018
+1
+4
+VVV3
+1
+Hang 1, Cot5
+VVV4
 0
+Hang5, Cot 6
+VVV5
 0
+Hang6 Cot 4
+VVV6
+0
+Hang 2 cot 9
