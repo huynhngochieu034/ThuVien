@@ -5,8 +5,14 @@ Fdgd
 Chat Choi
 34
 43
-0
-0
+2
+2
+AAA1
+1
+q
+AAA2
+1
+y
 NNN
 BALOON
 Nguyen Van Chou
@@ -37,6 +43,26 @@ Phieu Luu
 GGG1
 1
 1
+VVV
+C++
+Anh Tanh
+Tieu Thuyet
+200
+2018
+1
+4
+VVV3
+1
+Hang 1, Cot5
+VVV4
+0
+Hang5, Cot 6
+VVV5
+0
+Hang6 Cot 4
+VVV6
+0
+Hang 2 cot 9
 QQQ
 Clean Code 2
 Tran Van Duy
@@ -79,23 +105,3 @@ test
 ISBN5
 1
 test2
-VVV
-C++
-Anh Tanh
-Tieu Thuyet
-200
-2018
-1
-4
-VVV3
-1
-Hang 1, Cot5
-VVV4
-0
-Hang5, Cot 6
-VVV5
-0
-Hang6 Cot 4
-VVV6
-0
-Hang 2 cot 9

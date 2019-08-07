@@ -1408,13 +1408,18 @@ void TraSach(TREE &t, NODETHEDOCGIA* &dg, LIST_DS &lds){
 			cout << "--------------------------------------------------\n";
 		}
 	}
-	
+	HANDLE hConsoleColor;
+	hConsoleColor = GetStdHandle(STD_OUTPUT_HANDLE);
 	string maSach;
 	string ngay, thang, nam;
+	int vitri1=-1;
 	nhapmasachtra:
 	cout << "Nhap ma sach can tra: ";
 	getline(cin, maSach);
 	if (checkNhapMaSach(maSach) == 0 || maSach == ""){
+		ConsoleProcess::CreateBoxTitle(80, 18, "Thong Bao: ", 70);
+		SetConsoleTextAttribute(hConsoleColor, 12);
+		ConsoleProcess::gotoxy(90, 18);
 		cout << "Du lieu tim kiem khong hop le. Vui long nhap lai.\n";
 		goto nhapmasachtra;
 	}
@@ -1429,8 +1434,7 @@ void TraSach(TREE &t, NODETHEDOCGIA* &dg, LIST_DS &lds){
 		return;
 	}
 
-	HANDLE hConsoleColor;
-	hConsoleColor = GetStdHandle(STD_OUTPUT_HANDLE);
+	
 	SetConsoleTextAttribute(hConsoleColor, 11);
 	ConsoleProcess::CreateBoxTitle(80, 15, "Nhap Chuc Nang(0: Tra Sach, 1: Bao Mat Sach): ", 70);
 	
@@ -1543,11 +1547,12 @@ void TraSach(TREE &t, NODETHEDOCGIA* &dg, LIST_DS &lds){
 		//chuyen trang thai da tra sach
 		p->data.TrangThai = 1;
 		//chuyen trang thai sach = 0: cho muon dc
-		int vitri1 = TimViTriDauSachTuMaSach(lds, maSach);
+		 vitri1 = TimViTriDauSachTuMaSach(lds, maSach);
 		NODE_DMS* pDMS = TimKiemDanhMucSach(lds.ListDS[vitri1]->listDMS, maSach);
 		pDMS->data.TrangThai = 0;
-
-
+		lds.ListDS[vitri1]->data.soluotmuon--;
+		LuuDuLieuDauSach(lds);
+		DocDuLieuDauSach(lds);
 		LuuDuLieuDocGia(t);
 		DocDuLieuDocGia(t);
 		ConsoleProcess::CreateBoxTitle(80, 18, "Thong Bao: ", 70);
@@ -1558,6 +1563,9 @@ void TraSach(TREE &t, NODETHEDOCGIA* &dg, LIST_DS &lds){
 	else if (stoi(nhap) == 1){
 		if (p->data.TrangThai != 2){
 			p->data.TrangThai = 2;
+			lds.ListDS[vitri1]->data.soluotmuon--;
+			LuuDuLieuDauSach(lds);
+			DocDuLieuDauSach(lds);
 			ConsoleProcess::CreateBoxTitle(80, 18, "Thong Bao: ", 70);
 			SetConsoleTextAttribute(hConsoleColor, 12);
 			ConsoleProcess::gotoxy(90, 18);
@@ -1591,10 +1599,12 @@ int CapNhatMuonTra(TREE &t, LIST_MUONTRA &l, NODETHEDOCGIA* &dg, LIST_DS &lds){
 	if (k == 1){
 		MuonSach(t,l, dg, lds);
 		getch();
+		return 4;
 	}
 	if (k == 2){
 		TraSach(t, dg, lds);
 		getch();
+		return 4;
 	}
 	if (k == 3) {
 		InTieuDeMuonTra(w);
@@ -1807,8 +1817,8 @@ void Swap(pNODEDAUSACH ds1, pNODEDAUSACH ds2){
 
 void SapXepTheoTheLoaiVaTenSach(LIST_DS lds, int w[]){
 	int j;
-	for (int i = 0; i < lds.n - 1; i++){
-		for (j = 0; j < lds.n - i - 1; j++){
+	for (int i = 0; i < lds.n ; i++){
+		for (j = 0; j < lds.n - i; j++){
 			if (lds.ListDS[j]->data.TheLoai > lds.ListDS[j+1]->data.TheLoai){
 				Swap(lds.ListDS[j], lds.ListDS[j + 1]);
 			}
@@ -2690,6 +2700,7 @@ int CapNhatDanhSachDanhMucSach(LIST_DS &lds, LIST_DMS &ldms, pNODEDAUSACH &p){
 		LuuDuLieuDauSach(lds);
 		DocDuLieuDauSach(lds);
 		ConsoleProcess::ThongBao(72, 15, "Them danh muc sach thanh cong", 1);
+		return 5;
 	}
 
 	if (k == 3) {
@@ -2730,6 +2741,7 @@ int CapNhatDanhSachDanhMucSach(LIST_DS &lds, LIST_DMS &ldms, pNODEDAUSACH &p){
 			LuuDuLieuDauSach(lds);
 			DocDuLieuDauSach(lds);
 			ConsoleProcess::ThongBao(72, 15, "Hieu chinh dau sach thanh cong", 1);
+			return 5;
 		}
 	}
 	if (k == 4){
@@ -2775,6 +2787,7 @@ int CapNhatDanhSachDanhMucSach(LIST_DS &lds, LIST_DMS &ldms, pNODEDAUSACH &p){
 				LuuDuLieuDauSach(lds);
 				DocDuLieuDauSach(lds);
 				ConsoleProcess::ThongBao(42, 6, "Xoa sach thanh cong", 1);
+				return 5;
 			}
 
 		}
@@ -3060,18 +3073,77 @@ void InDongDuLieuLietKeDS(LIST_DS lds, int w[], int max){
 		cout << endl;
 }
 
+int randomPartition(LIST_DS lds, int l, int r);
+// This function returns k'th smallest element in arr[l..r] using 
+// QuickSort based method. ASSUMPTION: ELEMENTS IN ARR[] ARE DISTINCT 
+int kthSmallest(LIST_DS lds, int l, int r, int k)
+{
+	// If k is smaller than number of elements in array 
+	if (k > 0 && k <= r - l + 1)
+	{
+		// Partition the array around a random element and 
+		// get position of pivot element in sorted array 
+		int pos = randomPartition(lds, l, r);
+
+		// If position is same as k 
+		if (pos - l == k - 1)
+			return lds.ListDS[pos]->data.soluotmuon;
+		if (pos - l > k - 1)  // If position is more, recur for left subarray 
+			return kthSmallest(lds, l, pos - 1, k);
+
+		// Else recur for right subarray 
+		return kthSmallest(lds, pos + 1, r, k - pos + l - 1);
+	}
+
+	// If k is more than the number of elements in the array 
+	return INT_MAX;
+}
+
+// Standard partition process of QuickSort().  It considers the last 
+// element as pivot and moves all smaller element to left of it and 
+// greater elements to right. This function is used by randomPartition() 
+int partition(LIST_DS lds, int l, int r)
+{
+	int x = lds.ListDS[r]->data.soluotmuon, i = l;
+	for (int j = l; j <= r - 1; j++)
+	{
+		if (lds.ListDS[j]->data.soluotmuon > x)
+		{
+			Swap(lds.ListDS[i], lds.ListDS[j]);
+			i++;
+		}
+	}
+	Swap(lds.ListDS[i], lds.ListDS[r]);
+	return i;
+}
+
+// Picks a random pivot element between l and r and partitions 
+// arr[l..r] around the randomly picked element using partition() 
+int randomPartition(LIST_DS lds, int l, int r)
+{
+	int n = r - l + 1;
+	int pivot = rand() % n;
+	Swap(lds.ListDS[l + pivot], lds.ListDS[r]);
+	return partition(lds, l, r);
+}
 void SelectionSortVaIn10DauSach(LIST_DS lds){
 	int j, max, k;
-	int dem = 0;
+	//int dem = 0;
 	int w[4] = { 20, 20, 20, 20 };
-
 	InTieuDeLietKeDS(w);
-	for (int i = 0; i < lds.n+1; i++){
-		max = i;
-		for (j = i + 1; j < lds.n+1; j++)
-		if (lds.ListDS[j]->data.soluotmuon > lds.ListDS[max]->data.soluotmuon) max = j;
-			InDongDuLieuLietKeDS(lds, w, max);
+	/*for (int i = 0; i < lds.n  +1; i++){
+		cout << lds.ListDS[i]->data.soluotmuon <<" ";
+	}*/
+	for (int i = 0; i < 8; i++){
+		kthSmallest(lds, 0, lds.n, i);
 	}
+
+	for (int i = 0; i < 8; i++){
+		/*cout << lds.ListDS[i]->data.ISBN << " ";
+		cout << lds.ListDS[i]->data.soluotmuon << " ";*/
+		InDongDuLieuLietKeDS(lds, w, i);
+	}
+
 	
 
 }
