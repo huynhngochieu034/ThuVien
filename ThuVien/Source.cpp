@@ -38,7 +38,7 @@ struct DauSach{
 
 struct NodeDauSach{
 	DauSach data;
-	LIST_DMS listDMS;/// chua danh sach cac danh muc sach cua danh muc sach do
+	LIST_DMS listDMS;/// chua danh sach cac danh muc sach cua dau sach do
 };
 typedef struct NodeDauSach NODEDAUSACH;
 typedef NODEDAUSACH* pNODEDAUSACH;
@@ -704,8 +704,7 @@ int XoaDocGia(TREE &t, int maDocGia){
 			else //node can xoa la node co 2 con
 			{
 				//C1: Tim node trai nhat cua cay con phai( cay con phai cua node can xoa)	
-				NODETHEDOCGIA *y = t->pRight; //node y la node the mang cho node can xoa -  node nay se dam nhiem tim ra node trai nhat
-				DiTimNodeTheMang(x, y);
+				DiTimNodeTheMang(x, t->pRight);
 			}
 			delete x; //xoa node can xoa
 			return 1;
@@ -1649,11 +1648,12 @@ void LayViTriNodeDuocChonMuonTra(TREE &t,LIST_DS &lds){
 		while (true){
 			check = CapNhatMuonTra(t, p->listMuonTra, p,lds);
 			if (check == 4) {
+				//GiaiPhongDanhSachLKK(p->listMuonTra);
 				break;
 			}
 		}
 	}
-	//GiaiPhongDanhSachLKK(p->listMuonTra);
+	
 	return;
 }
 //-----------------------------End process Muon tra-------------------------------------------
