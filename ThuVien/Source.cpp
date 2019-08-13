@@ -240,7 +240,7 @@ int checkNhapMaSach(string str){
 	foru(i, 0, str.length())
 	if (!(((str[i] >= 65 && str[i] <= 90) || (str[i] >= 97 && str[i] <= 122)) || (str[i] >= 48 && str[i] <= 57))){
 		if (str[i] != '\0'){
-			cout << "Loi nhap so chu";
+			//cout << "Loi nhap so chu";
 			return 0;
 		}
 	}
@@ -286,7 +286,7 @@ int songay(int thang, int nam){
 boolean okNgayThangNam(int ngay, int thang, int nam){
 	if (thang<1 || thang >12) return false;
 	if (ngay<1 || ngay>songay(thang, nam)) return false;
-	if (nam<1900 || nam>2019) return false;
+	if (nam<1900 || nam>LayNamHienTai()) return false;
 	return true;
 }
 
