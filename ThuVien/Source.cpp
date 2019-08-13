@@ -1348,11 +1348,11 @@ void MuonSach(TREE &t,LIST_MUONTRA &l, NODETHEDOCGIA* &dg, LIST_DS &lds){
 				}
 				pp->data.TrangThai = 1;
 				lds.ListDS[vitri]->data.soluotmuon++;
-				LuuDuLieuDauSach(lds);
-				DocDuLieuDauSach(lds);
 				AddTailMT(l, nmt);
 				LuuDuLieuDocGia(t);
 				DocDuLieuDocGia(t);
+				LuuDuLieuDauSach(lds);
+				DocDuLieuDauSach(lds);
 				ConsoleProcess::ThongBao(42, 6, "Muon sach thanh cong", 1);
 			}
 		}
@@ -1429,7 +1429,10 @@ void TraSach(TREE &t, NODETHEDOCGIA* &dg, LIST_DS &lds){
 
 	NODE_MUONTRA* p = TimNodeMuonTra(dg, maSach);
 	if (p == NULL)  {
-		ConsoleProcess::ThongBao(20, 1, "Khong tim thay ma sach vua nhap.", 0);
+		ConsoleProcess::CreateBoxTitle(80, 18, "Thong Bao: ", 70);
+		SetConsoleTextAttribute(hConsoleColor, 12);
+		ConsoleProcess::gotoxy(90, 18);
+		cout << "Khong tim thay ma sach vua nhap!\n";
 		return;
 	}
 
