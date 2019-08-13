@@ -2578,14 +2578,17 @@ void NhapDanhMucSach(DanhMucSach &dms, string maSach){
 
 
 	ConsoleProcess::CreateBoxTitle(60, 3, "          NHAP THONG TIN DANH MUC SACH", 100);
-	ConsoleProcess::CreateBoxAdd(60, 5, " Nhap trang thai(0: Cho muon duoc, 1: Da co doc gia muon, 2:Da thanh ly): ", 100);
-	ConsoleProcess::CreateBoxAdd(60, 6, " Nhap Vi Tri Sach: ", 100);
-	ConsoleProcess::CreateBoxEnd(60, 7, "", 100);
+	ConsoleProcess::CreateBoxAdd(60, 5, " Ma Sach: ", 100);
+	ConsoleProcess::gotoxy(75, 5);
+	cout << maSach;
+	ConsoleProcess::CreateBoxAdd(60, 6, " Nhap trang thai(0: Cho muon duoc, 1: Da co doc gia muon, 2:Da thanh ly): ", 100);
+	ConsoleProcess::CreateBoxAdd(60, 7, " Nhap Vi Tri Sach: ", 100);
+	ConsoleProcess::CreateBoxEnd(60, 8, "", 100);
 	ConsoleProcess::CreateBoxTitle(60, 15, "Thong Bao: ", 100);
 
 	nhaptrangthaidms:
 	SetConsoleTextAttribute(hConsoleColor, Normal_Color);
-	ConsoleProcess::gotoxy(133, 5);
+	ConsoleProcess::gotoxy(133, 6);
 	ConsoleProcess::ShowCur(1);
 	getline(cin, trangthai);
 	if (checkNhapSo0va1va2(trangthai) == 0 || trangthai==""){
@@ -2602,7 +2605,7 @@ void NhapDanhMucSach(DanhMucSach &dms, string maSach){
 
 	nhapViTri:
 	SetConsoleTextAttribute(hConsoleColor, Normal_Color);
-	ConsoleProcess::gotoxy(80, 6);
+	ConsoleProcess::gotoxy(80, 7);
 	ConsoleProcess::ShowCur(1);
 	getline(cin, dms.ViTri);
 	if (dms.ViTri == ""){

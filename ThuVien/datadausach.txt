@@ -6,13 +6,16 @@ Chat Choi
 34
 43
 2
-2
+3
 AAA1
 1
 q
 AAA2
 1
 y
+AAA3
+0
+Hang 3, Cot 4
 NNN
 BALOON
 Nguyen Van Chou
