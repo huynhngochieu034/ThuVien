@@ -3156,6 +3156,25 @@ void SelectionSortVaIn10DauSach(LIST_DS lds){
 
 }
 
+void SelectionSortVaIn10DauSach2(LIST_DS lds){
+	int i, j, max_idx;
+	int w[4] = { 20, 20, 20, 20 };
+	// One by one move boundary of unsorted subarray  
+	for (i = 0; i < lds.n; i++)
+	{
+		// Find the maximum element in unsorted array  
+		max_idx = i;
+		for (j = i + 1; j < lds.n +1; j++)
+		if (lds.ListDS[j]->data.soluotmuon > lds.ListDS[max_idx]->data.soluotmuon)
+			max_idx = j;
+
+		// Swap the found maximum element with the first element  
+		Swap(lds.ListDS[max_idx], lds.ListDS[i]);
+		if (i == 10) break;
+		InDongDuLieuLietKeDS(lds, w, i);
+	}
+}
+
 //----------------------------------------END LIET KE---------------------------------------------
 int LuaChon2(){
 	Menu a(35, 80, 1);
@@ -3241,7 +3260,7 @@ int main()
 				delete[] arr;
 				break; 
 		}
-		case 5:  SelectionSortVaIn10DauSach(lds);
+		case 5:  SelectionSortVaIn10DauSach2(lds);
 				getch(); 
 				break;
 		case 6:  return 0; break;
