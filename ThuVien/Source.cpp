@@ -1156,8 +1156,8 @@ int demSoNamNhuan(Date d){
 	int nam = d.Nam;
 	//Kiem tra nam hien tai co can xem xet cho so nam nhuan hay khong
 	if (d.Thang <= 2) nam--;
-	//Mot nam la mot nam nhuan neu no la boi so cua 4, boi so cua 400 va khong phai la boi so cua 100
-	return (nam / 4) - (nam / 100 + nam / 400);
+	//Mot nam la mot nam nhuan neu no chia het cho 4 va khong chia het cho 100 hoac chia het cho 400
+	return nam / 4 - nam / 100 + nam / 400;
 }
 
 int TinhKhoangCachNgay(Date d1, Date d2){
@@ -2845,11 +2845,13 @@ void TimMaTheVaHoTenDocGia(TREE t, string maSach, NODE_MUONTRA *p, string &MaThe
 	if (t != NULL){
 		TimMaTheVaHoTenDocGia(t->pLeft, maSach, p, MaThe, HoTen);
 		for (p = t->listMuonTra.pHead; p != NULL; p = p->pNext){
+			string hoten;
 			if (p->data.MaSach == maSach){
 				MaThe = ConsoleProcess::convert(t->data.MATHE);
-				HoTen.append(t->data.Ho);
-				HoTen.append(" ");
-				HoTen.append(t->data.Ten);
+				hoten.append(t->data.Ho);
+				hoten.append(" ");
+				hoten.append(t->data.Ten);
+				HoTen = hoten;
 			}
 		}
 		TimMaTheVaHoTenDocGia(t->pRight, maSach, p, MaThe, HoTen);
@@ -3223,11 +3225,17 @@ int main()
 				d2.Ngay = LayNgayHienTai();
 				d2.Thang = LayThangHienTai();
 				d2.Nam = LayNamHienTai();
-
+				HANDLE hConsoleColor;
+				hConsoleColor = GetStdHandle(STD_OUTPUT_HANDLE);
+				
 				InTieuDeQuaHan(w);
 				InDanhSachQuaHan(t,arr, lds, w, vitri, ngaymuon, hoten, mathe, d2); 
 				QuickSortQuaHan(arr, 0, index);
 				InDongDuLieuQuaHan(arr, w);
+				SetConsoleTextAttribute(hConsoleColor, 6);
+				ConsoleProcess::gotoxy(50, 1);
+				cout << "----DANH SACH DOC GIA MUON SACH QUA HAN---\n";
+				SetConsoleTextAttribute(hConsoleColor, 15);
 				index = 0;
 				getch();
 				delete[] arr;

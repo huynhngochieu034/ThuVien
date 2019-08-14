@@ -1,4 +1,4 @@
-﻿Build started 8/13/2019 1:08:32 PM.
+﻿Build started 8/14/2019 12:56:17 PM.
      1>Project "C:\Users\hieunh.hh\Documents\ThuVien\ThuVien\ThuVien.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Source.cpp
@@ -19,9 +19,9 @@
      1>c:\users\hieunh.hh\documents\thuvien\thuvien\source.cpp(687): warning C4018: '<' : signed/unsigned mismatch
      1>c:\users\hieunh.hh\documents\thuvien\thuvien\source.cpp(690): warning C4018: '>' : signed/unsigned mismatch
      1>c:\users\hieunh.hh\documents\thuvien\thuvien\source.cpp(2169): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\hieunh.hh\documents\thuvien\thuvien\source.cpp(3136): warning C4101: 'k' : unreferenced local variable
-     1>c:\users\hieunh.hh\documents\thuvien\thuvien\source.cpp(3136): warning C4101: 'max' : unreferenced local variable
-     1>c:\users\hieunh.hh\documents\thuvien\thuvien\source.cpp(3136): warning C4101: 'j' : unreferenced local variable
+     1>c:\users\hieunh.hh\documents\thuvien\thuvien\source.cpp(3138): warning C4101: 'k' : unreferenced local variable
+     1>c:\users\hieunh.hh\documents\thuvien\thuvien\source.cpp(3138): warning C4101: 'max' : unreferenced local variable
+     1>c:\users\hieunh.hh\documents\thuvien\thuvien\source.cpp(3138): warning C4101: 'j' : unreferenced local variable
      1>c:\users\hieunh.hh\documents\thuvien\thuvien\source.cpp(350): warning C4715: 'TimKiemDocGia' : not all control paths return a value
      1>c:\users\hieunh.hh\documents\thuvien\thuvien\source.cpp(714): warning C4715: 'XoaDocGia' : not all control paths return a value
      1>c:\users\hieunh.hh\documents\thuvien\thuvien\source.cpp(1145): warning C4715: 'TimTenSach' : not all control paths return a value
@@ -36,4 +36,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:16.42
+Time Elapsed 00:00:02.09
