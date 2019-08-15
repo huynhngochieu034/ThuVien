@@ -91,10 +91,10 @@ Tran Van Di
 Truyen Ma
 200
 2018
-4
+3
 5
 ISBN1
-1
+2
 dsa
 ISBN2
 1

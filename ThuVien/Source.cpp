@@ -378,11 +378,11 @@ void InTieuDe(int w[]){
 
 	/// dong 3
 	foru(i, 1, w[0]) cout << " "; cout << "\xb3";
-	ConsoleProcess::InTungPhanTu_Xau("MA THE", w[1] - 1, -1);
-	ConsoleProcess::InTungPhanTu_Xau("HO", w[2], -1);
-	ConsoleProcess::InTungPhanTu_Xau("TEN", w[3], -1);
-	ConsoleProcess::InTungPhanTu_Xau("GIOI TINH(0: Nu, 1:Nam)", w[4], -1);
-	ConsoleProcess::InTungPhanTu_Xau("TRANG THAI(0: Bi khoa , 1: Dang hoat dong)", w[5], -1);
+	ConsoleProcess::InTungPhanTu_XauMau("MA THE", w[1] - 1, -1);
+	ConsoleProcess::InTungPhanTu_XauMau("HO", w[2], -1);
+	ConsoleProcess::InTungPhanTu_XauMau("TEN", w[3], -1);
+	ConsoleProcess::InTungPhanTu_XauMau("GIOI TINH(0: Nu, 1:Nam)", w[4], -1);
+	ConsoleProcess::InTungPhanTu_XauMau("TRANG THAI(0: Bi khoa , 1: Dang hoat dong)", w[5], -1);
 	cout << endl;
 
 	/// dong 4
@@ -857,8 +857,8 @@ void CapNhatDanhSachCacDocGia(TREE &t){
 		ConsoleProcess::gotoxy(75, 1);
 		cout << "----DANH SACH DOC GIA TANG THEO MA---\n";
 		
-		ConsoleProcess::CreateBoxTitle(29, 3, "Nhap ma doc gia can hieu chinh: ", 50);
-		ConsoleProcess::CreateBoxTitle(29, 6, "Thong Bao: ", 50);
+		ConsoleProcess::CreateBoxTitle(29, 3, "Nhap ma doc gia can hieu chinh: ", 60);
+		ConsoleProcess::CreateBoxTitle(29, 6, "Thong Bao: ", 60);
 		string maDocGia;
 	nhapmadocgiahieuchinh:
 		ConsoleProcess::ShowCur(1);
@@ -868,6 +868,10 @@ void CapNhatDanhSachCacDocGia(TREE &t){
 			ConsoleProcess::gotoxy(42, 6);
 			cout << "Du lieu tim kiem khong hop le. Vui long nhap lai.\n";
 			goto nhapmadocgiahieuchinh;
+		}
+		else{
+			ConsoleProcess::gotoxy(42, 6);
+			cout << "                                                        ";
 		}
 
 		NODETHEDOCGIA *p = TimKiemDocGia(t, stoi(maDocGia));
@@ -893,8 +897,8 @@ void CapNhatDanhSachCacDocGia(TREE &t){
 		ConsoleProcess::gotoxy(75, 1);
 		cout << "----DANH SACH DOC GIA TANG THEO MA---\n";
 		//SetConsoleTextAttribute(hConsoleColor, 15);
-		ConsoleProcess::CreateBoxTitle(29, 3, "Nhap ma doc gia can xoa: ", 50);
-		ConsoleProcess::CreateBoxTitle(29, 6, "Thong Bao: ", 50);
+		ConsoleProcess::CreateBoxTitle(29, 3, "Nhap ma doc gia can xoa: ", 60);
+		ConsoleProcess::CreateBoxTitle(29, 6, "Thong Bao: ", 60);
 
 		string madocgia;
 	nhapmadocgiaxoa:
@@ -905,6 +909,10 @@ void CapNhatDanhSachCacDocGia(TREE &t){
 			ConsoleProcess::gotoxy(42, 6);
 			cout << "Du lieu tim kiem khong hop le. Vui long nhap lai.\n";
 			goto nhapmadocgiaxoa;
+		}
+		else{
+			ConsoleProcess::gotoxy(42, 6);
+			cout << "                                                      ";
 		}
 		NODETHEDOCGIA *p = TimKiemDocGia(t, stoi(madocgia));
 		if (p->listMuonTra.pHead != NULL){
@@ -1307,6 +1315,10 @@ void MuonSach(TREE &t,LIST_MUONTRA &l, NODETHEDOCGIA* &dg, LIST_DS &lds){
 				cout << "Du lieu tim kiem khong hop le. Vui long nhap lai.";
 				goto nhapmasachmuon;
 			}
+			else{
+				ConsoleProcess::gotoxy(42, 6);
+				cout << "                                                      ";
+			}
 			NODE_DMS *pp = TimKiemDanhMucSach(lds.ListDS[vitri]->listDMS, maSach);
 			if (pp == NULL) {
 				ConsoleProcess::gotoxy(42, 6);
@@ -1316,7 +1328,8 @@ void MuonSach(TREE &t,LIST_MUONTRA &l, NODETHEDOCGIA* &dg, LIST_DS &lds){
 			}
 			else{
 				
-					
+				ConsoleProcess::gotoxy(42, 6);
+				cout << "                                                      ";
 				NODE_MUONTRA *nmt = new NODE_MUONTRA;
 				MuonTra *mt = new MuonTra;
 				mt->MaSach = maSach;
@@ -1422,8 +1435,12 @@ void TraSach(TREE &t, NODETHEDOCGIA* &dg, LIST_DS &lds){
 		cout << "Du lieu tim kiem khong hop le. Vui long nhap lai.\n";
 		goto nhapmasachtra;
 	}
+	else{
+		ConsoleProcess::gotoxy(90, 18);
+		cout << "                                                     ";
+	}
 
-	cout << "";
+
 
 
 
@@ -1434,6 +1451,10 @@ void TraSach(TREE &t, NODETHEDOCGIA* &dg, LIST_DS &lds){
 		ConsoleProcess::gotoxy(90, 18);
 		cout << "Khong tim thay ma sach vua nhap!\n";
 		return;
+	}
+	else{
+		ConsoleProcess::gotoxy(90, 18);
+		cout << "                                                     ";
 	}
 
 	
@@ -1565,9 +1586,14 @@ void TraSach(TREE &t, NODETHEDOCGIA* &dg, LIST_DS &lds){
 	else if (stoi(nhap) == 1){
 		if (p->data.TrangThai != 2){
 			p->data.TrangThai = 2;
+			vitri1 = TimViTriDauSachTuMaSach(lds, maSach);
+			NODE_DMS* pDMS = TimKiemDanhMucSach(lds.ListDS[vitri1]->listDMS, maSach);
+			pDMS->data.TrangThai = 2;
 			lds.ListDS[vitri1]->data.soluotmuon--;
 			LuuDuLieuDauSach(lds);
 			DocDuLieuDauSach(lds);
+			LuuDuLieuDocGia(t);
+			DocDuLieuDocGia(t);
 			ConsoleProcess::CreateBoxTitle(80, 18, "Thong Bao: ", 70);
 			SetConsoleTextAttribute(hConsoleColor, 12);
 			ConsoleProcess::gotoxy(90, 18);
