@@ -1,10 +1,10 @@
 8
 AAA
-Con Chim Non
-Fdgd
-Chat Choi
-34
-43
+Nguon Goc Cac Loai
+Darwin
+Khoa Hoc
+200
+2008
 2
 3
 AAA1
@@ -17,9 +17,9 @@ AAA3
 0
 Hang 3, Cot 4
 NNN
-BALOON
-Nguyen Van Chou
-Kinh Di
+Luoc Su Thoi Gian
+Hawking
+Khoa Hoc
 208
 2014
 0
@@ -27,7 +27,7 @@ Kinh Di
 RRR
 Nhat Ky Vang Thu
 Nguyen Nhat Anh
-Phieu Luu
+Van Hoc
 208
 2016
 0
@@ -36,11 +36,11 @@ RRR1
 0
 1
 GGG
-tre
-Ews
-Phieu Luu
-3
-32
+Hoa Nguc
+Brown
+Trinh Tham
+200
+2004
 2
 1
 GGG1
@@ -48,8 +48,8 @@ GGG1
 1
 VVV
 C++
-Anh Tanh
-Tieu Thuyet
+Edition
+Chuyen Nganh
 200
 2018
 1
@@ -67,17 +67,17 @@ VVV6
 0
 Hang 2 cot 9
 QQQ
-Clean Code 2
-Tran Van Duy
-Tieu Thuyet
+Clean Code
+Robert C Martin
+Chuyen Nganh
 201
 2014
 0
 0
 EEE
-Head First JV
-Tuki Shichi
-Tieu Thuyet
+Head First Java
+Bert Bates
+Chuyen Nganh
 201
 2019
 0
@@ -86,9 +86,9 @@ EEE1
 0
 hhjhjh
 ISBN
-Clean Code
-Tran Van Di
-Truyen Ma
+Dau Thuong Den chet
+Quy Co Nu
+Kinh Di
 200
 2018
 3
