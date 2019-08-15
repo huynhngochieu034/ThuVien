@@ -1779,8 +1779,10 @@ void InDongDuLieuDauSachTimKiem(LIST_DS lds, int w[], string TenSach){
 			cout << "-----------The Loai: " << lds.ListDS[it]->data.TheLoai << endl;
 			cout << "--------------------------------------------------\n";
 			cout << "---------------------Cac Ma Sach--------------------\n";
+			if (lds.ListDS[it]->listDMS.pHead == NULL) cout << "Khong co ma sach nao!\n";
 			for (NODE_DMS* p = lds.ListDS[it]->listDMS.pHead; p != NULL; p = p->pNext)
 			{
+				
 				cout << "Ma: " << p->data.MaSach << "   " << "Trang Thai: ";
 				if (p->data.TrangThai == 0)
 					cout << "Cho Muon Duoc"<<endl;
@@ -3185,6 +3187,8 @@ void SelectionSortVaIn10DauSach(LIST_DS lds){
 void SelectionSortVaIn10DauSach2(LIST_DS lds){
 	int i, j, max_idx;
 	int w[4] = { 20, 20, 20, 20 };
+	system("cls");
+	InTieuDeLietKeDS(w);
 	// One by one move boundary of unsorted subarray  
 	for (i = 0; i < lds.n; i++)
 	{
@@ -3199,6 +3203,12 @@ void SelectionSortVaIn10DauSach2(LIST_DS lds){
 		if (i == 10) break;
 		InDongDuLieuLietKeDS(lds, w, i);
 	}
+	HANDLE hConsoleColor;
+	hConsoleColor = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsoleColor, 6);
+	ConsoleProcess::gotoxy(32, 1);
+	cout << "-------DAU SACH CO LUOT MUON NHIEU NHAT------\n";
+	SetConsoleTextAttribute(hConsoleColor, 15);
 }
 
 //----------------------------------------END LIET KE---------------------------------------------
@@ -3259,7 +3269,7 @@ int main()
 		case 2:	main2(lds); break;///OK
 		case 3: LayViTriNodeDuocChonMuonTra(t,lds); break;
 		case 4: {
-				int w[7] = { 20, 15, 15, 15, 15, 15, 20 };
+				int w[7] = { 20, 20, 30, 20, 30, 20, 20 };
 				string vitri;
 				string ngaymuon;
 				string hoten;
@@ -3278,7 +3288,7 @@ int main()
 				QuickSortQuaHan(arr, 0, index);
 				InDongDuLieuQuaHan(arr, w);
 				SetConsoleTextAttribute(hConsoleColor, 6);
-				ConsoleProcess::gotoxy(50, 1);
+				ConsoleProcess::gotoxy(60, 1);
 				cout << "----DANH SACH DOC GIA MUON SACH QUA HAN---\n";
 				SetConsoleTextAttribute(hConsoleColor, 15);
 				index = 0;

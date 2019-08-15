@@ -1,51 +1,4 @@
-8
-AAA
-Nguon Goc Cac Loai
-Darwin
-Khoa Hoc
-200
-2008
-2
-3
-AAA1
-1
-q
-AAA2
-1
-y
-AAA3
-0
-Hang 3, Cot 4
-NNN
-Luoc Su Thoi Gian
-Hawking
-Khoa Hoc
-208
-2014
-0
-0
-RRR
-Nhat Ky Vang Thu
-Nguyen Nhat Anh
-Van Hoc
-208
-2016
-0
-1
-RRR1
-0
-1
-GGG
-Hoa Nguc
-Brown
-Trinh Tham
-200
-2004
-2
-1
-GGG1
-1
-1
+9
 VVV
 C++
 Edition
@@ -85,6 +38,31 @@ Chuyen Nganh
 EEE1
 0
 hhjhjh
+NNN
+Luoc Su Thoi Gian
+Hawking
+Khoa Hoc
+208
+2014
+0
+0
+AAA
+Nguon Goc Cac Loai
+Darwin
+Khoa Hoc
+200
+2008
+2
+3
+AAA1
+1
+q
+AAA2
+1
+y
+AAA3
+0
+Hang 3, Cot 4
 ISBN
 Dau Thuong Den chet
 Quy Co Nu
@@ -108,3 +86,33 @@ test
 ISBN5
 1
 test2
+GGG
+Hoa Nguc
+Brown
+Trinh Tham
+200
+2004
+2
+1
+GGG1
+1
+1
+MMM
+Songoku
+Julisima
+Truyen Tranh
+204
+2012
+0
+0
+RRR
+Nhat Ky Vang Thu
+Nguyen Nhat Anh
+Van Hoc
+208
+2016
+0
+1
+RRR1
+0
+1
