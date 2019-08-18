@@ -93,6 +93,13 @@ struct nodeQuaHan
 };
 typedef struct nodeQuaHan NODEQUAHAN;
 
+struct nodeQuaHanr
+{
+	unsigned int MATHE;
+	int SoNgayQuaHan;
+};
+typedef struct nodeQuaHanr NODEQUAHANR;
+
 //----------------END struct muon tra-------------------
 
 
@@ -1202,6 +1209,8 @@ int KiemTraSachDangMuon(NODETHEDOCGIA* dg, NODE_MUONTRA *mt){
 void MuonSach(TREE &t,LIST_MUONTRA &l, NODETHEDOCGIA* &dg, LIST_DS &lds){
 	int w[7] = { 24, 10, 45, 10, 35, 18, 25 };
 	int w2[4] = { 20, 20, 35, 20 };
+	string masach[] = {""};
+	int dem = 0;
 	Date d2;
 	d2.Ngay = LayNgayHienTai();
 	d2.Thang = LayThangHienTai();
@@ -1279,6 +1288,16 @@ void MuonSach(TREE &t,LIST_MUONTRA &l, NODETHEDOCGIA* &dg, LIST_DS &lds){
 
 		string ISBN = NhapISBN();
 		int vitri = TimKiemDauSach(lds, ISBN);
+		for (NODE_MUONTRA *p = dg->listMuonTra.pHead; p != NULL; p = p->pNext){
+			if (vitri == TimViTriDauSachTuMaSach(lds, p->data.MaSach) && p->data.TrangThai == 0){
+				ConsoleProcess::gotoxy(42, 6);
+				cout << "Ban Da Muon Sach Nay, Vui Long Muon Sach Khac!";
+				getch();
+				return;
+			}
+		}
+
+		
 		if (vitri == -1) {
 			ConsoleProcess::gotoxy(42, 6);
 			cout << "Dau sach " << ISBN << " khong ton tai!";
@@ -1665,6 +1684,8 @@ void LayViTriNodeDuocChonMuonTra(TREE &t,LIST_DS &lds){
 		cout << "Du lieu tim kiem khong hop le. Vui long nhap lai.\n";
 		goto nhapmadocgiaduocchon;
 	}
+	ConsoleProcess::gotoxy(42, 6);
+	cout << "                                                            ";
 	NODETHEDOCGIA *p = TimKiemDocGia(t, stoi(maDocGia));
 	if (p == NULL) {
 		ConsoleProcess::gotoxy(42, 6);
@@ -1704,6 +1725,13 @@ int isFull(LIST_DS &lds){
 int KiemTraTonTaiISBN(LIST_DS lds, string ISBN){
 	foru(i, 0, lds.n)
 	if (lds.ListDS[i]->data.ISBN == ISBN)
+		return 1;
+	return 0;
+}
+
+int KiemTraTonTaiTenSach(LIST_DS lds, string tenSach){
+	foru(i, 0, lds.n)
+	if (lds.ListDS[i]->data.TenSach == tenSach)
 		return 1;
 	return 0;
 }
@@ -1924,6 +1952,15 @@ void NhapThongTin1DauSach(LIST_DS lds, DauSach &ds, int w[], int isISBN){
 		SetConsoleTextAttribute(hConsoleColor, 12);
 		ConsoleProcess::gotoxy(72, 15);
 		cout << "Vui long khong de trong. Nhap lai";
+		goto nhapTenSach;
+	}
+	else if (KiemTraTonTaiTenSach(lds, ds.TenSach) == 1){
+		SetConsoleTextAttribute(hConsoleColor, 12);
+		ConsoleProcess::gotoxy(72, 15);
+		cout << "                                      ";
+		SetConsoleTextAttribute(hConsoleColor, 12);
+		ConsoleProcess::gotoxy(72, 15);
+		cout << "Ten Sach Da Ton Tai. Nhap lai";
 		goto nhapTenSach;
 	}
 	else{
@@ -2343,7 +2380,7 @@ void CapNhatDanhSachDauSach(LIST_DS &lds){
 
 			}
 			else{
-				int check = XoaDauSach(lds, vitri);
+				int check = XoaDauSach(lds, vitri3);
 				if (check == 1) {
 					LuuDuLieuDauSach(lds);
 					DocDuLieuDauSach(lds);
@@ -2869,23 +2906,6 @@ void LayViTriNodeDuocChon(LIST_DS &lds){
 
 //-------------------------------IN DANH SACH QUA HAN---------------------------------------
 
-void TimMaTheVaHoTenDocGia(TREE t, string maSach, NODE_MUONTRA *p, string &MaThe, string &HoTen){
-	if (t != NULL){
-		TimMaTheVaHoTenDocGia(t->pLeft, maSach, p, MaThe, HoTen);
-		for (p = t->listMuonTra.pHead; p != NULL; p = p->pNext){
-			string hoten;
-			if (p->data.MaSach == maSach){
-				MaThe = ConsoleProcess::convert(t->data.MATHE);
-				hoten.append(t->data.Ho);
-				hoten.append(" ");
-				hoten.append(t->data.Ten);
-				HoTen = hoten;
-			}
-		}
-		TimMaTheVaHoTenDocGia(t->pRight, maSach, p, MaThe, HoTen);
-	}
-}
-
 void InTieuDeQuaHan(int w[]){
 	system("cls");
 	cout << endl;
@@ -2926,89 +2946,19 @@ void InTieuDeQuaHan(int w[]){
 	cout << endl;
 }
 
-void AddListQuaHan(TREE t, NODEQUAHAN *arr, LIST_DS lds, int w[], string vitri, string hoten, string mathe, Date d2){
+void AddListQuaHan2(TREE t, NODEQUAHANR *arr, int w[], Date d2){
 	NODE_MUONTRA* pp = new NODE_MUONTRA;
 	for (NODE_MUONTRA *p = t->listMuonTra.pHead; p != NULL; p = p->pNext){
 		if (p->data.TrangThai == 0 && TinhKhoangCachNgay(p->data.NgayMuon, d2) >= 7){
-			TimMaTheVaHoTenDocGia(t, p->data.MaSach, pp, mathe, hoten);
-			arr[index].MATHE = stoi(mathe);
-			arr[index].HoTen = hoten;
-			arr[index].MaSach = p->data.MaSach;
-			arr[index].TenSach = TimTenSach(p->data.MaSach, lds, vitri);
-			arr[index].NgayMuon = p->data.NgayMuon;
+			arr[index].MATHE = t->data.MATHE;
 			arr[index].SoNgayQuaHan = TinhKhoangCachNgay(p->data.NgayMuon, d2);
 			++index;
 		}
 	}
 }
 
-void InDongDuLieuQuaHan(NODEQUAHAN *arr, int w[]){
-	for (int it = 0; it < index; it++){
-		string ngaymuon;
-		/// in dong trang
-		foru(i, 1, w[0]) cout << " "; cout << "\xb3";
-		foru(i, 1, w[1] - 2) cout << " "; cout << "\xb3";
-		foru(i, 2, 6){
-			foru(j, 1, w[i] - 1)cout << " ";
-			cout << "\xb3";
-		}
-
-		cout << endl;
-
-		/// in dong du lieu
-
-		foru(i, 1, w[0]) cout << " "; cout << "\xb3";
-
-		ConsoleProcess::InTungPhanTu_Xau(ConsoleProcess::convert(arr[it].MATHE), w[1] - 1, -1);
-		ConsoleProcess::InTungPhanTu_Xau(arr[it].HoTen, w[2], -1);
-		ConsoleProcess::InTungPhanTu_Xau(arr[it].MaSach, w[3], -1);
-		ConsoleProcess::InTungPhanTu_Xau(arr[it].TenSach, w[4], -1);
-
-		if (arr[it].NgayMuon.Ngay < 10) {
-			ngaymuon.append("0");
-			ngaymuon.append(ConsoleProcess::convert(arr[it].NgayMuon.Ngay));
-			ngaymuon.append("/");
-		}
-		else {
-			ngaymuon.append(ConsoleProcess::convert(arr[it].NgayMuon.Ngay));
-			ngaymuon.append("/");
-		}
-		if (arr[it].NgayMuon.Thang < 10) {
-			ngaymuon.append("0");
-			ngaymuon.append(ConsoleProcess::convert(arr[it].NgayMuon.Thang));
-			ngaymuon.append("/");
-		}
-		else {
-			ngaymuon.append(ConsoleProcess::convert(arr[it].NgayMuon.Thang));
-			ngaymuon.append("/");
-		}
-		ngaymuon.append(ConsoleProcess::convert(arr[it].NgayMuon.Nam));
-
-		ConsoleProcess::InTungPhanTu_Xau(ngaymuon, w[5], -1);
-		ConsoleProcess::InTungPhanTu_Xau(ConsoleProcess::convert(arr[it].SoNgayQuaHan), w[6], -1);
-		cout << endl;
-		/// in dong _
-		foru(i, 1, w[0]) cout << " "; cout << "\xb3";
-		foru(i, 1, w[1] - 2) cout << "_"; cout << "\xb3";
-		foru(i, 2, 6){
-			foru(j, 1, w[i] - 1)cout << "_";
-			cout << "\xb3";
-		}
-		cout << endl;
-	}
-}
-
-void InDanhSachQuaHan(TREE t, NODEQUAHAN *arr, LIST_DS lds, int w[], string vitri, string ngaymuon, string hoten, string mathe, Date d2){
-	if (t != NULL){
-		InDanhSachQuaHan(t->pLeft,arr, lds, w, vitri, ngaymuon, hoten, mathe, d2);
-		//InDongDuLieuQuaHan(t, lds, w, vitri, ngaymuon, hoten, mathe, d2);
-		AddListQuaHan(t, arr,lds, w, vitri, hoten, mathe, d2);
-		InDanhSachQuaHan(t->pRight, arr, lds, w, vitri, ngaymuon, hoten, mathe, d2);
-	}
-}
-
-void QuickSortQuaHan(NODEQUAHAN *arr, int q, int r){
-	NODEQUAHAN temp;
+void QuickSortQuaHan2(NODEQUAHANR *arr, int q, int r){
+	NODEQUAHANR temp;
 	int i = q;
 	int j = r;
 	//Lấy phần tử giữa của dãy cần sắp thứ tự làm chốt
@@ -3031,11 +2981,101 @@ void QuickSortQuaHan(NODEQUAHAN *arr, int q, int r){
 	} while (i <= j);
 
 	if (q<j) 	// phần thứ nhất có từ 2 phần tử trở lên
-		QuickSortQuaHan(arr, q, j);
+		QuickSortQuaHan2(arr, q, j);
 	if (i < r)   	// phần thứ ba có từ 2 phần tử trở lên
-		QuickSortQuaHan(arr, i, r);
+		QuickSortQuaHan2(arr, i, r);
 }
+
+void InDongDuLieuQuaHan2(TREE t, LIST_DS lds, NODEQUAHANR *arr, int w[], Date d2){
+	
+	for (int it = 0; it < index; it++){
+		string ngaymuon;
+		string hoten;
+		string masach;
+		string ms;
+		int vitri5;
+		string vitrisach;
+		string ngayquahan;
+		/// in dong trang
+		foru(i, 1, w[0]) cout << " "; cout << "\xb3";
+		foru(i, 1, w[1] - 2) cout << " "; cout << "\xb3";
+		foru(i, 2, 6){
+			foru(j, 1, w[i] - 1)cout << " ";
+			cout << "\xb3";
+		}
+
+		cout << endl;
+
+		/// in dong du lieu
+
+		foru(i, 1, w[0]) cout << " "; cout << "\xb3";
+
+		ConsoleProcess::InTungPhanTu_Xau(ConsoleProcess::convert(arr[it].MATHE), w[1] - 1, -1);
+
+		NODETHEDOCGIA* p = TimKiemDocGia(t, arr[it].MATHE);
+		hoten.append(p->data.Ho);
+		hoten.append(" ");
+		hoten.append(p->data.Ten);
+
+		for (NODE_MUONTRA *pp = p->listMuonTra.pHead; pp != NULL; pp = pp->pNext){
+			if (pp->data.TrangThai == 0 && TinhKhoangCachNgay(pp->data.NgayMuon, d2) == arr[it].SoNgayQuaHan){
+
+				masach.append(pp->data.MaSach);
+				//masach.append(" ");
+				ms = pp->data.MaSach;
+
+				if (pp->data.NgayMuon.Ngay < 10) {
+					ngaymuon.append("0");
+					ngaymuon.append(ConsoleProcess::convert(pp->data.NgayMuon.Ngay));
+					ngaymuon.append("/");
+				}
+				else {
+					ngaymuon.append(ConsoleProcess::convert(pp->data.NgayMuon.Ngay));
+					ngaymuon.append("/");
+				}
+				if (pp->data.NgayMuon.Thang < 10) {
+					ngaymuon.append("0");
+					ngaymuon.append(ConsoleProcess::convert(pp->data.NgayMuon.Thang));
+					ngaymuon.append("/");
+				}
+				else {
+					ngaymuon.append(ConsoleProcess::convert(pp->data.NgayMuon.Thang));
+					ngaymuon.append("/");
+				}
+				ngaymuon.append(ConsoleProcess::convert(pp->data.NgayMuon.Nam));
+				//ngaymuon.append(" ");
+				break;
+
+			}
+		}
+
+		//vitri5 = TimViTriDauSachTuMaSach(lds,ms);
 		
+		ConsoleProcess::InTungPhanTu_Xau(hoten, w[2], -1);
+		ConsoleProcess::InTungPhanTu_Xau(masach, w[3], -1);
+		ConsoleProcess::InTungPhanTu_Xau(TimTenSach(ms, lds, vitrisach), w[4], -1);
+		ConsoleProcess::InTungPhanTu_Xau(ngaymuon, w[5], -1);
+		ConsoleProcess::InTungPhanTu_Xau(ConsoleProcess::convert(arr[it].SoNgayQuaHan), w[6], -1);
+		cout << endl;
+		/// in dong _
+		foru(i, 1, w[0]) cout << " "; cout << "\xb3";
+		foru(i, 1, w[1] - 2) cout << "_"; cout << "\xb3";
+		foru(i, 2, 6){
+			foru(j, 1, w[i] - 1)cout << "_";
+			cout << "\xb3";
+		}
+		cout << endl;
+	}
+}
+
+void InDanhSachQuaHan2(TREE t, NODEQUAHANR *arr, int w[], Date d2){
+	if (t != NULL){
+		InDanhSachQuaHan2(t->pLeft, arr, w, d2);
+		//InDongDuLieuQuaHan(t, lds, w, vitri, ngaymuon, hoten, mathe, d2);
+		AddListQuaHan2(t, arr, w, d2);
+		InDanhSachQuaHan2(t->pRight, arr, w, d2);
+	}
+}
 //-----------------------------------------END DANH SACH QUA HAN-------------------------------------
 
 //----------------------------------------LIET KE 10 DAU SACH CO LUOT MUON NHIU NHAT----------------
@@ -3107,81 +3147,6 @@ void InDongDuLieuLietKeDS(LIST_DS lds, int w[], int max){
 			cout << "\xb3";
 		}
 		cout << endl;
-}
-
-int randomPartition(LIST_DS lds, int l, int r);
-// This function returns k'th smallest element in arr[l..r] using 
-// QuickSort based method. ASSUMPTION: ELEMENTS IN ARR[] ARE DISTINCT 
-int kthSmallest(LIST_DS lds, int l, int r, int k)
-{
-	// If k is smaller than number of elements in array 
-	if (k > 0 && k <= r - l + 1)
-	{
-		// Partition the array around a random element and 
-		// get position of pivot element in sorted array 
-		int pos = randomPartition(lds, l, r);
-
-		// If position is same as k 
-		if (pos - l == k - 1)
-			return lds.ListDS[pos]->data.soluotmuon;
-		if (pos - l > k - 1)  // If position is more, recur for left subarray 
-			return kthSmallest(lds, l, pos - 1, k);
-
-		// Else recur for right subarray 
-		return kthSmallest(lds, pos + 1, r, k - pos + l - 1);
-	}
-
-	// If k is more than the number of elements in the array 
-	return INT_MAX;
-}
-
-// Standard partition process of QuickSort().  It considers the last 
-// element as pivot and moves all smaller element to left of it and 
-// greater elements to right. This function is used by randomPartition() 
-int partition(LIST_DS lds, int l, int r)
-{
-	int x = lds.ListDS[r]->data.soluotmuon, i = l;
-	for (int j = l; j <= r - 1; j++)
-	{
-		if (lds.ListDS[j]->data.soluotmuon > x)
-		{
-			Swap(lds.ListDS[i], lds.ListDS[j]);
-			i++;
-		}
-	}
-	Swap(lds.ListDS[i], lds.ListDS[r]);
-	return i;
-}
-
-// Picks a random pivot element between l and r and partitions 
-// arr[l..r] around the randomly picked element using partition() 
-int randomPartition(LIST_DS lds, int l, int r)
-{
-	int n = r - l + 1;
-	int pivot = rand() % n;
-	Swap(lds.ListDS[l + pivot], lds.ListDS[r]);
-	return partition(lds, l, r);
-}
-void SelectionSortVaIn10DauSach(LIST_DS lds){
-	int j, max, k;
-	//int dem = 0;
-	int w[4] = { 20, 20, 20, 20 };
-	InTieuDeLietKeDS(w);
-	/*for (int i = 0; i < lds.n  +1; i++){
-		cout << lds.ListDS[i]->data.soluotmuon <<" ";
-	}*/
-	for (int i = 0; i < 8; i++){
-		kthSmallest(lds, 0, lds.n, i);
-	}
-
-	for (int i = 0; i < 8; i++){
-		/*cout << lds.ListDS[i]->data.ISBN << " ";
-		cout << lds.ListDS[i]->data.soluotmuon << " ";*/
-		InDongDuLieuLietKeDS(lds, w, i);
-	}
-
-	
-
 }
 
 void SelectionSortVaIn10DauSach2(LIST_DS lds){
@@ -3269,24 +3234,26 @@ int main()
 		case 2:	main2(lds); break;///OK
 		case 3: LayViTriNodeDuocChonMuonTra(t,lds); break;
 		case 4: {
-				int w[7] = { 20, 20, 30, 20, 30, 20, 20 };
+				int w[7] = { 5, 10, 30, 30, 30, 40, 20 };
 				string vitri;
 				string ngaymuon;
 				string hoten;
 				string mathe;
 				int sodocgia = DemSoDocGia(t);
-				NODEQUAHAN *arr = new NODEQUAHAN[sodocgia*3];
+				NODEQUAHANR *arr = new NODEQUAHANR[sodocgia*3];
 				Date d2;
 				d2.Ngay = LayNgayHienTai();
 				d2.Thang = LayThangHienTai();
 				d2.Nam = LayNamHienTai();
 				HANDLE hConsoleColor;
 				hConsoleColor = GetStdHandle(STD_OUTPUT_HANDLE);
-				
+
 				InTieuDeQuaHan(w);
-				InDanhSachQuaHan(t,arr, lds, w, vitri, ngaymuon, hoten, mathe, d2); 
-				QuickSortQuaHan(arr, 0, index);
-				InDongDuLieuQuaHan(arr, w);
+				AddListQuaHan2(t, arr, w, d2);
+				InDanhSachQuaHan2(t, arr, w, d2);
+				QuickSortQuaHan2(arr, 0, index);
+				InDongDuLieuQuaHan2(t, lds,arr,w, d2);
+
 				SetConsoleTextAttribute(hConsoleColor, 6);
 				ConsoleProcess::gotoxy(60, 1);
 				cout << "----DANH SACH DOC GIA MUON SACH QUA HAN---\n";
@@ -3294,7 +3261,7 @@ int main()
 				index = 0;
 				getch();
 				delete[] arr;
-				break; 
+				break;
 		}
 		case 5:  SelectionSortVaIn10DauSach2(lds);
 				getch(); 
