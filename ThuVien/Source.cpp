@@ -146,6 +146,8 @@ int TimViTriDauSachTuMaSach(LIST_DS lds, string maSach);
 void LuuDuLieuDauSach(LIST_DS lds);
 void DocDuLieuDauSach(LIST_DS &lds);
 void SapXepTheoTheLoaiVaTenSach(LIST_DS lds, int w[]);
+void InTieuDeDauSach(int w[]);
+void AddHeadMT(LIST_MUONTRA &l, MuonTra data);
 //-------------------END bien toan cuc------------------------
 
 
@@ -623,6 +625,8 @@ void DocDuLieuDocGia(TREE &t){
 	KhoiTaoCay(t);
 
 	fstream filein;
+	MuonTra mt;
+	TheDocGia tdg;
 	int soDocGia;
 	int soSach;
 	int index;
@@ -634,34 +638,34 @@ void DocDuLieuDocGia(TREE &t){
 		for (int i = 0; i < soDocGia; i++)
 		{
 			NODETHEDOCGIA *p = new NODETHEDOCGIA;
-			TheDocGia *tdg = new TheDocGia;
-			filein >> tdg->MATHE;
+			
+			filein >> tdg.MATHE;
 			getline(filein, temp);
-			getline(filein, tdg->Ho);
-			getline(filein, tdg->Ten);
-			filein >> tdg->Phai;
-			filein >> tdg->TrangThai;
-			ThemNodeVaoCay(t, *tdg);
-			p = TimKiemDocGia(t, tdg->MATHE);
+			getline(filein, tdg.Ho);
+			getline(filein, tdg.Ten);
+			filein >> tdg.Phai;
+			filein >> tdg.TrangThai;
+			ThemNodeVaoCay(t, tdg);
+			p = TimKiemDocGia(t, tdg.MATHE);
 
 			filein >> soSach;
 			Init(p->listMuonTra);
 			for (int j = 0; j < soSach; j++)
 			{
-				NODE_MUONTRA *nmt = new NODE_MUONTRA;
-				MuonTra *mt = new MuonTra;
+				//NODE_MUONTRA *nmt = new NODE_MUONTRA;
+				
 				getline(filein, temp);
-				getline(filein, mt->MaSach);
-				filein >> mt->NgayMuon.Ngay;
-				filein >> mt->NgayMuon.Thang;
-				filein >> mt->NgayMuon.Nam;
-				filein >> mt->NgayTra.Ngay;
-				filein >> mt->NgayTra.Thang;
-				filein >> mt->NgayTra.Nam;
-				filein >> mt->TrangThai;
-				nmt->data = *mt;
+				getline(filein, mt.MaSach);
+				filein >> mt.NgayMuon.Ngay;
+				filein >> mt.NgayMuon.Thang;
+				filein >> mt.NgayMuon.Nam;
+				filein >> mt.NgayTra.Ngay;
+				filein >> mt.NgayTra.Thang;
+				filein >> mt.NgayTra.Nam;
+				filein >> mt.TrangThai;
+				//nmt->data = *mt;
 				// cap nhat du lieu vao
-				AddTailMT(p->listMuonTra, nmt);
+				AddHeadMT(p->listMuonTra, mt);
 				/*index = TimViTriDauSachTuMaSach(lds,nmt->data.MaSach);
 				lds.ListDS[index]->data.soluotmuon++;*/
 			}
@@ -1107,16 +1111,17 @@ NODE_MUONTRA* KhoiTaoNodeMT(MuonTra mt){
 	return p;
 }
 
-void AddHeadMT(LIST_MUONTRA &l, NODE_MUONTRA *p) {
-	NODE_MUONTRA *mt = KhoiTaoNodeMT(p->data);
+void AddHeadMT(LIST_MUONTRA &l, MuonTra data) {
+	NODE_MUONTRA *mt = KhoiTaoNodeMT(data);
 	if (l.pHead == NULL) {
-		l.pHead = mt;
-		l.pTail = mt;
-		return;
+		l.pHead = l.pTail = mt;
 	}
-	l.pHead->pPrev = mt;
-	mt->pNext = l.pHead;
-	l.pHead = mt;
+	else{
+		l.pHead->pPrev = mt;
+		mt->pNext = l.pHead;
+		l.pHead = mt;
+	}
+	++l.n;
 }
 
 void AddTailMT(LIST_MUONTRA &l, NODE_MUONTRA *p){
@@ -1124,7 +1129,7 @@ void AddTailMT(LIST_MUONTRA &l, NODE_MUONTRA *p){
 	NODE_MUONTRA *mt = KhoiTaoNodeMT(p->data);
 	if (l.pHead == NULL) {
 		l.pHead = l.pTail = p;
-		l.pTail->pNext = NULL;
+		//l.pTail->pNext = NULL;
 		++l.n;
 		return;
 	}
@@ -1133,7 +1138,7 @@ void AddTailMT(LIST_MUONTRA &l, NODE_MUONTRA *p){
 		l.pTail->pNext = p;
 		p->pPrev = l.pTail;
 		l.pTail = p;
-		l.pTail->pNext = NULL;
+		//l.pTail->pNext = NULL;
 		++l.n;
 		return;
 	}
@@ -1206,7 +1211,8 @@ int KiemTraSachDangMuon(NODETHEDOCGIA* dg, NODE_MUONTRA *mt){
 	return 0;
 }
 
-void MuonSach(TREE &t,LIST_MUONTRA &l, NODETHEDOCGIA* &dg, LIST_DS &lds){
+void MuonSach(TREE &t,LIST_MUONTRA &l, TREE &dg, LIST_DS &lds){
+	
 	int w[7] = { 24, 10, 45, 10, 35, 18, 25 };
 	int w2[4] = { 20, 20, 35, 20 };
 	string masach[] = {""};
@@ -1273,7 +1279,7 @@ void MuonSach(TREE &t,LIST_MUONTRA &l, NODETHEDOCGIA* &dg, LIST_DS &lds){
 		return;
 	}
 	if (dg->listMuonTra.n < 3){
-		InDanhSachDauSach(lds, w);
+		InTieuDeDauSach(w);
 
 		SapXepTheoTheLoaiVaTenSach(lds, w);
 		HANDLE hConsoleColor;
@@ -1346,26 +1352,6 @@ void MuonSach(TREE &t,LIST_MUONTRA &l, NODETHEDOCGIA* &dg, LIST_DS &lds){
 				return;
 			}
 			else{
-				
-				ConsoleProcess::gotoxy(42, 6);
-				cout << "                                                      ";
-				NODE_MUONTRA *nmt = new NODE_MUONTRA;
-				MuonTra *mt = new MuonTra;
-				mt->MaSach = maSach;
-				mt->NgayMuon.Ngay = LayNgayHienTai();
-				mt->NgayMuon.Thang = LayThangHienTai();
-				mt->NgayMuon.Nam = LayNamHienTai();
-				mt->NgayTra.Ngay = 0;
-				mt->NgayTra.Thang = 0;
-				mt->NgayTra.Nam = 0;
-				mt->TrangThai = 0;
-				nmt->data = *mt;
-				if (KiemTraSachDangMuon(dg, nmt)==1){
-					ConsoleProcess::gotoxy(42, 6);
-					cout << "Sach nay ban da muon vao hom nay. Vui long den muon vao ngay mai!";
-					getch();
-					return;
-				}
 				if (pp->data.TrangThai == 1)  {
 					ConsoleProcess::gotoxy(42, 6);
 					cout << "Sach nay da co doc gia muon!";
@@ -1378,9 +1364,29 @@ void MuonSach(TREE &t,LIST_MUONTRA &l, NODETHEDOCGIA* &dg, LIST_DS &lds){
 					getch();
 					return;
 				}
+				ConsoleProcess::gotoxy(42, 6);
+				cout << "                                                      ";
+				NODE_MUONTRA *nmt = new NODE_MUONTRA;
+				MuonTra mt;
+				mt.MaSach = maSach;
+				mt.NgayMuon.Ngay = LayNgayHienTai();
+				mt.NgayMuon.Thang = LayThangHienTai();
+				mt.NgayMuon.Nam = LayNamHienTai();
+				mt.NgayTra.Ngay = 0;
+				mt.NgayTra.Thang = 0;
+				mt.NgayTra.Nam = 0;
+				mt.TrangThai = 0;
+				//nmt->data = *mt;
+				/*if (KiemTraSachDangMuon(dg, nmt)==1){
+					ConsoleProcess::gotoxy(42, 6);
+					cout << "Sach nay ban da muon vao hom nay. Vui long den muon vao ngay mai!";
+					getch();
+					return;
+				}*/
+				
 				pp->data.TrangThai = 1;
 				lds.ListDS[vitri]->data.soluotmuon++;
-				AddTailMT(l, nmt);
+				AddHeadMT(l, mt);
 				LuuDuLieuDocGia(t);
 				DocDuLieuDocGia(t);
 				LuuDuLieuDauSach(lds);
@@ -1396,11 +1402,14 @@ void MuonSach(TREE &t,LIST_MUONTRA &l, NODETHEDOCGIA* &dg, LIST_DS &lds){
 		getch();
 		return;
 	}
+	return;
 
 }
 
 void TraSach(TREE &t, NODETHEDOCGIA* &dg, LIST_DS &lds){
 	Date d2;
+	HANDLE hConsoleColor;
+	hConsoleColor = GetStdHandle(STD_OUTPUT_HANDLE);
 	d2.Ngay = LayNgayHienTai();
 	d2.Thang = LayThangHienTai();
 	d2.Nam = LayNamHienTai();
@@ -1419,7 +1428,13 @@ void TraSach(TREE &t, NODETHEDOCGIA* &dg, LIST_DS &lds){
 	cout << "--------------------------------------------------\n";
 	cout << "--------------------------------------------------\n";
 	cout << "---------------------Cac Sach Dang muon--------------------\n";
-	if (dg->listMuonTra.pHead == NULL) cout << "Hien chua muon sach nao\n";
+	if (dg->listMuonTra.pHead == NULL) {
+		ConsoleProcess::CreateBoxTitle(80, 18, "Thong Bao: ", 70);
+		SetConsoleTextAttribute(hConsoleColor, 12);
+		ConsoleProcess::gotoxy(90, 18);
+		cout << "Ban Chua Muon Sach Nao!.\n";
+		return;
+	}
 	string vitri;
 	int ngaydamuon;
 	for (NODE_MUONTRA *p = dg->listMuonTra.pHead; p != NULL; p = p->pNext){
@@ -1439,8 +1454,7 @@ void TraSach(TREE &t, NODETHEDOCGIA* &dg, LIST_DS &lds){
 			cout << "--------------------------------------------------\n";
 		}
 	}
-	HANDLE hConsoleColor;
-	hConsoleColor = GetStdHandle(STD_OUTPUT_HANDLE);
+	
 	string maSach;
 	string ngay, thang, nam;
 	int vitri1=-1;
@@ -1560,7 +1574,18 @@ void TraSach(TREE &t, NODETHEDOCGIA* &dg, LIST_DS &lds){
 			ConsoleProcess::gotoxy(90, 18);
 			cout << "                                            ";
 		}
-		if (stoi(ngay) > LayNgayHienTai() && stoi(thang) > LayThangHienTai() && stoi(nam) > LayNamHienTai()){
+		Date d1, d2, d3;
+		d1.Ngay = stoi(ngay);
+		d1.Thang = stoi(thang);
+		d1.Nam = stoi(nam);
+		d2.Ngay = LayNgayHienTai();
+		d2.Thang = LayThangHienTai();
+		d2.Nam = LayNamHienTai();
+		d2.Ngay = LayNgayHienTai();
+		d2.Thang = LayThangHienTai();
+		d2.Nam = LayNamHienTai();
+		//if (stoi(ngay) > LayNgayHienTai() || stoi(thang) > LayThangHienTai() || stoi(nam) > LayNamHienTai()){
+			if (TinhKhoangCachNgay(d1,d2) < 0){
 			ConsoleProcess::CreateBoxTitle(80, 18, "Thong Bao: ", 70);
 			SetConsoleTextAttribute(hConsoleColor, 12);
 			ConsoleProcess::gotoxy(90, 18);
@@ -1571,7 +1596,7 @@ void TraSach(TREE &t, NODETHEDOCGIA* &dg, LIST_DS &lds){
 			ConsoleProcess::gotoxy(90, 18);
 			cout << "                                                  ";
 		}
-		if (stoi(ngay) < p->data.NgayMuon.Ngay && stoi(thang) < p->data.NgayMuon.Thang && stoi(nam) < p->data.NgayMuon.Nam){
+		if (TinhKhoangCachNgay(p->data.NgayMuon,d1) < 0){
 			ConsoleProcess::CreateBoxTitle(80, 18, "Thong Bao: ", 70);
 			SetConsoleTextAttribute(hConsoleColor, 12);
 			ConsoleProcess::gotoxy(90, 18);
@@ -1593,6 +1618,7 @@ void TraSach(TREE &t, NODETHEDOCGIA* &dg, LIST_DS &lds){
 		NODE_DMS* pDMS = TimKiemDanhMucSach(lds.ListDS[vitri1]->listDMS, maSach);
 		pDMS->data.TrangThai = 0;
 		lds.ListDS[vitri1]->data.soluotmuon--;
+		dg->listMuonTra.n--;
 		LuuDuLieuDauSach(lds);
 		DocDuLieuDauSach(lds);
 		LuuDuLieuDocGia(t);
@@ -1632,6 +1658,7 @@ void TraSach(TREE &t, NODETHEDOCGIA* &dg, LIST_DS &lds){
 }
 
 int CapNhatMuonTra(TREE &t, LIST_MUONTRA &l, NODETHEDOCGIA* &dg, LIST_DS &lds){
+	
 	int w[7] = { 15, 20, 20, 20, 20, 20, 20 };
 	Menu a(35, 60, 1);
 	a.Set_Header("MENU LUA CHON");
@@ -1646,18 +1673,19 @@ int CapNhatMuonTra(TREE &t, LIST_MUONTRA &l, NODETHEDOCGIA* &dg, LIST_DS &lds){
 	if (k == 1){
 		MuonSach(t,l, dg, lds);
 		getch();
-		return 4;
+		//return 4;
 	}
 	if (k == 2){
 		TraSach(t, dg, lds);
 		getch();
-		return 4;
+		//return 4;
 	}
 	if (k == 3) {
 		InTieuDeMuonTra(w);
 		InDongDuLieuMuonTra(dg->listMuonTra, lds, w);
 		getch();
 	}
+	
 }
 
 void LayViTriNodeDuocChonMuonTra(TREE &t,LIST_DS &lds){
@@ -1693,12 +1721,12 @@ void LayViTriNodeDuocChonMuonTra(TREE &t,LIST_DS &lds){
 		getch();
 	}
 	else{
-		if (p->listMuonTra.n == 0) Init(p->listMuonTra);
+		//if (p->listMuonTra.n == 0) Init(p->listMuonTra);
 		int check;
 		while (true){
-			check = CapNhatMuonTra(t, p->listMuonTra, p,lds);
+			check = CapNhatMuonTra(t, p->listMuonTra, p, lds);
 			if (check == 4) {
-				//GiaiPhongDanhSachLKK(p->listMuonTra);
+				GiaiPhongDanhSachLKK(p->listMuonTra);
 				break;
 			}
 		}
@@ -1729,9 +1757,9 @@ int KiemTraTonTaiISBN(LIST_DS lds, string ISBN){
 	return 0;
 }
 
-int KiemTraTonTaiTenSach(LIST_DS lds, string tenSach){
+int KiemTraTonTaiTenSach(LIST_DS lds, string tenSach, int vitri){
 	foru(i, 0, lds.n)
-	if (lds.ListDS[i]->data.TenSach == tenSach)
+	if (lds.ListDS[i]->data.TenSach == tenSach && i != vitri)
 		return 1;
 	return 0;
 }
@@ -1941,7 +1969,7 @@ void NhapThongTin1DauSach(LIST_DS lds, DauSach &ds, int w[], int isISBN){
 		cout << ds.ISBN;
 	}
 
-
+	int check = TimKiemDauSach(lds, ds.ISBN);
 
 	nhapTenSach:
 	SetConsoleTextAttribute(hConsoleColor, Normal_Color);
@@ -1954,7 +1982,7 @@ void NhapThongTin1DauSach(LIST_DS lds, DauSach &ds, int w[], int isISBN){
 		cout << "Vui long khong de trong. Nhap lai";
 		goto nhapTenSach;
 	}
-	else if (KiemTraTonTaiTenSach(lds, ds.TenSach) == 1){
+	else if (KiemTraTonTaiTenSach(lds, ds.TenSach, check) == 1){
 		SetConsoleTextAttribute(hConsoleColor, 12);
 		ConsoleProcess::gotoxy(72, 15);
 		cout << "                                      ";
@@ -2771,7 +2799,7 @@ int CapNhatDanhSachDanhMucSach(LIST_DS &lds, LIST_DMS &ldms, pNODEDAUSACH &p){
 		LuuDuLieuDauSach(lds);
 		DocDuLieuDauSach(lds);
 		ConsoleProcess::ThongBao(72, 15, "Them danh muc sach thanh cong", 1);
-		return 5;
+		//return 5;
 	}
 
 	if (k == 3) {
@@ -2812,7 +2840,7 @@ int CapNhatDanhSachDanhMucSach(LIST_DS &lds, LIST_DMS &ldms, pNODEDAUSACH &p){
 			LuuDuLieuDauSach(lds);
 			DocDuLieuDauSach(lds);
 			ConsoleProcess::ThongBao(72, 15, "Hieu chinh dau sach thanh cong", 1);
-			return 5;
+			//return 5;
 		}
 	}
 	if (k == 4){
@@ -2887,7 +2915,7 @@ void LayViTriNodeDuocChon(LIST_DS &lds){
 		getch();
 	}
 
-	else{
+	/*else{
 		NODEDAUSACH *p = lds.ListDS[vitri];
 		if (p->listDMS.n == 0) KhoiTaoDanhMucSach(p->listDMS);
 		int check;
@@ -2895,6 +2923,18 @@ void LayViTriNodeDuocChon(LIST_DS &lds){
 			check = CapNhatDanhSachDanhMucSach(lds, p->listDMS, p);
 			if (check == 5) {
 				GiaiPhongDanhSachLKD(p->listDMS); 
+				break;
+			}
+		}
+	}*/
+	else{
+		//NODEDAUSACH *p = lds.ListDS[vitri];
+		if (lds.ListDS[vitri]->listDMS.n == 0) KhoiTaoDanhMucSach(lds.ListDS[vitri]->listDMS);
+		int check;
+		while (true){
+			check = CapNhatDanhSachDanhMucSach(lds,lds.ListDS[vitri]->listDMS,lds.ListDS[vitri]);
+			if (check == 5) {
+				GiaiPhongDanhSachLKD(lds.ListDS[vitri]->listDMS);
 				break;
 			}
 		}
