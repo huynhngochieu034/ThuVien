@@ -1,4 +1,4 @@
-﻿Build started 8/20/2019 12:31:11 AM.
+﻿Build started 8/20/2019 1:04:07 AM.
      1>Project "C:\Users\huynh\OneDrive\Desktop\ThuVien\ThuVien\ThuVien.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          D:\visual studio\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Source.cpp
@@ -18,14 +18,14 @@
      1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(632): warning C4101: 'index' : unreferenced local variable
      1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(698): warning C4018: '<' : signed/unsigned mismatch
      1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(701): warning C4018: '>' : signed/unsigned mismatch
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(1577): warning C4101: 'd3' : unreferenced local variable
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(2262): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(3036): warning C4101: 'vitri5' : unreferenced local variable
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(1584): warning C4101: 'd3' : unreferenced local variable
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(2269): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(3043): warning C4101: 'vitri5' : unreferenced local variable
      1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(359): warning C4715: 'TimKiemDocGia' : not all control paths return a value
      1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(725): warning C4715: 'XoaDocGia' : not all control paths return a value
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(1165): warning C4715: 'TimTenSach' : not all control paths return a value
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(1689): warning C4715: 'CapNhatMuonTra' : not all control paths return a value
-     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(2894): warning C4715: 'CapNhatDanhSachDanhMucSach' : not all control paths return a value
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(1172): warning C4715: 'TimTenSach' : not all control paths return a value
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(1696): warning C4715: 'CapNhatMuonTra' : not all control paths return a value
+     1>c:\users\huynh\onedrive\desktop\thuvien\thuvien\source.cpp(2901): warning C4715: 'CapNhatDanhSachDanhMucSach' : not all control paths return a value
        Link:
          D:\visual studio\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\huynh\OneDrive\Desktop\ThuVien\Debug\ThuVien.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\huynh\OneDrive\Desktop\ThuVien\Debug\ThuVien.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\huynh\OneDrive\Desktop\ThuVien\Debug\ThuVien.lib" /MACHINE:X86 Debug\ConsoleProcess.obj
          Debug\Menu.obj
@@ -35,4 +35,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.88
+Time Elapsed 00:00:01.86

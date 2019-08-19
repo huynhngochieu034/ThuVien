@@ -924,8 +924,15 @@ void CapNhatDanhSachCacDocGia(TREE &t){
 		else{
 			ConsoleProcess::gotoxy(42, 6);
 			cout << "                                                      ";
+
 		}
 		NODETHEDOCGIA *p = TimKiemDocGia(t, stoi(madocgia));
+		if (p == NULL){
+			ConsoleProcess::gotoxy(42, 6);
+			cout << "Ma doc gia " << madocgia << " khong ton tai!";
+			getch();
+			return;
+		}
 		if (p->listMuonTra.pHead != NULL){
 			ConsoleProcess::gotoxy(42, 6);
 			cout << "Doc gia da muon sach, Khong duoc xoa.";
@@ -2886,7 +2893,7 @@ int CapNhatDanhSachDanhMucSach(LIST_DS &lds, LIST_DMS &ldms, pNODEDAUSACH &p){
 				LuuDuLieuDauSach(lds);
 				DocDuLieuDauSach(lds);
 				ConsoleProcess::ThongBao(42, 6, "Xoa sach thanh cong", 1);
-				return 5;
+				//return 5;
 			}
 
 		}
