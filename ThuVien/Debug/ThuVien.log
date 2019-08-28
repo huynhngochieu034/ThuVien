@@ -1,4 +1,4 @@
-﻿Build started 8/20/2019 1:04:07 AM.
+﻿Build started 8/20/2019 5:52:52 PM.
      1>Project "C:\Users\huynh\OneDrive\Desktop\ThuVien\ThuVien\ThuVien.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          D:\visual studio\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Source.cpp
@@ -35,4 +35,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.86
+Time Elapsed 00:00:05.06

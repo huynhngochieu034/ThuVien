@@ -82,16 +82,16 @@ struct listMuonTra{
 };
 typedef struct listMuonTra LIST_MUONTRA;
 
-struct nodeQuaHan
-{
-	unsigned int MATHE;
-	string HoTen;
-	string MaSach;
-	string TenSach;
-	Date NgayMuon;
-	int SoNgayQuaHan;
-};
-typedef struct nodeQuaHan NODEQUAHAN;
+//struct nodeQuaHan
+//{
+//	unsigned int MATHE;
+//	string HoTen;
+//	string MaSach;
+//	string TenSach;
+//	Date NgayMuon;
+//	int SoNgayQuaHan;
+//};
+//typedef struct nodeQuaHan NODEQUAHAN;
 
 struct nodeQuaHanr
 {
@@ -1733,7 +1733,7 @@ void LayViTriNodeDuocChonMuonTra(TREE &t,LIST_DS &lds){
 		while (true){
 			check = CapNhatMuonTra(t, p->listMuonTra, p, lds);
 			if (check == 4) {
-				GiaiPhongDanhSachLKK(p->listMuonTra);
+				//GiaiPhongDanhSachLKK(p->listMuonTra);
 				break;
 			}
 		}
@@ -2941,7 +2941,7 @@ void LayViTriNodeDuocChon(LIST_DS &lds){
 		while (true){
 			check = CapNhatDanhSachDanhMucSach(lds,lds.ListDS[vitri]->listDMS,lds.ListDS[vitri]);
 			if (check == 5) {
-				GiaiPhongDanhSachLKD(lds.ListDS[vitri]->listDMS);
+				//GiaiPhongDanhSachLKD(lds.ListDS[vitri]->listDMS);
 				break;
 			}
 		}
