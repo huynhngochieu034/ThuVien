@@ -1,4 +1,4 @@
-9
+11
 VVV
 C++
 Edition
@@ -86,6 +86,14 @@ test
 ISBN5
 1
 test2
+DEMO
+demo sach 2
+Tui
+Ma
+123
+2019
+0
+0
 GGG
 Hoa Nguc
 Brown
@@ -97,6 +105,14 @@ Trinh Tham
 GGG1
 1
 1
+MNBV
+demo sach
+Tui
+Truyen Ma
+209
+2020
+0
+0
 MMM
 Songoku
 Julisima

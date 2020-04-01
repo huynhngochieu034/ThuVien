@@ -311,10 +311,7 @@ void KhoiTaoCay(TREE &t){
 unsigned int Random()
 {
 	srand(time(0));
-	int x;
-	// bo ham rand() vao vong lap moi khong bi loi tang dan, hay giam dan.
-	for (int i = 0; i < 500; i++)
-		x = rand();
+	int x = rand();
 	return x;
 }
 
